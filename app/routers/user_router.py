@@ -3,6 +3,7 @@ from collections.abc import Sequence
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.core.deps import get_current_active_user
 from app.core.exceptions import UserNotFoundError
 from app.database.session import get_db
 from app.schemas.user_schemas import UserOutput
@@ -17,7 +18,12 @@ async def get_users(session: AsyncSession = Depends(get_db)) -> Sequence[UserOut
     return users
 
 
-@user_router.get("/{user_id}", response_model=UserOutput)
+@user_router.get("/me")
+async def get_me(current_user=Depends(get_current_active_user)):
+    return current_user
+
+
+@user_router.get("/{user_id:int}", response_model=UserOutput)
 async def get_user_by_id(user_id: int, session: AsyncSession = Depends(get_db)) -> UserOutput:
     try:
         return await user_service.get_user_by_id(session=session, user_id=user_id)

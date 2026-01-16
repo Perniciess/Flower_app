@@ -1,11 +1,8 @@
+from fastapi.security import OAuth2PasswordBearer
 from pwdlib import PasswordHash
 
-SECRET_KEY = "12345"
-ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 30
-
-
 password_hash = PasswordHash.recommended()
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/token")
 
 
 def verify_password(plain_password, hashed_password):
