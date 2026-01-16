@@ -1,0 +1,52 @@
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual env
+.venv/
+venv/
+ENV/
+
+# Packaging
+build/
+dist/
+wheels/
+*.egg-info/
+.eggs/
+
+# Tools
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+.pyright/
+.coverage
+coverage.xml
+htmlcov/
+
+# IDE
+.vscode/
+.idea/
+*.iml
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Env files / secrets
+.env
+.env.*
+!.env.example
+
+# FastAPI / logs
+*.log
+
+# SQLite
+*.sqlite3
+
+# UV
+.uv/
+uv.lock.bak
+
+# Alembic
+alembic/**/*.pyc
