@@ -7,9 +7,9 @@ class UserNotFoundError(Exception):
         self.email = email
 
         if user_id is not None:
-            msg = f"User with id={user_id} not found"
+            msg = f"Пользователь с ID={user_id} не найден"
         else:
-            msg = f"User with email={email} not found"
+            msg = f"Пользователь с email={email} не найден"
 
         super().__init__(msg)
 
@@ -17,4 +17,9 @@ class UserNotFoundError(Exception):
 class UserAlreadyExistsError(Exception):
     def __init__(self, email: str) -> None:
         self.email = email
-        super().__init__(f"User with email={email} already exists")
+        super().__init__(f"Пользователь с таким email={email} уже существует")
+
+
+class PasswordsDoNotMatchError(Exception):
+    def __init__(self) -> None:
+        super().__init__("Неправильный пароль")

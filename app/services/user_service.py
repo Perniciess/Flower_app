@@ -5,10 +5,10 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.exceptions import UserAlreadyExistsError, UserNotFoundError
 from app.core.security import get_password_hash
 from app.repositories import user_repository
-from app.schemas.user_schemas import UserInput, UserOutput
+from app.schemas.user_schemas import UserOutput
 
 
-async def create_user(*, session: AsyncSession, data: UserInput) -> UserOutput:
+async def create_user(*, session: AsyncSession, data) -> UserOutput:
     user_exist = await user_repository.get_user_by_email(session=session, email=data.email)
     if user_exist:
         raise UserAlreadyExistsError(data.email)
