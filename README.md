@@ -17,17 +17,28 @@ REST API для управления каталогом цветов, корзи
 - **asyncpg** — асинхронный драйвер PostgreSQL
 
 ## 📁 Структура проекта
-app/
-├── core/ # Ядро приложения
-│ ├── config.py # Настройки окружения
-│ ├── security.py # JWT, хэширование паролей
-│ └── exceptions.py # Кастомные исключения
-├── database/ # Конфигурация БД
-│ ├── session.py # Async session
-│ └── base.py # Base для моделей
-├── models/ # SQLAlchemy модели
-├── schemas/ # Pydantic схемы
-├── repositories/ # Слой работы с БД
-├── services/ # Бизнес-логика
-├── routers/ # API endpoints
-└── main.py # Точка входа приложения
+FlowerShop_FastAPI/
+├─ app/
+│  ├─ core/
+│  │  ├─ config.py          # Settings / env config
+│  │  ├─ security.py        # JWT, password hashing
+│  │  ├─ exceptions.py      # Custom exceptions
+│  │  └─ handlers.py        # Exception handlers
+│  ├─ database/
+│  │  ├─ base.py            # DeclarativeBase
+│  │  └─ session.py         # AsyncSession, engine, get_db
+│  ├─ models/
+│  │  └─ user.py            # SQLAlchemy model User
+│  ├─ schemas/
+│  │  └─ user_schemas.py    # Pydantic schemas
+│  ├─ repositories/
+│  │  └─ user_repository.py # DB layer
+│  ├─ services/
+│  │  └─ user_service.py    # Business logic
+│  ├─ routers/
+│  │  └─ user_router.py     # API endpoints
+│  └─ main.py               # FastAPI app entrypoint
+├─ alembic/
+├─ alembic.ini
+├─ pyproject.toml
+└─ README.md
