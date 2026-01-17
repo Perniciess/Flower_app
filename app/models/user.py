@@ -1,6 +1,6 @@
 from enum import StrEnum
 
-from sqlalchemy import String
+from sqlalchemy import Enum, String
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.database.base import Base
@@ -18,4 +18,4 @@ class User(Base):
     email: Mapped[str] = mapped_column(String(64))
     name: Mapped[str] = mapped_column(String(64))
     hash: Mapped[str] = mapped_column(String(255))
-    role: Mapped[Role] = mapped_column(default=Role.CLIENT)
+    role: Mapped[Role] = mapped_column(Enum(Role), default=Role.CLIENT)

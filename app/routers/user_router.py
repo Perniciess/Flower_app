@@ -1,12 +1,11 @@
 from collections.abc import Sequence
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.deps import get_current_active_user
-from app.core.exceptions import UserNotFoundError
 from app.database.session import get_db
-from app.schemas.user_schemas import UserOutput
+from app.schemas.user_schemas import UserOutput, UserUpdate
 from app.services import user_service
 
 user_router = APIRouter(prefix="/users", tags=["users"])
@@ -18,14 +17,16 @@ async def get_users(session: AsyncSession = Depends(get_db)) -> Sequence[UserOut
     return users
 
 
-@user_router.get("/me")
+@user_router.get("/me", response_model=UserOutput)
 async def get_me(current_user=Depends(get_current_active_user)):
     return current_user
 
 
 @user_router.get("/{user_id:int}", response_model=UserOutput)
 async def get_user_by_id(user_id: int, session: AsyncSession = Depends(get_db)) -> UserOutput:
-    try:
-        return await user_service.get_user_by_id(session=session, user_id=user_id)
-    except UserNotFoundError as e:
-        raise HTTPException(status_code=404, detail=str(e)) from e
+    return await user_service.get_user_by_id(session=session, user_id=user_id)
+
+
+@user_router.patch("/{user_id:int}", response_model=UserOutput)
+async def update_user(user_id: int, data: UserUpdate, session: AsyncSession = Depends(get_db)) -> UserOutput:
+    return await user_service.update_user(session=session, user_id=user_id, data=data)

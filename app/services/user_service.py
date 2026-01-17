@@ -5,7 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.exceptions import UserAlreadyExistsError, UserNotFoundError
 from app.core.security import get_password_hash
 from app.repositories import user_repository
-from app.schemas.user_schemas import UserOutput
+from app.schemas.user_schemas import UserOutput, UserUpdate
 
 
 async def create_user(*, session: AsyncSession, data) -> UserOutput:
@@ -24,6 +24,14 @@ async def get_user_by_email(*, session: AsyncSession, email: str) -> UserOutput:
     if user is None:
         raise UserNotFoundError(email=email)
 
+    return UserOutput.model_validate(user)
+
+
+async def update_user(*, session: AsyncSession, user_id: int, data: UserUpdate) -> UserOutput:
+    patch = data.model_dump(exclude_unset=True)
+    user = await user_repository.update_user(session=session, user_id=user_id, data=patch)
+    if user is None:
+        raise UserNotFoundError(user_id=user_id)
     return UserOutput.model_validate(user)
 
 

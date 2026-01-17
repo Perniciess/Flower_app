@@ -1,5 +1,7 @@
 from pydantic import BaseModel, ConfigDict, EmailStr, Field
 
+from app.models.user import Role
+
 
 class UserOutput(BaseModel):
     model_config = ConfigDict(from_attributes=True)
@@ -7,4 +9,10 @@ class UserOutput(BaseModel):
     id: int = Field(..., description="Уникальный идентификатор пользователя")
     email: EmailStr = Field(..., description="Электронная почта пользователя")
     name: str = Field(..., min_length=1, max_length=64, description="Имя пользователя")
-    role: str = Field(..., description="Роль пользователя")
+    role: Role
+
+
+class UserUpdate(BaseModel):
+    email: EmailStr | None = Field(default=None, description="Электронная почта пользователя")
+    name: str | None = Field(default=None, min_length=1, max_length=64, description="Имя пользователя")
+    role: Role | None = None

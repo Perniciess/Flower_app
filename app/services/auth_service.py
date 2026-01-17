@@ -31,7 +31,7 @@ async def login(*, session: AsyncSession, data: UserLogin) -> Token:
 
     access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = _create_access_token(data={"sub": user.email}, expires_delta=access_token_expires)
-    return Token(access_token=access_token, token_type="Bearer")
+    return Token(access_token=access_token, token_type="bearer")
 
 
 def _create_access_token(data: dict, expires_delta: timedelta | None = None):
