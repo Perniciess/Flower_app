@@ -13,3 +13,11 @@ def set_token(response: Response, token: Token) -> None:
         samesite="lax",
         max_age=settings.ACCESS_TOKEN_EXPIRE_MINUTES * 60,
     )
+
+
+def remove_token(response: Response) -> None:
+    response.delete_cookie(
+        key="access_token",
+        secure=settings.COOKIE_SECURE,
+        samesite="lax",
+    )

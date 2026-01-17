@@ -6,7 +6,7 @@ from app.database.session import get_db
 from app.schemas.auth_schemas import Token, UserLogin, UserRegister
 from app.schemas.user_schemas import UserOutput
 from app.services import auth_service
-from app.services.cookie_service import set_token
+from app.services.cookie_service import remove_token, set_token
 
 auth_router = APIRouter(prefix="/auth", tags=["auth"])
 
@@ -22,6 +22,12 @@ async def login(response: Response, data: UserLogin, session: AsyncSession = Dep
     access_token = await auth_service.login(session=session, data=data)
     set_token(response=response, token=access_token)
     return {"message": "Успешная авторизация", "email": data.email}
+
+
+@auth_router.post("/logout")
+async def logout(response: Response):
+    remove_token(response)
+    return {"message": "Выход из системы выполнен"}
 
 
 @auth_router.post("/token", response_model=Token)
