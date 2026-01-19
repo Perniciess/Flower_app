@@ -32,8 +32,7 @@ async def login(*, session: AsyncSession, data: UserLogin) -> Tokens:
     if not verify_password(data.password, user.password_hash):
         raise PasswordsDoNotMatchError()
 
-    access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
-    access_token = _create_access_token(data={"sub": str(user.id)}, expires_delta=access_token_expires)
+    access_token = _create_access_token(data={"sub": str(user.id)})
 
     refresh_token = secrets.token_urlsafe(64)
     refresh_hash = get_refresh_hash(refresh_token)
@@ -50,12 +49,9 @@ async def login(*, session: AsyncSession, data: UserLogin) -> Tokens:
     return Tokens(access_token=access_token, refresh_token=refresh_token, token_type="bearer")
 
 
-def _create_access_token(data: dict, expires_delta: timedelta | None = None):
+def _create_access_token(data: dict):
     to_encode = data.copy()
-    if expires_delta:
-        expire = datetime.now(UTC) + expires_delta
-    else:
-        expire = datetime.now(UTC) + timedelta(minutes=15)
+    expire = datetime.now(UTC) + timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
     to_encode.update({"exp": expire})
     encoded_jwt = jwt.encode(to_encode, settings.SECRET_KEY, algorithm=settings.ALGORITHM)
     return encoded_jwt
