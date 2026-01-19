@@ -13,8 +13,7 @@ async def create_user(*, session: AsyncSession, data: Mapping[str, str]) -> User
         password_hash=data["password_hash"],
     )
     session.add(user)
-    await session.commit()
-    await session.refresh(user)
+    await session.flush()
     return user
 
 
@@ -33,13 +32,8 @@ async def get_user_by_id(*, session: AsyncSession, user_id: int) -> User | None:
 async def update_user(*, session: AsyncSession, user_id: int, data: Mapping[str, object]) -> User | None:
     statement = update(User).where(User.id == user_id).values(**data).returning(User)
     result = await session.execute(statement)
-    user: User | None = result.scalar_one_or_none()
-    if user is None:
-        await session.rollback()
-        return None
-    await session.commit()
-    await session.refresh(user)
-    return user
+    await session.flush()
+    return result.scalar_one_or_none()
 
 
 async def get_users(*, session: AsyncSession) -> Sequence[User]:
