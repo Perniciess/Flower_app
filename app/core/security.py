@@ -1,5 +1,10 @@
+import hashlib
+import hmac
+
 from fastapi.security import HTTPBearer, OAuth2PasswordBearer
 from pwdlib import PasswordHash
+
+from .config import settings
 
 password_hash = PasswordHash.recommended()
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/token", auto_error=False)
@@ -14,5 +19,5 @@ def get_password_hash(password):
     return password_hash.hash(password)
 
 
-def get_refresh_hash(refresh_token):
-    return password_hash.hash(refresh_token)
+def get_refresh_hash(refresh_token: str) -> str:
+    return hmac.new(settings.SECRET_KEY.encode(), refresh_token.encode(), hashlib.sha256).hexdigest()

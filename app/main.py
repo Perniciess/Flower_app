@@ -9,12 +9,14 @@ from starlette_csrf import CSRFMiddleware
 from app.core.config import settings
 from app.core.exceptions import (
     InsufficientPermission,
+    InvalidToken,
     PasswordsDoNotMatchError,
     UserAlreadyExistsError,
     UserNotFoundError,
 )
 from app.core.handlers import (
     insufficient_permission,
+    invalid_token,
     password_not_match_handler,
     user_exists_handler,
     user_not_found_handler,
@@ -71,3 +73,4 @@ app.add_exception_handler(UserNotFoundError, user_not_found_handler)
 app.add_exception_handler(UserAlreadyExistsError, user_exists_handler)
 app.add_exception_handler(PasswordsDoNotMatchError, password_not_match_handler)
 app.add_exception_handler(InsufficientPermission, insufficient_permission)
+app.add_exception_handler(InvalidToken, invalid_token)

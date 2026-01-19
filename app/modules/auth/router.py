@@ -1,12 +1,11 @@
-from fastapi import APIRouter, Depends, Response
-from fastapi.security import OAuth2PasswordRequestForm
+from fastapi import APIRouter, Cookie, Depends, Response
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.database.session import get_db
 from app.modules.users.schema import UserOutput
 
 from . import service as auth_service
-from .schema import Tokens, UserLogin, UserRegister
+from .schema import UserLogin, UserRegister
 from .utils import remove_token, set_token
 
 auth_router = APIRouter(prefix="/auth", tags=["auth"])
@@ -31,7 +30,8 @@ async def logout(response: Response):
     return {"message": "Выход из системы выполнен"}
 
 
-@auth_router.post("/token", response_model=Tokens)
-async def token(form_data: OAuth2PasswordRequestForm = Depends(), session: AsyncSession = Depends(get_db)) -> Tokens:
-    data = UserLogin(email=form_data.username, password=form_data.password)
-    return await auth_service.login(session=session, data=data)
+@auth_router.post("/refresh")
+async def refresh_token(response: Response, refresh_token: str = Cookie(), session: AsyncSession = Depends(get_db)):
+    tokens = await auth_service.refresh_tokens(session=session, refresh_token=refresh_token)
+    set_token(response=response, tokens=tokens)
+    return {"message": "Успешная замена токенов"}
