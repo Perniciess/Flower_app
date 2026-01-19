@@ -1,4 +1,3 @@
-import secrets
 from typing import Annotated, Any, Literal
 
 from pydantic import (
@@ -28,14 +27,21 @@ class Settings(BaseSettings):
     )
     API_V1_STR: str = "/api/v1"
 
-    SECRET_KEY: str = secrets.token_urlsafe(32)
+    # Security settings
+    SECRET_KEY: str
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 15
     REFRESH_TOKEN_EXPIRE_DAYS: int = 30
 
+    CSRF_SECRET_KEY: str
+    CSRF_COOKIE_NAME: str = "csrftoken"
+    CSRF_HEADER_NAME: str = "x-csrftoken"
+
     ALGORITHM: str = "HS256"
+
     FRONTEND_HOST: str = "http://localhost:5173"
     ENVIRONMENT: Literal["local", "staging", "production"] = "local"
     COOKIE_SECURE: bool = False
+    COOKIE_SAMESITE: Literal["lax", "strict", "none"] = "strict"
     BACKEND_CORS_ORIGINS: Annotated[list[AnyUrl] | str, BeforeValidator(parse_cors)] = []
 
     @computed_field  # type: ignore[prop-decorator]

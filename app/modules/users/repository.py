@@ -3,7 +3,7 @@ from collections.abc import Mapping, Sequence
 from sqlalchemy import select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.models.user import User
+from .model import User
 
 
 async def create_user(*, session: AsyncSession, data: Mapping[str, str]) -> User:

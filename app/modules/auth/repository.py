@@ -3,7 +3,7 @@ from typing import Any
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.models.refresh_token import RefreshToken
+from .model import RefreshToken
 
 
 async def create_refresh_token(*, session: AsyncSession, data: Mapping[str, Any]) -> RefreshToken:
