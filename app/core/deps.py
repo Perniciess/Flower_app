@@ -4,18 +4,11 @@ from jwt import InvalidTokenError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import settings
+from app.core.exceptions import InsufficientPermission
 from app.core.security import oauth2_scheme
 from app.database.session import get_db
+from app.models.user import Role, User
 from app.repositories import user_repository
-
-
-def _extract_bearer(raw: str | None) -> str | None:
-    if not raw:
-        return None
-    parts = raw.split(" ", 1)
-    if len(parts) == 2 and parts[0].lower() == "bearer" and parts[1]:
-        return parts[1]
-    return None
 
 
 async def get_current_user(
@@ -34,19 +27,36 @@ async def get_current_user(
 
     try:
         payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
-        email = payload.get("sub")
-        if not isinstance(email, str) or not email:
-            raise HTTPException(status_code=401, detail="Could not validate credentials")
-    except InvalidTokenError:
+        sub = payload.get("sub")
+        user_id = int(sub)
+    except (InvalidTokenError, TypeError, ValueError):
         raise HTTPException(status_code=401, detail="Could not validate credentials") from None
 
-    user = await user_repository.get_user_by_email(session=session, email=email)
+    user = await user_repository.get_user_by_id(session=session, user_id=user_id)
     if user is None:
         raise HTTPException(status_code=401, detail="Could not validate credentials")
     return user
 
 
-async def get_current_active_user(current_user=Depends(get_current_user)):
-    if getattr(current_user, "disabled", False):
-        raise HTTPException(status_code=400, detail="Inactive user")
-    return current_user
+class RoleChecker:
+    def __init__(self, allowed_roles: list[Role]) -> None:
+        self.allowed_roles = allowed_roles
+
+    def __call__(self, current_user: User = Depends(get_current_user)) -> User:
+        if current_user.role in self.allowed_roles:
+            return current_user
+
+        raise InsufficientPermission()
+
+
+require_admin = RoleChecker([Role.ADMIN])
+require_client = RoleChecker([Role.CLIENT, Role.ADMIN])
+
+
+def _extract_bearer(raw: str | None) -> str | None:
+    if not raw:
+        return None
+    parts = raw.split(" ", 1)
+    if len(parts) == 2 and parts[0].lower() == "bearer" and parts[1]:
+        return parts[1]
+    return None

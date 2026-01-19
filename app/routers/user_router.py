@@ -3,8 +3,9 @@ from collections.abc import Sequence
 from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.core.deps import get_current_active_user
+from app.core.deps import get_current_user, require_admin
 from app.database.session import get_db
+from app.models.user import User
 from app.schemas.user_schemas import UserOutput, UserUpdate
 from app.services import user_service
 
@@ -12,13 +13,15 @@ user_router = APIRouter(prefix="/users", tags=["users"])
 
 
 @user_router.get("/", response_model=Sequence[UserOutput])
-async def get_users(session: AsyncSession = Depends(get_db)) -> Sequence[UserOutput]:
+async def get_users(
+    session: AsyncSession = Depends(get_db), current_user: User = Depends(require_admin)
+) -> Sequence[UserOutput]:
     users = await user_service.get_users(session=session)
     return users
 
 
 @user_router.get("/me", response_model=UserOutput)
-async def get_me(current_user=Depends(get_current_active_user)):
+async def get_me(current_user=Depends(get_current_user)):
     return current_user
 
 

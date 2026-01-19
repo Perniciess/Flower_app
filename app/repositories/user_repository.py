@@ -10,7 +10,7 @@ async def create_user(*, session: AsyncSession, data: Mapping[str, str]) -> User
     user = User(
         email=data["email"],
         name=data["name"],
-        hash=data["hash"],
+        password_hash=data["password_hash"],
     )
     session.add(user)
     await session.commit()
@@ -24,7 +24,7 @@ async def get_user_by_email(*, session: AsyncSession, email: str) -> User | None
     return user.scalar_one_or_none()
 
 
-async def get_user_by_id(*, session: AsyncSession, user_id: int, data) -> User | None:
+async def get_user_by_id(*, session: AsyncSession, user_id: int) -> User | None:
     statement = select(User).where(User.id == user_id)
     user = await session.execute(statement)
     return user.scalar_one_or_none()

@@ -23,3 +23,8 @@ class UserAlreadyExistsError(Exception):
 class PasswordsDoNotMatchError(Exception):
     def __init__(self) -> None:
         super().__init__("Неправильный пароль")
+
+
+class InsufficientPermission(Exception):
+    def __init__(self) -> None:
+        super().__init__("Отсутствуют права на выполнение операции")

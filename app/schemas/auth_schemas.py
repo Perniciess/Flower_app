@@ -41,10 +41,19 @@ class UserRegister(BaseModel):
         return v
 
 
-class Token(BaseModel):
+class AccessToken(BaseModel):
     access_token: str
+
+
+class RefreshToken(BaseModel):
+    refresh_token: str
+
+
+class Tokens(BaseModel):
+    access_token: str
+    refresh_token: str
     token_type: str
 
 
 class TokenData(BaseModel):
-    email: str
+    id: str

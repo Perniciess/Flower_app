@@ -9,7 +9,7 @@ from sqlalchemy.ext.asyncio import async_engine_from_config
 from alembic import context
 from app.core.config import settings
 from app.database.base import Base  # <-- твой declarative_base()
-from app.models import user
+from app.models import user, refresh_token
 
 config = context.config
 
