@@ -5,6 +5,7 @@ from fastapi.responses import JSONResponse
 
 from .exceptions import (
     InsufficientPermission,
+    InvalidToken,
     PasswordsDoNotMatchError,
     UserAlreadyExistsError,
     UserNotFoundError,
@@ -35,4 +36,9 @@ async def password_not_match_handler(request: Request, exc: Exception) -> JSONRe
 
 async def insufficient_permission(request: Request, exc: Exception) -> JSONResponse:
     e = cast(InsufficientPermission, exc)
-    return JSONResponse(status_code=400, content={"detail": str(e)})
+    return JSONResponse(status_code=403, content={"detail": str(e)})
+
+
+async def invalid_token(request: Request, exc: Exception) -> JSONResponse:
+    e = cast(InvalidToken, exc)
+    return JSONResponse(status_code=403, content={"detail": str(e)})

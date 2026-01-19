@@ -28,3 +28,8 @@ class PasswordsDoNotMatchError(Exception):
 class InsufficientPermission(Exception):
     def __init__(self) -> None:
         super().__init__("Отсутствуют права на выполнение операции")
+
+
+class InvalidToken(Exception):
+    def __init__(self) -> None:
+        super().__init__("Невалидный токен")
