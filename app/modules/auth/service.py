@@ -7,10 +7,10 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.config import settings
 from app.core.exceptions import PasswordsDoNotMatchError, UserAlreadyExistsError, UserNotFoundError
 from app.core.security import get_password_hash, get_refresh_hash, verify_password
-from app.modules.auth import repository as auth_repository
-from app.modules.user import repository as user_repository
-from app.modules.user.schema import UserOutput
+from app.modules.users import repository as user_repository
+from app.modules.users.schema import UserOutput
 
+from . import repository as auth_repository
 from .schema import Tokens, UserLogin, UserRegister
 
 

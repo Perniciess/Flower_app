@@ -17,7 +17,7 @@ from app.core.handlers import (
 )
 from app.database.session import engine
 from app.modules.auth.router import auth_router
-from app.modules.user.router import user_router
+from app.modules.users.router import user_router
 
 
 @asynccontextmanager

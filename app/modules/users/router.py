@@ -5,8 +5,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.deps import get_current_user, require_admin
 from app.database.session import get_db
-from app.modules.user import service as user_service
 
+from . import service as user_service
 from .model import User
 from .schema import UserOutput, UserUpdate
 

@@ -4,8 +4,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.exceptions import UserAlreadyExistsError, UserNotFoundError
 from app.core.security import get_password_hash
-from app.modules.user import repository as user_repository
 
+from . import repository as user_repository
 from .schema import UserOutput, UserUpdate
 
 
