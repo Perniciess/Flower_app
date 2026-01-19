@@ -31,3 +31,8 @@ def remove_token(response: Response) -> None:
         secure=settings.COOKIE_SECURE,
         samesite="lax",
     )
+    response.delete_cookie(
+        key="refresh_token",
+        secure=settings.COOKIE_SECURE,
+        samesite="lax",
+    )

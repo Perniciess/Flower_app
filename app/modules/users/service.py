@@ -16,7 +16,7 @@ async def create_user(*, session: AsyncSession, data) -> UserOutput:
 
     data_user = {"email": data.email, "name": data.name, "hash": get_password_hash(data.password)}
 
-    new_user = await create_user(session=session, data=data_user)
+    new_user = await user_repository.create_user(session=session, data=data_user)
     return UserOutput.model_validate(new_user)
 
 
