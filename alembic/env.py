@@ -9,8 +9,8 @@ from sqlalchemy.ext.asyncio import async_engine_from_config
 from alembic import context
 from app.core.config import settings
 from app.database.base import Base  # <-- твой declarative_base()
-from app.models import user, refresh_token
-
+from app.modules.user.model import User
+from app.modules.auth.model import RefreshToken
 config = context.config
 
 if config.config_file_name is not None:

@@ -1,8 +1,12 @@
+import re
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 from sqlalchemy import text
+from starlette.middleware.cors import CORSMiddleware
+from starlette_csrf import CSRFMiddleware
 
+from app.core.config import settings
 from app.core.exceptions import (
     InsufficientPermission,
     PasswordsDoNotMatchError,
@@ -16,8 +20,8 @@ from app.core.handlers import (
     user_not_found_handler,
 )
 from app.database.session import engine
-from app.routers.auth_router import auth_router
-from app.routers.user_router import user_router
+from app.modules.auth.router import auth_router
+from app.modules.users.router import user_router
 
 
 @asynccontextmanager
@@ -33,6 +37,33 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(lifespan=lifespan)
+
+if settings.all_cors_origins:
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=settings.all_cors_origins,
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
+
+app.add_middleware(
+    CSRFMiddleware,
+    secret=settings.CSRF_SECRET_KEY,
+    cookie_name=settings.CSRF_COOKIE_NAME,
+    header_name=settings.CSRF_HEADER_NAME,
+    cookie_secure=settings.COOKIE_SECURE,
+    cookie_samesite="strict",
+    sensitive_cookies={"access_token"},
+    exempt_urls=[
+        re.compile(r"^/docs.*"),
+        re.compile(r"^/redoc.*"),
+        re.compile(r"^/openapi.json"),
+        re.compile(r"^/auth/token$"),
+        re.compile(r"^/auth/refresh$"),
+    ],
+)
+
 app.include_router(user_router)
 app.include_router(auth_router)
 

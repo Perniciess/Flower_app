@@ -3,12 +3,13 @@ from fastapi import Depends, HTTPException, Request, status
 from jwt import InvalidTokenError
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.core.config import settings
-from app.core.exceptions import InsufficientPermission
-from app.core.security import oauth2_scheme
 from app.database.session import get_db
-from app.models.user import Role, User
-from app.repositories import user_repository
+from app.modules.users import repository as user_repository
+from app.modules.users.model import Role, User
+
+from .config import settings
+from .exceptions import InsufficientPermission
+from .security import oauth2_scheme
 
 
 async def get_current_user(

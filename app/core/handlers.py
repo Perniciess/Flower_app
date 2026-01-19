@@ -3,7 +3,7 @@ from typing import cast
 from fastapi import Request
 from fastapi.responses import JSONResponse
 
-from app.core.exceptions import (
+from .exceptions import (
     InsufficientPermission,
     PasswordsDoNotMatchError,
     UserAlreadyExistsError,

@@ -9,7 +9,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.database.base import Base
 
 if TYPE_CHECKING:
-    from .refresh_token import RefreshToken
+    from app.modules.auth.model import RefreshToken
 
 
 class Role(StrEnum):
