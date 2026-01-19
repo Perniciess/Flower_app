@@ -16,8 +16,8 @@ from app.core.handlers import (
     user_not_found_handler,
 )
 from app.database.session import engine
-from app.routers.auth_router import auth_router
-from app.routers.user_router import user_router
+from app.modules.auth.router import auth_router
+from app.modules.user.router import user_router
 
 
 @asynccontextmanager

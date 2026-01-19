@@ -1,7 +1,8 @@
 from fastapi import Response
 
 from app.core.config import settings
-from app.schemas.auth_schemas import Tokens
+
+from .schema import Tokens
 
 
 def set_token(response: Response, tokens: Tokens) -> None:
@@ -20,7 +21,7 @@ def set_token(response: Response, tokens: Tokens) -> None:
         httponly=True,
         secure=settings.COOKIE_SECURE,
         samesite="lax",
-        max_age=settings.ACCESS_TOKEN_EXPIRE_MINUTES * 60,
+        max_age=settings.REFRESH_TOKEN_EXPIRE_DAYS * 24 * 60 * 60,
     )
 
 

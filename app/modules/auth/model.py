@@ -9,7 +9,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.database.base import Base
 
 if TYPE_CHECKING:
-    from .user import User
+    from app.modules.user.model import User
 
 
 class RefreshToken(Base):

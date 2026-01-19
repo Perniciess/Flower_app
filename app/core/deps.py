@@ -7,8 +7,8 @@ from app.core.config import settings
 from app.core.exceptions import InsufficientPermission
 from app.core.security import oauth2_scheme
 from app.database.session import get_db
-from app.models.user import Role, User
-from app.repositories import user_repository
+from app.modules.user import repository as user_repository
+from app.modules.user.model import Role, User
 
 
 async def get_current_user(
