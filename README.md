@@ -20,27 +20,37 @@ REST API для управления каталогом цветов, корзи
 ```
 FlowerShop_FastAPI/
 ├─ app/
-│  ├─ core/
-│  │  ├─ config.py          # Settings / env config
-│  │  ├─ security.py        # JWT, password hashing
-│  │  ├─ exceptions.py      # Custom exceptions
-│  │  └─ handlers.py        # Exception handlers
-│  ├─ database/
-│  │  ├─ base.py            # DeclarativeBase
-│  │  └─ session.py         # AsyncSession, engine, get_db
-│  ├─ models/
-│  │  └─ user.py            # SQLAlchemy model User
-│  ├─ schemas/
-│  │  └─ user_schemas.py    # Pydantic schemas
-│  ├─ repositories/
-│  │  └─ user_repository.py # DB layer
-│  ├─ services/
-│  │  └─ user_service.py    # Business logic
-│  ├─ routers/
-│  │  └─ user_router.py     # API endpoints
-│  └─ main.py               # FastAPI app entrypoint
+│ ├─ core/
+│ │ ├─ init.py
+│ │ ├─ config.py # Settings / env config
+│ │ ├─ deps.py # Dependencies
+│ │ ├─ security.py # JWT, password hashing
+│ │ ├─ exceptions.py # Custom exceptions
+│ │ └─ handlers.py # Exception handlers
+│ ├─ database/
+│ │ ├─ init.py
+│ │ ├─ base.py # DeclarativeBase
+│ │ └─ session.py # AsyncSession, engine, get_db
+│ ├─ modules/
+│ │ ├─ auth/
+│ │ │ ├─ init.py
+│ │ │ ├─ model.py # Auth model
+│ │ │ ├─ schema.py # Pydantic schemas
+│ │ │ ├─ repository.py # DB layer
+│ │ │ ├─ service.py # Business logic
+│ │ │ ├─ router.py # API endpoints
+│ │ │ └─ utils.py # Helper functions
+│ │ └─ users/
+│ │ ├─ init.py
+│ │ ├─ model.py # User model
+│ │ ├─ schema.py # Pydantic schemas
+│ │ ├─ repository.py # DB layer
+│ │ ├─ service.py # Business logic
+│ │ └─ router.py # API endpoints
+│ ├─ init.py
+│ └─ main.py # FastAPI app entrypoint
 ├─ alembic/
-├─ alembic.ini
-├─ pyproject.toml
+├─ docker/
+├─ DEVELOPMENT.md
 └─ README.md
 ```
