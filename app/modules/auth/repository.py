@@ -36,6 +36,18 @@ async def get_refresh_token(*, session: AsyncSession, token_hash: str) -> Refres
     return result.scalar_one_or_none()
 
 
+async def get_refresh_token_for_update(*, session: AsyncSession, token_hash: str) -> RefreshToken | None:
+    statement = (
+        select(RefreshToken)
+        .where(RefreshToken.token_hash == token_hash)
+        .where(RefreshToken.is_revoked.is_(False))
+        .where(RefreshToken.expires_at > datetime.now(UTC))
+        .with_for_update()
+    )
+    result = await session.execute(statement)
+    return result.scalar_one_or_none()
+
+
 async def revoke_token(*, session: AsyncSession, token_id: int) -> bool:
     now = datetime.now(UTC)
     statement = (

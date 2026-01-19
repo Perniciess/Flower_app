@@ -25,7 +25,8 @@ async def login(response: Response, data: UserLogin, session: AsyncSession = Dep
 
 
 @auth_router.post("/logout")
-async def logout(response: Response):
+async def logout(response: Response, refresh_token: str = Cookie(), session: AsyncSession = Depends(get_db)):
+    await auth_service.logout(session=session, refresh_token=refresh_token)
     remove_token(response)
     return {"message": "Выход из системы выполнен"}
 

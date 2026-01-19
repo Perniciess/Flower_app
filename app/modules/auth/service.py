@@ -38,10 +38,22 @@ async def login(*, session: AsyncSession, data: UserLogin) -> Tokens:
     return Tokens(access_token=access_token, refresh_token=refresh_token, token_type="bearer")
 
 
-async def refresh_tokens(*, session: AsyncSession, refresh_token: str) -> Tokens:
+async def logout(*, session: AsyncSession, refresh_token: str) -> None:
     refresh_hash = get_refresh_hash(refresh_token)
 
     token = await auth_repository.get_refresh_token(session=session, token_hash=refresh_hash)
+    if token is None:
+        raise InvalidToken()
+
+    revoked = await auth_repository.revoke_token(session=session, token_id=token.id)
+    if not revoked:
+        raise InvalidToken()
+
+
+async def refresh_tokens(*, session: AsyncSession, refresh_token: str) -> Tokens:
+    refresh_hash = get_refresh_hash(refresh_token)
+
+    token = await auth_repository.get_refresh_token_for_update(session=session, token_hash=refresh_hash)
     if token is None:
         raise InvalidToken()
 
