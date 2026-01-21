@@ -1,3 +1,4 @@
+import re
 from contextlib import asynccontextmanager
 
 from fastapi import Depends, FastAPI
@@ -9,6 +10,7 @@ from starlette_csrf import CSRFMiddleware
 from app.core.config import settings
 from app.core.exceptions import (
     CartAlreadyExistsException,
+    CartNotFoundError,
     FlowerNotFoundError,
     ImageNotFoundError,
     InsufficientPermission,
@@ -19,6 +21,7 @@ from app.core.exceptions import (
 )
 from app.core.handlers import (
     cart_already_exists,
+    cart_not_found,
     flower_not_found,
     image_not_found,
     insufficient_permission,
@@ -68,6 +71,11 @@ app.add_middleware(
     cookie_secure=settings.COOKIE_SECURE,
     cookie_samesite="strict",
     sensitive_cookies={"access_token"},
+    exempt_urls=[
+        re.compile(r"/docs"),
+        re.compile(r"/openapi.json"),
+        re.compile(r"/auth/login"),
+    ],
 )
 
 app.include_router(user_router, dependencies=[Depends(csrf_header_scheme)])
@@ -83,3 +91,4 @@ app.add_exception_handler(InvalidToken, invalid_token)
 app.add_exception_handler(FlowerNotFoundError, flower_not_found)
 app.add_exception_handler(ImageNotFoundError, image_not_found)
 app.add_exception_handler(CartAlreadyExistsException, cart_already_exists)
+app.add_exception_handler(CartNotFoundError, cart_not_found)

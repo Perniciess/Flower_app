@@ -14,3 +14,8 @@ cart_router = APIRouter(prefix="/carts", tags=["carts"])
 async def create_cart(user: User = Depends(get_current_user), session: AsyncSession = Depends(get_db)):
     cart = await cart_service.create_cart(session=session, user_id=user.id)
     return cart
+
+
+@cart_router.delete("/{cart_id}", status_code=204)
+async def delete_cart(cart_id: int, session: AsyncSession = Depends(get_db)):
+    await cart_service.delete_cart(session=session, cart_id=cart_id)
