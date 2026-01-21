@@ -33,3 +33,13 @@ class InsufficientPermission(Exception):
 class InvalidToken(Exception):
     def __init__(self) -> None:
         super().__init__("Невалидный токен")
+
+
+class FlowerNotFoundError(Exception):
+    def __init__(self, flower_id: int) -> None:
+        super().__init__(f"Цветок с ID={flower_id} не найден")
+
+
+class ImageNotFoundError(Exception):
+    def __init__(self, image_id: int) -> None:
+        super().__init__(f"Изображение с ID={image_id} не найдено")

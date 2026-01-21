@@ -4,6 +4,8 @@ from fastapi import Request
 from fastapi.responses import JSONResponse
 
 from .exceptions import (
+    FlowerNotFoundError,
+    ImageNotFoundError,
     InsufficientPermission,
     InvalidToken,
     PasswordsDoNotMatchError,
@@ -42,3 +44,13 @@ async def insufficient_permission(request: Request, exc: Exception) -> JSONRespo
 async def invalid_token(request: Request, exc: Exception) -> JSONResponse:
     e = cast(InvalidToken, exc)
     return JSONResponse(status_code=403, content={"detail": str(e)})
+
+
+async def flower_not_found(request: Request, exc: Exception) -> JSONResponse:
+    e = cast(FlowerNotFoundError, exc)
+    return JSONResponse(status_code=404, content={"detail": str(e)})
+
+
+async def image_not_found(request: Request, exc: Exception) -> JSONResponse:
+    e = cast(ImageNotFoundError, exc)
+    return JSONResponse(status_code=404, content={"detail": str(e)})

@@ -25,14 +25,18 @@ async def login(response: Response, data: AuthLogin, session: AsyncSession = Dep
 
 
 @auth_router.post("/logout")
-async def logout(response: Response, refresh_token: str = Cookie(), session: AsyncSession = Depends(get_db)):
+async def logout(
+    response: Response, refresh_token: str = Cookie(), session: AsyncSession = Depends(get_db)
+) -> dict[str, str]:
     await auth_service.logout(session=session, refresh_token=refresh_token)
     remove_token(response)
     return {"message": "Выход из системы выполнен"}
 
 
 @auth_router.post("/refresh")
-async def refresh_token(response: Response, refresh_token: str = Cookie(), session: AsyncSession = Depends(get_db)):
+async def refresh_token(
+    response: Response, refresh_token: str = Cookie(), session: AsyncSession = Depends(get_db)
+) -> dict[str, str]:
     tokens = await auth_service.refresh_tokens(session=session, refresh_token=refresh_token)
     set_token(response=response, tokens=tokens)
     return {"message": "Успешная замена токенов"}
