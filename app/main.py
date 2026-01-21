@@ -1,7 +1,7 @@
-import re
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI
+from fastapi import Depends, FastAPI
+from fastapi.security import APIKeyHeader
 from sqlalchemy import text
 from starlette.middleware.cors import CORSMiddleware
 from starlette_csrf import CSRFMiddleware
@@ -27,6 +27,7 @@ from app.core.handlers import (
 )
 from app.database.session import engine
 from app.modules.auth.router import auth_router
+from app.modules.carts.router import cart_router
 from app.modules.flowers.router import flower_router
 from app.modules.users.router import user_router
 
@@ -43,7 +44,9 @@ async def lifespan(app: FastAPI):
     await engine.dispose()
 
 
-app = FastAPI(lifespan=lifespan)
+app = FastAPI(lifespan=lifespan, swagger_ui_parameters={"defaultModelsExpandDepth": -1})
+
+csrf_header_scheme = APIKeyHeader(name=settings.CSRF_HEADER_NAME, auto_error=False)
 
 if settings.all_cors_origins:
     app.add_middleware(
@@ -56,24 +59,19 @@ if settings.all_cors_origins:
 
 app.add_middleware(
     CSRFMiddleware,
+    cookie_httponly=False,
     secret=settings.CSRF_SECRET_KEY,
     cookie_name=settings.CSRF_COOKIE_NAME,
     header_name=settings.CSRF_HEADER_NAME,
     cookie_secure=settings.COOKIE_SECURE,
     cookie_samesite="strict",
     sensitive_cookies={"access_token"},
-    exempt_urls=[
-        re.compile(r"^/docs.*"),
-        re.compile(r"^/redoc.*"),
-        re.compile(r"^/openapi.json"),
-        re.compile(r"^/auth/token$"),
-        re.compile(r"^/auth/refresh$"),
-    ],
 )
 
-app.include_router(user_router)
-app.include_router(auth_router)
-app.include_router(flower_router)
+app.include_router(user_router, dependencies=[Depends(csrf_header_scheme)])
+app.include_router(auth_router, dependencies=[Depends(csrf_header_scheme)])
+app.include_router(flower_router, dependencies=[Depends(csrf_header_scheme)])
+app.include_router(cart_router, dependencies=[Depends(csrf_header_scheme)])
 
 app.add_exception_handler(UserNotFoundError, user_not_found_handler)
 app.add_exception_handler(UserAlreadyExistsError, user_exists_handler)
