@@ -8,23 +8,23 @@ from app.core.config import settings
 from app.core.exceptions import InvalidToken, PasswordsDoNotMatchError, UserAlreadyExistsError, UserNotFoundError
 from app.core.security import get_password_hash, get_refresh_hash, verify_password
 from app.modules.users import repository as user_repository
-from app.modules.users.schema import UserOutput
+from app.modules.users.schema import UserResponse
 
 from . import repository as auth_repository
-from .schema import Tokens, UserLogin, UserRegister
+from .schema import AuthLogin, AuthRegister, Tokens
 
 
-async def register(*, session: AsyncSession, data: UserRegister) -> UserOutput:
+async def register(*, session: AsyncSession, data: AuthRegister) -> UserResponse:
     user_exist = await user_repository.get_user_by_email(session=session, email=data.email)
     if user_exist:
         raise UserAlreadyExistsError(data.email)
 
     data_user = {"email": data.email, "name": data.name, "password_hash": get_password_hash(data.password)}
     new_user = await user_repository.create_user(session=session, data=data_user)
-    return UserOutput.model_validate(new_user)
+    return UserResponse.model_validate(new_user)
 
 
-async def login(*, session: AsyncSession, data: UserLogin) -> Tokens:
+async def login(*, session: AsyncSession, data: AuthLogin) -> Tokens:
     user = await user_repository.get_user_by_email(session=session, email=data.email)
     if user is None:
         raise UserNotFoundError(email=data.email)
