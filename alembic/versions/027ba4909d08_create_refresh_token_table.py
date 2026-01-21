@@ -4,7 +4,7 @@ from alembic import op
 import sqlalchemy as sa
 
 
-revision: str = "PUT_REVISION_ID_HERE"
+revision: str = "027ba4909d08"
 down_revision: Union[str, Sequence[str], None] = "50c646e67ab3"
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None

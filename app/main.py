@@ -23,6 +23,7 @@ from app.core.handlers import (
 )
 from app.database.session import engine
 from app.modules.auth.router import auth_router
+from app.modules.flowers.router import flower_router
 from app.modules.users.router import user_router
 
 
@@ -68,6 +69,7 @@ app.add_middleware(
 
 app.include_router(user_router)
 app.include_router(auth_router)
+app.include_router(flower_router)
 
 app.add_exception_handler(UserNotFoundError, user_not_found_handler)
 app.add_exception_handler(UserAlreadyExistsError, user_exists_handler)
