@@ -8,6 +8,8 @@ from starlette_csrf import CSRFMiddleware
 
 from app.core.config import settings
 from app.core.exceptions import (
+    FlowerNotFoundError,
+    ImageNotFoundError,
     InsufficientPermission,
     InvalidToken,
     PasswordsDoNotMatchError,
@@ -15,6 +17,8 @@ from app.core.exceptions import (
     UserNotFoundError,
 )
 from app.core.handlers import (
+    flower_not_found,
+    image_not_found,
     insufficient_permission,
     invalid_token,
     password_not_match_handler,
@@ -76,3 +80,5 @@ app.add_exception_handler(UserAlreadyExistsError, user_exists_handler)
 app.add_exception_handler(PasswordsDoNotMatchError, password_not_match_handler)
 app.add_exception_handler(InsufficientPermission, insufficient_permission)
 app.add_exception_handler(InvalidToken, invalid_token)
+app.add_exception_handler(FlowerNotFoundError, flower_not_found)
+app.add_exception_handler(ImageNotFoundError, image_not_found)
