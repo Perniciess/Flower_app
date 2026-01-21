@@ -48,3 +48,8 @@ class ImageNotFoundError(Exception):
 class CartAlreadyExistsException(Exception):
     def __init__(self, cart_id: int) -> None:
         super().__init__(f"Корзина с ID={cart_id} уже существует")
+
+
+class CartNotFoundError(Exception):
+    def __init__(self, cart_id: int) -> None:
+        super().__init__(f"Корзина с ID={cart_id} не найдена")
