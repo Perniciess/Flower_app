@@ -43,3 +43,8 @@ class FlowerNotFoundError(Exception):
 class ImageNotFoundError(Exception):
     def __init__(self, image_id: int) -> None:
         super().__init__(f"Изображение с ID={image_id} не найдено")
+
+
+class CartAlreadyExistsException(Exception):
+    def __init__(self, cart_id: int) -> None:
+        super().__init__(f"Корзина с ID={cart_id} уже существует")
