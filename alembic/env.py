@@ -12,6 +12,7 @@ from app.database.base import Base  # <-- твой declarative_base()
 from app.modules.users.model import User
 from app.modules.auth.model import RefreshToken
 from app.modules.flowers.model import Flower, FlowerImage
+from app.modules.carts.model import Cart, CartItem
 config = context.config
 
 if config.config_file_name is not None:
