@@ -8,6 +8,7 @@ from starlette_csrf import CSRFMiddleware
 
 from app.core.config import settings
 from app.core.exceptions import (
+    CartAlreadyExistsException,
     FlowerNotFoundError,
     ImageNotFoundError,
     InsufficientPermission,
@@ -17,6 +18,7 @@ from app.core.exceptions import (
     UserNotFoundError,
 )
 from app.core.handlers import (
+    cart_already_exists,
     flower_not_found,
     image_not_found,
     insufficient_permission,
@@ -80,3 +82,4 @@ app.add_exception_handler(InsufficientPermission, insufficient_permission)
 app.add_exception_handler(InvalidToken, invalid_token)
 app.add_exception_handler(FlowerNotFoundError, flower_not_found)
 app.add_exception_handler(ImageNotFoundError, image_not_found)
+app.add_exception_handler(CartAlreadyExistsException, cart_already_exists)
