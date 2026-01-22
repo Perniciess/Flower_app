@@ -1,5 +1,6 @@
 import uuid
 from collections.abc import Sequence
+from decimal import Decimal
 from pathlib import Path
 
 from fastapi import UploadFile
@@ -15,6 +16,7 @@ UPLOAD_DIR = Path("app/static/uploads/flowers")
 
 async def create_flower(*, session: AsyncSession, flower_data: FlowerCreate) -> FlowerResponse:
     flower = await flower_repository.create_flower(session=session, flower_data=flower_data.model_dump())
+    flower = await flower_repository.get_flower_by_id(session=session, flower_id=flower.id)
     return FlowerResponse.model_validate(flower)
 
 
@@ -37,9 +39,7 @@ async def delete_flower(*, session: AsyncSession, flower_id: int) -> bool:
     return True
 
 
-async def upload_image(
-    *, session: AsyncSession, flower_id: int, image: UploadFile, sort_order: int
-) -> FlowerImageResponse:
+async def upload_image(*, session: AsyncSession, flower_id: int, image: UploadFile, sort_order: int) -> FlowerImageResponse:
     if not image.filename:
         raise ValueError("Файл без имени")
 
@@ -54,9 +54,7 @@ async def upload_image(
         f.write(content)
 
     url = f"/static/uploads/flowers/{filename}"
-    flower_image = await flower_repository.create_flower_image(
-        session=session, flower_id=flower_id, url=url, sort_order=sort_order
-    )
+    flower_image = await flower_repository.create_flower_image(session=session, flower_id=flower_id, url=url, sort_order=sort_order)
     return FlowerImageResponse.model_validate(flower_image)
 
 
@@ -75,3 +73,10 @@ async def delete_flower_image(*, session: AsyncSession, image_id: int) -> bool:
         file_path.unlink()
 
     return True
+
+
+async def get_flower_price(*, session: AsyncSession, flower_id: int) -> Decimal:
+    price = await flower_repository.get_flower_price(session=session, flower_id=flower_id)
+    if price is None:
+        raise FlowerNotFoundError(flower_id=flower_id)
+    return price
