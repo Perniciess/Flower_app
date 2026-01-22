@@ -10,6 +10,7 @@ from starlette_csrf import CSRFMiddleware
 from app.core.config import settings
 from app.core.exceptions import (
     CartAlreadyExistsException,
+    CartItemNotFoundError,
     CartNotFoundError,
     FlowerNotFoundError,
     ImageNotFoundError,
@@ -21,6 +22,7 @@ from app.core.exceptions import (
 )
 from app.core.handlers import (
     cart_already_exists,
+    cart_item_not_found,
     cart_not_found,
     flower_not_found,
     image_not_found,
@@ -92,3 +94,4 @@ app.add_exception_handler(FlowerNotFoundError, flower_not_found)
 app.add_exception_handler(ImageNotFoundError, image_not_found)
 app.add_exception_handler(CartAlreadyExistsException, cart_already_exists)
 app.add_exception_handler(CartNotFoundError, cart_not_found)
+app.add_exception_handler(CartItemNotFoundError, cart_item_not_found)

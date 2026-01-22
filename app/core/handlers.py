@@ -5,6 +5,7 @@ from fastapi.responses import JSONResponse
 
 from .exceptions import (
     CartAlreadyExistsException,
+    CartItemNotFoundError,
     CartNotFoundError,
     FlowerNotFoundError,
     ImageNotFoundError,
@@ -65,4 +66,9 @@ async def cart_already_exists(request: Request, exc: Exception) -> JSONResponse:
 
 async def cart_not_found(request: Request, exc: Exception) -> JSONResponse:
     e = cast(CartNotFoundError, exc)
+    return JSONResponse(status_code=404, content={"detail": str(e)})
+
+
+async def cart_item_not_found(request: Request, exc: Exception) -> JSONResponse:
+    e = cast(CartItemNotFoundError, exc)
     return JSONResponse(status_code=404, content={"detail": str(e)})

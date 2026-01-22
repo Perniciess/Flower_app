@@ -23,7 +23,6 @@ class CartItemCreate(BaseModel):
 
 class CartItemUpdate(BaseModel):
     quantity: int | None = Field(default=None, description="Количество товара")
-    price: Decimal | None = Field(default=None, description="Цена товара")
 
 
 class CartItemResponse(CartItemBase):
