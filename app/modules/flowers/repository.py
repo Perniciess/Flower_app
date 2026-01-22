@@ -1,4 +1,5 @@
 from collections.abc import Mapping, Sequence
+from decimal import Decimal
 from typing import Any
 
 from sqlalchemy import delete, select, update
@@ -54,5 +55,17 @@ async def get_flowers_images(*, session: AsyncSession) -> Sequence[FlowerImage]:
 
 async def delete_flower_image(*, session: AsyncSession, image_id: int) -> str | None:
     statement = delete(FlowerImage).where(FlowerImage.id == image_id).returning(FlowerImage.url)
+    result = await session.execute(statement)
+    return result.scalar_one_or_none()
+
+
+async def get_flower_price(*, session: AsyncSession, flower_id: int) -> Decimal | None:
+    statement = select(Flower.price).where(Flower.id == flower_id)
+    result = await session.execute(statement)
+    return result.scalar_one_or_none()
+
+
+async def get_flower_by_id(*, session: AsyncSession, flower_id: int) -> Flower | None:
+    statement = select(Flower).options(selectinload(Flower.images)).where(Flower.id == flower_id)
     result = await session.execute(statement)
     return result.scalar_one_or_none()
