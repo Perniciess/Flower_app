@@ -42,3 +42,9 @@ async def get_cart_item(*, session: AsyncSession, cart_id: int, flower_id) -> Ca
     statement = select(CartItem).where(CartItem.cart_id == cart_id, CartItem.flower_id == flower_id)
     cart_item = await session.execute(statement)
     return cart_item.scalar_one_or_none()
+
+
+async def get_cart_item_by_id(*, session: AsyncSession, cart_item_id: int) -> CartItem | None:
+    statement = select(CartItem).where(CartItem.id == cart_item_id)
+    cart_item = await session.execute(statement)
+    return cart_item.scalar_one_or_none()
