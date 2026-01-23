@@ -4,6 +4,8 @@ from app.modules.users.schema import UserCreate
 
 
 class AuthLogin(BaseModel):
+    "Схема для авторизации пользователя."
+
     email: EmailStr = Field(..., description="Электронная почта")
     password: str = Field(..., min_length=8, description="Пароль")
 
@@ -14,6 +16,8 @@ class AuthLogin(BaseModel):
 
 
 class AuthRegister(UserCreate):
+    "Схема для регистрации пользователя."
+
     @field_validator("name", mode="before")
     @classmethod
     def name_strip(cls, v: str) -> str:
@@ -40,18 +44,26 @@ class AuthRegister(UserCreate):
 
 
 class AccessToken(BaseModel):
-    access_token: str
+    "Схема access token."
+
+    access_token: str = Field(..., description="JWT access токен")
 
 
 class RefreshToken(BaseModel):
-    refresh_token: str
+    "Схема refresh token."
+
+    refresh_token: str = Field(..., description="JWT refresh токен")
 
 
 class Tokens(BaseModel):
-    access_token: str
-    refresh_token: str
-    token_type: str
+    "Схема пары токенов."
+
+    access_token: str = Field(..., description="JWT access токен")
+    refresh_token: str = Field(..., description="JWT refresh токен")
+    token_type: str = Field(default="bearer", description="Тип токена")
 
 
 class TokenData(BaseModel):
-    id: str
+    "Данные, закодированные в токене."
+
+    id: str = Field(..., description="ID пользователя")

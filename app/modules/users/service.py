@@ -11,7 +11,7 @@ from .schema import UserCreate, UserResponse, UserUpdate
 
 async def create_user(*, session: AsyncSession, data: UserCreate) -> UserResponse:
     """
-    Создает нового пользователя в базе данных
+    Создает нового пользователя в базе данных.
 
     Args:
         session: сессия базы данных
@@ -35,7 +35,7 @@ async def create_user(*, session: AsyncSession, data: UserCreate) -> UserRespons
 
 async def get_user_by_email(*, session: AsyncSession, email: str) -> UserResponse:
     """
-    Получает пользователя по его электронной почте
+    Получает пользователя по его электронной почте.
 
     Args:
         session: сессия базы данных
@@ -56,7 +56,7 @@ async def get_user_by_email(*, session: AsyncSession, email: str) -> UserRespons
 
 async def update_user(*, session: AsyncSession, user_id: int, data: UserUpdate) -> UserResponse:
     """
-    Обновляет данные пользователя
+    Обновляет данные пользователя.
 
     Args:
         session: сессия базы данных
@@ -78,7 +78,7 @@ async def update_user(*, session: AsyncSession, user_id: int, data: UserUpdate) 
 
 async def get_user_by_id(*, session: AsyncSession, user_id: int) -> UserResponse:
     """
-    Получает пользователя по идентификатору
+    Получает пользователя по идентификатору.
 
     Args:
         session: сессия базы данных
@@ -99,7 +99,7 @@ async def get_user_by_id(*, session: AsyncSession, user_id: int) -> UserResponse
 
 async def get_users(*, session: AsyncSession) -> Sequence[UserResponse]:
     """
-    Получает список пользователей
+    Получает список пользователей.
 
     Args:
         session: сессия базы данных
