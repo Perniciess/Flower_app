@@ -10,6 +10,8 @@ from app.database.base import Base
 
 
 class Flower(Base):
+    """Сущность цветка"""
+
     __tablename__ = "flower"
 
     id: Mapped[int] = mapped_column(primary_key=True, index=True)
@@ -21,12 +23,12 @@ class Flower(Base):
     description: Mapped[str | None] = mapped_column(Text())
     color: Mapped[str | None] = mapped_column(String(64))
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
-    updated_at: Mapped[datetime] = mapped_column(
-        DateTime(timezone=True), server_default=func.now(), onupdate=func.now()
-    )
+    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
 
 
 class FlowerImage(Base):
+    """Сущность изображений цветка"""
+
     __tablename__ = "flower_image"
 
     id: Mapped[int] = mapped_column(primary_key=True, index=True)

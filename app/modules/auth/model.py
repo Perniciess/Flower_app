@@ -13,6 +13,8 @@ if TYPE_CHECKING:
 
 
 class RefreshToken(Base):
+    """Сущность refresh токена"""
+
     __tablename__ = "refresh_token"
 
     id: Mapped[int] = mapped_column(primary_key=True, index=True)
