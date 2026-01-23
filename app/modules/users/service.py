@@ -15,7 +15,13 @@ async def create_user(*, session: AsyncSession, data: UserCreate) -> UserRespons
 
     Args:
         session: сессия базы данных
+        data: данные для создания пользователя
 
+    Returns:
+        UserResponse с данными созданного пользователя
+
+    Raises:
+        UserAlreadyExistsError: если пользователь с таким email уже существует
     """
     user_exist = await user_repository.get_user_by_email(session=session, email=data.email)
     if user_exist:
@@ -28,6 +34,19 @@ async def create_user(*, session: AsyncSession, data: UserCreate) -> UserRespons
 
 
 async def get_user_by_email(*, session: AsyncSession, email: str) -> UserResponse:
+    """
+    Получает пользователя по его электронной почте
+
+    Args:
+        session: сессия базы данных
+        email: электронная почта пользователя
+
+    Returns:
+        UserResponse с данными созданного пользователя
+
+    Raises:
+        UserNotFoundError: если пользователь с таким email не найден
+    """
     user = await user_repository.get_user_by_email(session=session, email=email)
     if user is None:
         raise UserNotFoundError(email=email)
@@ -36,6 +55,20 @@ async def get_user_by_email(*, session: AsyncSession, email: str) -> UserRespons
 
 
 async def update_user(*, session: AsyncSession, user_id: int, data: UserUpdate) -> UserResponse:
+    """
+    Обновляет данные пользователя
+
+    Args:
+        session: сессия базы данных
+        user_id: идентификтаор пользователя
+        data: новые данные пользователя
+
+    Returns:
+        UserResponse с данными созданного пользователя
+
+    Raises:
+        UserNotFoundError: если пользователь с таким email не найден
+    """
     patch = data.model_dump(exclude_unset=True)
     user = await user_repository.update_user(session=session, user_id=user_id, data=patch)
     if user is None:
@@ -44,6 +77,19 @@ async def update_user(*, session: AsyncSession, user_id: int, data: UserUpdate) 
 
 
 async def get_user_by_id(*, session: AsyncSession, user_id: int) -> UserResponse:
+    """
+    Получает пользователя по идентификатору
+
+    Args:
+        session: сессия базы данных
+        user_id: идентификтаор пользователя
+
+    Returns:
+        UserResponse с данными созданного пользователя
+
+    Raises:
+        UserNotFoundError: если пользователь с таким email не найден
+    """
     user = await user_repository.get_user_by_id(session=session, user_id=user_id)
     if user is None:
         raise UserNotFoundError(user_id=user_id)
@@ -52,5 +98,15 @@ async def get_user_by_id(*, session: AsyncSession, user_id: int) -> UserResponse
 
 
 async def get_users(*, session: AsyncSession) -> Sequence[UserResponse]:
+    """
+    Получает список пользователей
+
+    Args:
+        session: сессия базы данных
+
+    Returns:
+        Sequence[UserResponse] список пользователей с данными
+
+    """
     users = await user_repository.get_users(session=session)
     return [UserResponse.model_validate(u) for u in users]
