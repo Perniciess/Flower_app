@@ -1,21 +1,19 @@
 from pydantic import BaseModel, EmailStr, Field, field_validator
 
-
-class AuthBase(BaseModel):
-    email: EmailStr = Field(..., description="Электронная почта пользователя")
-    password: str = Field(..., min_length=8, description="Пароль пользователя")
+from app.modules.users.schema import UserCreate
 
 
-class AuthLogin(AuthBase):
+class AuthLogin(BaseModel):
+    email: EmailStr = Field(..., description="Электронная почта")
+    password: str = Field(..., min_length=8, description="Пароль")
+
     @field_validator("password", mode="before")
     @classmethod
     def password_strip(cls, v: str) -> str:
         return v.strip()
 
 
-class AuthRegister(AuthBase):
-    name: str = Field(..., min_length=1, max_length=64, description="Имя пользователя")
-
+class AuthRegister(UserCreate):
     @field_validator("name", mode="before")
     @classmethod
     def name_strip(cls, v: str) -> str:
