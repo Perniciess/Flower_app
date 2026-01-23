@@ -13,12 +13,13 @@ from .schema import FlowerCreate, FlowerImageResponse, FlowerResponse, FlowerUpd
 flower_router = APIRouter(prefix="/flowers", tags=["flowers"])
 
 
-@flower_router.post("/create", response_model=FlowerResponse, summary="Создание цветка")
+@flower_router.post("/create", response_model=FlowerResponse, summary="Создать цветок")
 async def create_flower(
     flower_data: FlowerCreate, session: AsyncSession = Depends(get_db), current_user: User = Depends(require_admin)
 ) -> FlowerResponse:
     """
-    Создание цветка\n
+    Создание цветка
+
     Требует прав администратора
     """
     flower = await flower_service.create_flower(session=session, flower_data=flower_data)
@@ -37,7 +38,8 @@ async def update_flower(
     flower_id: int, flower_data: FlowerUpdate, session: AsyncSession = Depends(get_db), current_user: User = Depends(require_admin)
 ) -> FlowerResponse:
     """
-    Изменение информации о цветке\n
+    Изменение информации о цветке
+
     Требует прав администратора
     """
     flower = await flower_service.update_flower(session=session, flower_id=flower_id, flower_data=flower_data)
@@ -47,8 +49,9 @@ async def update_flower(
 @flower_router.delete("/{flower_id}", status_code=204, summary="Удалить цветок")
 async def delete_flower(flower_id: int, session: AsyncSession = Depends(get_db), current_user: User = Depends(require_admin)):
     """
-    Удаление цветка\n
-    Требует прав администратора
+    Удаление цветка.
+
+    Требует прав администратора.
     """
     await flower_service.delete_flower(session=session, flower_id=flower_id)
 
@@ -62,8 +65,9 @@ async def upload_image(
     current_user: User = Depends(require_admin),
 ) -> FlowerImageResponse:
     """
-    Добавление изображения цветка\n
-    Требует прав администратора
+    Добавление изображения цветка.
+
+    Требует прав администратора.
     """
     flower_image = await flower_service.upload_image(session=session, flower_id=flower_id, image=image, sort_order=sort_order)
     return flower_image
@@ -71,7 +75,7 @@ async def upload_image(
 
 @flower_router.get("/images", response_model=Sequence[FlowerImageResponse], summary="Получить изображения цветка")
 async def get_flowers_images(session: AsyncSession = Depends(get_db)) -> Sequence[FlowerImageResponse]:
-    """Получение изображений цветка"""
+    """Получение изображений цветка."""
     images = await flower_service.get_flowers_images(session=session)
     return images
 
@@ -79,7 +83,8 @@ async def get_flowers_images(session: AsyncSession = Depends(get_db)) -> Sequenc
 @flower_router.delete("/images/{image_id}", status_code=204, summary="Удалить изображение цветка")
 async def delete_flower_image(image_id: int, session: AsyncSession = Depends(get_db), current_user: User = Depends(require_admin)):
     """
-    Удаление изображения цветка\n
-    Требует прав администратора
+    Удаление изображения цветка.
+
+    Требует прав администратора.
     """
     await flower_service.delete_flower_image(session=session, image_id=image_id)

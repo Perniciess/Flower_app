@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Query
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.deps import require_admin, require_client
@@ -11,20 +11,28 @@ from .schema import CartItemUpdate, CartResponse
 cart_router = APIRouter(prefix="/carts", tags=["carts"])
 
 
-@cart_router.post("/create", response_model=CartResponse)
+@cart_router.post("/create", response_model=CartResponse, summary="Создать корзину")
 async def create_cart(user: User = Depends(require_client), session: AsyncSession = Depends(get_db)) -> CartResponse:
-    """Создание корзины пользователя"""
+    """
+    Создание корзины пользователя.
+
+    Требует авторизации.
+    """
     cart = await cart_service.create_cart(session=session, user_id=user.id)
     return cart
 
 
-@cart_router.delete("/{cart_id}", status_code=204)
+@cart_router.delete("/{cart_id}", status_code=204, summary="Удалить корзину")
 async def delete_cart(cart_id: int, user: User = Depends(require_admin), session: AsyncSession = Depends(get_db)):
-    """Удаление корзины пользователя"""
+    """
+    Удаление корзины пользователя.
+
+    Требует авторизации.
+    """
     await cart_service.delete_cart(session=session, cart_id=cart_id, user_id=user.id)
 
 
-@cart_router.post("/cart_item/{flower_id}")
+@cart_router.post("/cart_item/{flower_id}", summary="Добавить товар в корзину")
 async def create_cart_item(
     flower_id: int,
     quantity: int,
@@ -32,18 +40,29 @@ async def create_cart_item(
     target_user_id: int | None = None,
     session: AsyncSession = Depends(get_db),
 ):
-    """Добавление товара в корзину"""
+    """
+    Добавление товара в корзину.
+
+    Требует авторизации.
+    """
     cart_item = await cart_service.create_cart_item(
         session=session, current_user=current_user, target_user_id=target_user_id, flower_id=flower_id, quantity=quantity
     )
     return cart_item
 
 
-@cart_router.patch("/cart_item/{cart_item_id}")
+@cart_router.patch("/cart_item/{cart_item_id}", response_model=CartItemUpdate, summary="Обновить количество товара в корзине")
 async def update_cart_item_quantity(
-    cart_item_id: int, quantity: int, current_user: User = Depends(require_client), session: AsyncSession = Depends(get_db)
+    cart_item_id: int,
+    quantity: int = Query(..., ge=1, description="Новое количество товара"),
+    current_user: User = Depends(require_client),
+    session: AsyncSession = Depends(get_db),
 ) -> CartItemUpdate:
-    """Изменение количества товара в корзине"""
+    """
+    Изменение количества товара в корзине.
+
+    Требует авторизации.
+    """
     cart_item = await cart_service.update_cart_item_quantity(
         session=session, cart_item_id=cart_item_id, quantity=quantity, current_user=current_user
     )
