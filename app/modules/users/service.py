@@ -6,10 +6,17 @@ from app.core.exceptions import UserAlreadyExistsError, UserNotFoundError
 from app.core.security import get_password_hash
 
 from . import repository as user_repository
-from .schema import UserResponse, UserUpdate
+from .schema import UserCreate, UserResponse, UserUpdate
 
 
-async def create_user(*, session: AsyncSession, data) -> UserResponse:
+async def create_user(*, session: AsyncSession, data: UserCreate) -> UserResponse:
+    """
+    Создает нового пользователя в базе данных
+
+    Args:
+        session: сессия базы данных
+
+    """
     user_exist = await user_repository.get_user_by_email(session=session, email=data.email)
     if user_exist:
         raise UserAlreadyExistsError(data.email)

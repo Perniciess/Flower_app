@@ -13,12 +13,14 @@ cart_router = APIRouter(prefix="/carts", tags=["carts"])
 
 @cart_router.post("/create", response_model=CartResponse)
 async def create_cart(user: User = Depends(require_client), session: AsyncSession = Depends(get_db)) -> CartResponse:
+    """Создание корзины пользователя"""
     cart = await cart_service.create_cart(session=session, user_id=user.id)
     return cart
 
 
 @cart_router.delete("/{cart_id}", status_code=204)
 async def delete_cart(cart_id: int, user: User = Depends(require_admin), session: AsyncSession = Depends(get_db)):
+    """Удаление корзины пользователя"""
     await cart_service.delete_cart(session=session, cart_id=cart_id, user_id=user.id)
 
 
@@ -30,6 +32,7 @@ async def create_cart_item(
     target_user_id: int | None = None,
     session: AsyncSession = Depends(get_db),
 ):
+    """Добавление товара в корзину"""
     cart_item = await cart_service.create_cart_item(
         session=session, current_user=current_user, target_user_id=target_user_id, flower_id=flower_id, quantity=quantity
     )
@@ -40,6 +43,7 @@ async def create_cart_item(
 async def update_cart_item_quantity(
     cart_item_id: int, quantity: int, current_user: User = Depends(require_client), session: AsyncSession = Depends(get_db)
 ) -> CartItemUpdate:
+    """Изменение количества товара в корзине"""
     cart_item = await cart_service.update_cart_item_quantity(
         session=session, cart_item_id=cart_item_id, quantity=quantity, current_user=current_user
     )

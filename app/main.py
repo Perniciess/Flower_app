@@ -51,7 +51,18 @@ async def lifespan(app: FastAPI):
     await engine.dispose()
 
 
-app = FastAPI(lifespan=lifespan, swagger_ui_parameters={"defaultModelsExpandDepth": -1})
+app = FastAPI(
+    title="FlowerShop API",
+    description="API для магазина цветов",
+    openapi_tags=[
+        {"name": "users", "description": "Операции с пользователями"},
+        {"name": "auth", "description": "Аутентификация и авторизация"},
+        {"name": "flowers", "description": "Операции с цветами"},
+        {"name": "carts", "description": "Корзина покупок"},
+    ],
+    lifespan=lifespan,
+    swagger_ui_parameters={"defaultModelsExpandDepth": -1},
+)
 
 csrf_header_scheme = APIKeyHeader(name=settings.CSRF_HEADER_NAME, auto_error=False)
 
