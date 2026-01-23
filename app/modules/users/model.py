@@ -18,6 +18,8 @@ class Role(StrEnum):
 
 
 class User(Base):
+    """Сущность пользователя"""
+
     __tablename__ = "user"
 
     id: Mapped[int] = mapped_column(primary_key=True, index=True)
