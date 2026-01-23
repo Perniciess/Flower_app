@@ -15,17 +15,47 @@ UPLOAD_DIR = Path("app/static/uploads/flowers")
 
 
 async def create_flower(*, session: AsyncSession, flower_data: FlowerCreate) -> FlowerResponse:
+    """
+    Создает новый цветок в базе данных.
+
+    Args:
+        session: сессия базы данных
+        flower_data: данные для создания цветка
+
+    Returns:
+        FlowerResponse с данными созданного цветка
+    """
     flower = await flower_repository.create_flower(session=session, flower_data=flower_data.model_dump())
     flower = await flower_repository.get_flower_by_id(session=session, flower_id=flower.id)
     return FlowerResponse.model_validate(flower)
 
 
 async def get_flowers(*, session: AsyncSession) -> Sequence[FlowerResponse]:
+    """
+    Получает список цветов из базы данных.
+
+    Args:
+        session: сессия базы данных
+
+    Returns:
+        Sequence[FlowerResponse] список цветов
+    """
     flowers = await flower_repository.get_flowers(session=session)
     return [FlowerResponse.model_validate(flower) for flower in flowers]
 
 
 async def update_flower(*, session: AsyncSession, flower_id: int, flower_data: FlowerUpdate) -> FlowerResponse:
+    """
+    Обновляет данные цветка в базе данных.
+
+    Args:
+        session: сессия базы данных
+        flower_id: идентификатор цветка
+        flower_data: новые данные цветка
+
+    Returns:
+        FlowerResponse с данными обновленного цветка
+    """
     flower = await flower_repository.update_flower(
         session=session, flower_id=flower_id, flower_data=flower_data.model_dump(exclude_unset=True)
     )
@@ -33,6 +63,16 @@ async def update_flower(*, session: AsyncSession, flower_id: int, flower_data: F
 
 
 async def delete_flower(*, session: AsyncSession, flower_id: int) -> bool:
+    """
+    Удаляет цветок из базы данных.
+
+    Args:
+        session: сессия базы данных
+        flower_id: идентификатор цветка
+
+    Returns:
+        bool: цветок удален или нет
+    """
     deleted = await flower_repository.delete_flower(session=session, flower_id=flower_id)
     if not deleted:
         raise FlowerNotFoundError(flower_id=flower_id)
@@ -40,6 +80,21 @@ async def delete_flower(*, session: AsyncSession, flower_id: int) -> bool:
 
 
 async def upload_image(*, session: AsyncSession, flower_id: int, image: UploadFile, sort_order: int) -> FlowerImageResponse:
+    """
+    Загружает изображение цветка.
+
+    Args:
+        session: сессия базы данных
+        flower_id: идентификатор цветка
+        image: файл изображения цветка
+        sort_order: порядок сортировка изображений
+
+    Returns:
+        FlowerImageResponse с данными изображения цветка
+
+    Raises:
+        ValueError: если файл без имени
+    """
     if not image.filename:
         raise ValueError("Файл без имени")
 
@@ -59,11 +114,30 @@ async def upload_image(*, session: AsyncSession, flower_id: int, image: UploadFi
 
 
 async def get_flowers_images(*, session: AsyncSession) -> Sequence[FlowerImageResponse]:
+    """
+    Получает список изображений цветка.
+
+    Args:
+        session: сессия базы данных
+
+    Returns:
+        Sequence[FlowerImageResponse] список изображений цветка
+    """
     flowers_images = await flower_repository.get_flowers_images(session=session)
     return [FlowerImageResponse.model_validate(images) for images in flowers_images]
 
 
 async def delete_flower_image(*, session: AsyncSession, image_id: int) -> bool:
+    """
+    Удаляет изображение цветка.
+
+    Args:
+        session: сессия базы данных
+        image_id: идентификатор изображения
+
+    Returns:
+        bool: изображение удалено или нет
+    """
     url = await flower_repository.delete_flower_image(session=session, image_id=image_id)
     if url is None:
         raise FlowerNotFoundError(flower_id=image_id)
@@ -76,6 +150,16 @@ async def delete_flower_image(*, session: AsyncSession, image_id: int) -> bool:
 
 
 async def get_flower_price(*, session: AsyncSession, flower_id: int) -> Decimal:
+    """
+    Получает цену цветка.
+
+    Args:
+        session: сессия базы данных
+        flower_id: идентификатор цветка
+
+    Returns:
+        Decimal: цена цветка
+    """
     price = await flower_repository.get_flower_price(session=session, flower_id=flower_id)
     if price is None:
         raise FlowerNotFoundError(flower_id=flower_id)
