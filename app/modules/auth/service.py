@@ -1,12 +1,14 @@
-import secrets
-from datetime import UTC, datetime, timedelta
-
-import jwt
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.core.config import settings
 from app.core.exceptions import InvalidToken, PasswordsDoNotMatchError, UserAlreadyExistsError, UserNotFoundError
-from app.core.security import get_password_hash, get_refresh_hash, verify_password
+from app.core.security import (
+    create_access_token,
+    create_refresh_token,
+    get_expires_at_refresh_token,
+    get_password_hash,
+    get_refresh_hash,
+    verify_password,
+)
 from app.modules.users import repository as user_repository
 from app.modules.users.schema import UserResponse
 
@@ -33,6 +35,7 @@ async def register(*, session: AsyncSession, data: AuthRegister) -> UserResponse
         raise UserAlreadyExistsError(data.phone_number)
 
     data_user = {"phone_number": data.phone_number, "name": data.name, "password_hash": get_password_hash(data.password)}
+
     new_user = await user_repository.create_user(session=session, data=data_user)
     return UserResponse.model_validate(new_user)
 
@@ -59,8 +62,8 @@ async def login(*, session: AsyncSession, data: AuthLogin) -> Tokens:
     if not verify_password(data.password, user.password_hash):
         raise PasswordsDoNotMatchError()
 
-    access_token = _create_access_token(user_id=user.id)
-    refresh_token = await _create_and_save_refresh_token(session=session, user_id=user.id)
+    access_token = create_access_token(user_id=user.id)
+    refresh_token = await _save_refresh_token(session=session, user_id=user.id)
 
     return Tokens(access_token=access_token, refresh_token=refresh_token, token_type="bearer")
 
@@ -114,15 +117,15 @@ async def refresh_tokens(*, session: AsyncSession, refresh_token: str) -> Tokens
     if not revoked:
         raise InvalidToken()
 
-    access_token = _create_access_token(user_id=token.user_id)
-    new_refresh_token = await _create_and_save_refresh_token(session=session, user_id=token.user_id)
+    access_token = create_access_token(user_id=token.user_id)
+    new_refresh_token = await _save_refresh_token(session=session, user_id=token.user_id)
 
     return Tokens(access_token=access_token, refresh_token=new_refresh_token, token_type="bearer")
 
 
-async def _create_and_save_refresh_token(*, session: AsyncSession, user_id: int) -> str:
+async def _save_refresh_token(*, session: AsyncSession, user_id: int) -> str:
     """
-    Создание и сохранение refresh токена
+    Cохранение refresh токена
 
     Args:
         session: сессия базы данных
@@ -131,9 +134,9 @@ async def _create_and_save_refresh_token(*, session: AsyncSession, user_id: int)
     Returns:
         str: refresh токен
     """
-    refresh_token = secrets.token_urlsafe(64)
+    refresh_token = create_refresh_token()
     refresh_hash = get_refresh_hash(refresh_token)
-    expires_at = datetime.now(UTC) + timedelta(days=settings.REFRESH_TOKEN_EXPIRE_DAYS)
+    expires_at = get_expires_at_refresh_token()
 
     token_data = {
         "user_id": user_id,
@@ -143,18 +146,3 @@ async def _create_and_save_refresh_token(*, session: AsyncSession, user_id: int)
 
     await auth_repository.create_refresh_token(session=session, data=token_data)
     return refresh_token
-
-
-def _create_access_token(*, user_id: int) -> str:
-    """
-    Создание access токена
-
-    Args:
-        user_id: идентификатор пользователя
-
-    Returns:
-        str: access токен
-    """
-    expire = datetime.now(UTC) + timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
-    payload = {"sub": str(user_id), "exp": expire}
-    return jwt.encode(payload, settings.SECRET_KEY, algorithm=settings.ALGORITHM)

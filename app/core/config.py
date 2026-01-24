@@ -3,7 +3,6 @@ from typing import Annotated, Any, Literal
 from pydantic import (
     AnyUrl,
     BeforeValidator,
-    HttpUrl,
     PostgresDsn,
     computed_field,
 )
@@ -20,7 +19,6 @@ def parse_cors(v: Any) -> list[str] | str:
 
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
-        # Use top level .env file (one level above ./backend/)
         env_file=".env",
         env_ignore_empty=True,
         extra="ignore",
@@ -50,12 +48,16 @@ class Settings(BaseSettings):
         return [str(origin).rstrip("/") for origin in self.BACKEND_CORS_ORIGINS] + [self.FRONTEND_HOST]
 
     PROJECT_NAME: str
-    SENTRY_DSN: HttpUrl | None = None
+
+    # POSTGRESQL DATABASE
     POSTGRES_SERVER: str
     POSTGRES_PORT: int = 5432
     POSTGRES_USER: str
     POSTGRES_PASSWORD: str = ""
     POSTGRES_DB: str = ""
+
+    # REDIS DATABASE
+    REDIS_URL: str
 
     @computed_field  # type: ignore[prop-decorator]
     @property
