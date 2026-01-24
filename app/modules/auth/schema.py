@@ -1,4 +1,5 @@
-from pydantic import BaseModel, EmailStr, Field, field_validator
+from pydantic import BaseModel, Field, field_validator
+from pydantic_extra_types.phone_numbers import PhoneNumber
 
 from app.modules.users.schema import UserCreate
 
@@ -6,8 +7,18 @@ from app.modules.users.schema import UserCreate
 class AuthLogin(BaseModel):
     "Схема для авторизации пользователя."
 
-    email: EmailStr = Field(..., description="Электронная почта")
+    phone_number: PhoneNumber = Field(..., description="Номер телефона пользователя")
     password: str = Field(..., min_length=8, description="Пароль")
+
+    @field_validator("phone_number")
+    @classmethod
+    def normalize_phone(cls, v: PhoneNumber) -> str:
+        s = str(v)
+        if s.startswith("tel:"):
+            s = s[4:]
+        s = s.replace(" ", "").replace("-", "")
+
+        return s
 
     @field_validator("password", mode="before")
     @classmethod

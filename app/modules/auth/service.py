@@ -26,13 +26,13 @@ async def register(*, session: AsyncSession, data: AuthRegister) -> UserResponse
         UserResponse с данными созданного пользователя
 
     Raises:
-        UserAlreadyExistsError: если пользователь с таким email уже существует
+        UserAlreadyExistsError: если пользователь с таким phone_number уже существует
     """
-    user_exist = await user_repository.get_user_by_email(session=session, email=data.email)
+    user_exist = await user_repository.get_user_by_phone(session=session, phone_number=data.phone_number)
     if user_exist:
-        raise UserAlreadyExistsError(data.email)
+        raise UserAlreadyExistsError(data.phone_number)
 
-    data_user = {"email": data.email, "name": data.name, "password_hash": get_password_hash(data.password)}
+    data_user = {"phone_number": data.phone_number, "name": data.name, "password_hash": get_password_hash(data.password)}
     new_user = await user_repository.create_user(session=session, data=data_user)
     return UserResponse.model_validate(new_user)
 
@@ -49,12 +49,12 @@ async def login(*, session: AsyncSession, data: AuthLogin) -> Tokens:
         Tokens: access и refresh токены
 
     Raises:
-        UserNotFoundError: если пользователь с таким email уже существует
+        UserNotFoundError: если пользователь с таким phone_number уже существует
         PasswordsDoNotMatchError: если пароли не совпадают
     """
-    user = await user_repository.get_user_by_email(session=session, email=data.email)
+    user = await user_repository.get_user_by_phone(session=session, phone_number=data.phone_number)
     if user is None:
-        raise UserNotFoundError(email=data.email)
+        raise UserNotFoundError(phone_number=data.phone_number)
 
     if not verify_password(data.password, user.password_hash):
         raise PasswordsDoNotMatchError()

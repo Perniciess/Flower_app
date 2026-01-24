@@ -21,35 +21,35 @@ async def create_user(*, session: AsyncSession, data: UserCreate) -> UserRespons
         UserResponse с данными созданного пользователя
 
     Raises:
-        UserAlreadyExistsError: если пользователь с таким email уже существует
+        UserAlreadyExistsError: если пользователь с таким phone_number уже существует
     """
-    user_exist = await user_repository.get_user_by_email(session=session, email=data.email)
+    user_exist = await user_repository.get_user_by_phone(session=session, phone_number=data.phone_number)
     if user_exist:
-        raise UserAlreadyExistsError(data.email)
+        raise UserAlreadyExistsError(data.phone_number)
 
-    data_user = {"email": data.email, "name": data.name, "password_hash": get_password_hash(data.password)}
+    data_user = {"phone_number": data.phone_number, "name": data.name, "password_hash": get_password_hash(data.password)}
 
     new_user = await user_repository.create_user(session=session, data=data_user)
     return UserResponse.model_validate(new_user)
 
 
-async def get_user_by_email(*, session: AsyncSession, email: str) -> UserResponse:
+async def get_user_by_phone(*, session: AsyncSession, phone_number: str) -> UserResponse:
     """
-    Получает пользователя по его электронной почте.
+    Получает пользователя по его номеру телефона.
 
     Args:
         session: сессия базы данных
-        email: электронная почта пользователя
+        phone_number: номер телефона пользователя
 
     Returns:
         UserResponse с данными созданного пользователя
 
     Raises:
-        UserNotFoundError: если пользователь с таким email не найден
+        UserNotFoundError: если пользователь с таким номером не найден
     """
-    user = await user_repository.get_user_by_email(session=session, email=email)
+    user = await user_repository.get_user_by_phone(session=session, phone_number=phone_number)
     if user is None:
-        raise UserNotFoundError(email=email)
+        raise UserNotFoundError(phone_number=phone_number)
 
     return UserResponse.model_validate(user)
 
@@ -67,7 +67,7 @@ async def update_user(*, session: AsyncSession, user_id: int, data: UserUpdate) 
         UserResponse с данными созданного пользователя
 
     Raises:
-        UserNotFoundError: если пользователь с таким email не найден
+        UserNotFoundError: если пользователь с таким phone_number не найден
     """
     patch = data.model_dump(exclude_unset=True)
     user = await user_repository.update_user(session=session, user_id=user_id, data=patch)
@@ -88,7 +88,7 @@ async def get_user_by_id(*, session: AsyncSession, user_id: int) -> UserResponse
         UserResponse с данными созданного пользователя
 
     Raises:
-        UserNotFoundError: если пользователь с таким email не найден
+        UserNotFoundError: если пользователь с таким phone_number не найден
     """
     user = await user_repository.get_user_by_id(session=session, user_id=user_id)
     if user is None:

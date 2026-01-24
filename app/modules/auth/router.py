@@ -25,7 +25,7 @@ async def login(response: Response, data: AuthLogin, session: AsyncSession = Dep
     """Авторизация пользователя."""
     tokens = await auth_service.login(session=session, data=data)
     set_token(response=response, tokens=tokens)
-    return {"message": "Успешная авторизация", "email": data.email}
+    return {"message": "Успешная авторизация", "phone_number": data.phone_number}
 
 
 @auth_router.post("/logout", summary="Выйти из системы")
