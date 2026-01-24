@@ -32,6 +32,7 @@ from app.core.handlers import (
     user_exists_handler,
     user_not_found_handler,
 )
+from app.core.redis import close_redis_pool, get_redis, init_redis_pool
 from app.database.session import engine
 from app.modules.auth.router import auth_router
 from app.modules.carts.router import cart_router
@@ -47,7 +48,18 @@ async def lifespan(app: FastAPI):
         print("DB connected")
     except Exception as exc:
         print(f"DB connection failed: {exc}")
+        raise
+    try:
+        await init_redis_pool()
+        redis = get_redis()
+        await redis.ping()  # type: ignore[misc]
+        await redis.aclose()
+        print("Redis connected")
+    except Exception as exc:
+        print(f"Redis connection failed: {exc}")
+        raise
     yield
+    await close_redis_pool()
     await engine.dispose()
 
 
