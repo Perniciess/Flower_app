@@ -8,7 +8,7 @@ from .model import User
 
 async def create_user(*, session: AsyncSession, data: Mapping[str, str]) -> User:
     user = User(
-        email=data["email"],
+        phone_number=data["phone_number"],
         name=data["name"],
         password_hash=data["password_hash"],
     )
@@ -17,8 +17,8 @@ async def create_user(*, session: AsyncSession, data: Mapping[str, str]) -> User
     return user
 
 
-async def get_user_by_email(*, session: AsyncSession, email: str) -> User | None:
-    statement = select(User).where(User.email == email)
+async def get_user_by_phone(*, session: AsyncSession, phone_number: str) -> User | None:
+    statement = select(User).where(User.phone_number == phone_number)
     user = await session.execute(statement)
     return user.scalar_one_or_none()
 

@@ -23,15 +23,15 @@ async def user_not_found_handler(request: Request, exc: Exception) -> JSONRespon
     content: dict[str, object] = {"detail": str(e)}
     if e.user_id is not None:
         content["user_id"] = e.user_id
-    if e.email is not None:
-        content["email"] = e.email
+    if e.phone_number is not None:
+        content["phone_number"] = e.phone_number
 
     return JSONResponse(status_code=404, content=content)
 
 
 async def user_exists_handler(request: Request, exc: Exception) -> JSONResponse:
     e = cast(UserAlreadyExistsError, exc)
-    return JSONResponse(status_code=409, content={"detail": str(e), "email": e.email})
+    return JSONResponse(status_code=409, content={"detail": str(e), "phone_number": e.phone_number})
 
 
 async def password_not_match_handler(request: Request, exc: Exception) -> JSONResponse:
