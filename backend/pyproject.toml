@@ -1,0 +1,52 @@
+[project]
+name = "flowershop-fastapi"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+  "asyncpg>=0.31.0",
+  "fastapi[standard]>=0.128.0",
+  "pwdlib[argon2]>=0.3.0",
+  "pydantic[email]>=2.12.5",
+  "pydantic-extra-types>=2.11.0",
+  "pydantic-settings>=2.12.0",
+  "pyjwt>=2.10.1",
+  "redis>=7.1.0",
+  "starlette-csrf>=3.0.0",
+  "phonenumbers>=9.0.22",
+  "sqlalchemy>=2.0.45",
+]
+
+
+[tool.ruff]
+target-version = "py313"
+fix = true
+line-length = 140
+exclude = ["migrations", "*.html", "alembic"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "PERF", "FIX002", "PLE", "PLW", "F822", "N", "S", "RUF", "ASYNC"]
+ignore = ["E501", "D104", "D100", "B008"]
+exclude = [".git", "__pycache__", "venv", ".venv"]
+allowed-confusables = ["а", "е", "о", "р", "с", "у", "х", "і", "г"]
+
+[tool.ruff.lint.flake8-quotes]
+docstring-quotes = "double"
+
+
+[tool.ruff.lint.isort]
+known-first-party = ["app"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "auto"
+skip-magic-trailing-comma = false
+docstring-code-format = true
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["F401"]

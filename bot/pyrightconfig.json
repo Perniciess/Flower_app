@@ -1,0 +1,30 @@
+{
+  "include": ["app"],
+  "exclude": [
+    "**/node_modules",
+    "**/__pycache__",
+    "**/.venv",
+    "**/.git",
+    "**/.idea",
+    "**/migrations",
+    "**/alembic",
+  ],
+  "venvPath": ".",
+  "venv": ".venv",
+  "pythonVersion": "3.13",
+  "typeCheckingMode": "strict",
+
+  "reportMissingImports": true,
+  "reportDeprecated": true,
+  "reportUnnecessaryTypeIgnoreComment": true,
+  "reportPrivateUsage": true,
+  "reportConstantRedefinition": true,
+
+  "reportUnknownMemberType": false,
+  "reportUnknownArgumentType": false,
+  "reportUnknownVariableType": false,
+  "reportUnknownParameterType": false,
+  "reportMissingTypeStubs": false,
+  "reportUnknownLambdaType": false,
+  "reportAny": false,
+}
