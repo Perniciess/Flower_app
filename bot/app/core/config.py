@@ -11,6 +11,8 @@ class Settings(BaseSettings):
     BOT_TOKEN: str
     REDIS_URL: str
     BACKEND_URL: str
+    WEBSITE_URL: str
+    API_V1_STR: str = "/api/v1"
 
 
 settings = Settings()  # type: ignore

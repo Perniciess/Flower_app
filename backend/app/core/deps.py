@@ -1,6 +1,6 @@
 import jwt
 from fastapi import Depends, HTTPException, Request, status
-from jwt import InvalidTokenError
+from redis.asyncio import Redis
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.database.session import get_db
@@ -8,16 +8,18 @@ from app.modules.users import repository as user_repository
 from app.modules.users.model import Role, User
 
 from .config import settings
-from .exceptions import InsufficientPermissionError
-from .security import oauth2_scheme
+from .exceptions import InsufficientPermissionError, InvalidTokenError
+from .redis import get_redis
+from .security import is_blacklisted, oauth2_scheme
 
 
 async def get_current_user(
     request: Request,
     session: AsyncSession = Depends(get_db),
+    redis: Redis = Depends(get_redis),
     header_token: str | None = Depends(oauth2_scheme),
 ):
-    token = header_token or _extract_bearer(request.cookies.get("access_token"))
+    token = header_token or request.cookies.get("access_token")
 
     if not token:
         raise HTTPException(
@@ -26,11 +28,13 @@ async def get_current_user(
             headers={"WWW-Authenticate": "Bearer"},
         )
 
+    if await is_blacklisted(redis, token):
+        raise InvalidTokenError()
     try:
         payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
         sub = payload.get("sub")
         user_id = int(sub)
-    except (InvalidTokenError, TypeError, ValueError):
+    except (jwt.InvalidTokenError, TypeError, ValueError):
         raise HTTPException(status_code=401, detail="Could not validate credentials") from None
 
     user = await user_repository.get_user_by_id(session=session, user_id=user_id)
@@ -52,12 +56,3 @@ class RoleChecker:
 
 require_admin = RoleChecker([Role.ADMIN])
 require_client = RoleChecker([Role.CLIENT, Role.ADMIN])
-
-
-def _extract_bearer(raw: str | None) -> str | None:
-    if not raw:
-        return None
-    parts = raw.split(" ", 1)
-    if len(parts) == 2 and parts[0].lower() == "bearer" and parts[1]:
-        return parts[1]
-    return None

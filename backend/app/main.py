@@ -1,7 +1,7 @@
 import re
 from contextlib import asynccontextmanager
 
-from fastapi import Depends, FastAPI
+from fastapi import APIRouter, Depends, FastAPI
 from fastapi.security import APIKeyHeader
 from sqlalchemy import text
 from starlette.middleware.cors import CORSMiddleware
@@ -99,14 +99,17 @@ app.add_middleware(
     exempt_urls=[
         re.compile(r"/docs"),
         re.compile(r"/openapi.json"),
-        re.compile(r"/auth/login"),
+        re.compile(rf"{settings.API_V1_STR}/auth/login"),
+        re.compile(rf"{settings.API_V1_STR}/auth/complete-register/.*"),
     ],
 )
 
-app.include_router(user_router, dependencies=[Depends(csrf_header_scheme)])
-app.include_router(auth_router, dependencies=[Depends(csrf_header_scheme)])
-app.include_router(flower_router, dependencies=[Depends(csrf_header_scheme)])
-app.include_router(cart_router, dependencies=[Depends(csrf_header_scheme)])
+api_router = APIRouter(prefix=settings.API_V1_STR)
+api_router.include_router(auth_router)
+api_router.include_router(user_router)
+api_router.include_router(flower_router)
+api_router.include_router(cart_router)
+app.include_router(api_router, dependencies=[Depends(csrf_header_scheme)])
 
 app.add_exception_handler(UserNotFoundError, user_not_found_handler)
 app.add_exception_handler(UserAlreadyExistsError, user_exists_handler)

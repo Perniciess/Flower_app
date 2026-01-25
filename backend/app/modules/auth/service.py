@@ -5,6 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.exceptions import InvalidTokenError, PasswordsDoNotMatchError, UserAlreadyExistsError, UserNotFoundError
 from app.core.security import (
+    add_to_blacklist,
     create_access_token,
     create_refresh_token,
     generate_verification_token,
@@ -31,17 +32,17 @@ async def register(*, session: AsyncSession, redis: Redis, data: AuthRegister) -
         "password_hash": get_password_hash(data.password),
         "verification_token": verification_token,
     }
-    await redis.set(f"verification:{verification_token}", json.dumps(data_user), ex=300)
+    await redis.set(f"v:{verification_token}", json.dumps(data_user), ex=300)
     telegram_link = f"https://t.me/kupibuket74_bot?start={verification_token}"
     return RegisterResponse(verification_token=data_user["verification_token"], telegram_link=telegram_link, expires_in=300)
 
 
 async def complete_register(*, session: AsyncSession, redis: Redis, verification_token: str) -> Tokens:
-    redis_data = await redis.get(f"verification:{verification_token}")
+    redis_data = await redis.get(f"v:{verification_token}")
     if redis_data is None:
         raise InvalidTokenError()
     data_user = json.loads(redis_data)
-    await redis.delete(f"verification:{verification_token}")
+    await redis.delete(f"v:{verification_token}")
     user = await user_repository.create_user(session=session, data=data_user)
 
     access_token = create_access_token(user_id=user.id)
@@ -78,7 +79,7 @@ async def login(*, session: AsyncSession, data: AuthLogin) -> Tokens:
     return Tokens(access_token=access_token, refresh_token=refresh_token)
 
 
-async def logout(*, session: AsyncSession, refresh_token: str) -> None:
+async def logout(*, session: AsyncSession, redis: Redis, access_token: str, refresh_token: str) -> None:
     """
     Выход пользователя из системы
 
@@ -97,10 +98,11 @@ async def logout(*, session: AsyncSession, refresh_token: str) -> None:
     token = await auth_repository.get_refresh_token(session=session, token_hash=refresh_hash)
     if token is None:
         raise InvalidTokenError()
-
     revoked = await auth_repository.revoke_token(session=session, token_id=token.id)
     if not revoked:
         raise InvalidTokenError()
+
+    await add_to_blacklist(redis=redis, access_token=access_token)
 
 
 async def refresh_tokens(*, session: AsyncSession, refresh_token: str) -> Tokens:

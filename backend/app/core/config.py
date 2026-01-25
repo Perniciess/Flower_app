@@ -42,7 +42,12 @@ class Settings(BaseSettings):
     COOKIE_SAMESITE: Literal["lax", "strict", "none"] = "strict"
     BACKEND_CORS_ORIGINS: Annotated[list[AnyUrl] | str, BeforeValidator(parse_cors)] = []
 
-    @computed_field  # type: ignore[prop-decorator]
+    # SECURITY.PY
+    REFRESH_TOKEN_BYTES: int = 64
+    VERIFICATION_TOKEN_LENGTH: int = 8  # если изменить на больше, то нужно  менять схему RegisterResponse
+    VERIFICATION_ALPHABET: str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+
+    @computed_field
     @property
     def all_cors_origins(self) -> list[str]:
         return [str(origin).rstrip("/") for origin in self.BACKEND_CORS_ORIGINS] + [self.FRONTEND_HOST]
@@ -59,7 +64,7 @@ class Settings(BaseSettings):
     # REDIS DATABASE
     REDIS_URL: str
 
-    @computed_field  # type: ignore[prop-decorator]
+    @computed_field
     @property
     def sqlalchemy_database_uri(self) -> PostgresDsn:
         return PostgresDsn.build(

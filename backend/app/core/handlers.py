@@ -61,7 +61,7 @@ async def image_not_found(request: Request, exc: Exception) -> JSONResponse:
 
 async def cart_already_exists(request: Request, exc: Exception) -> JSONResponse:
     e = cast(CartAlreadyExistsError, exc)
-    return JSONResponse(status_code=404, content={"detail": str(e)})
+    return JSONResponse(status_code=409, content={"detail": str(e)})
 
 
 async def cart_not_found(request: Request, exc: Exception) -> JSONResponse:

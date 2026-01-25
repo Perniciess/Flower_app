@@ -1,22 +1,22 @@
 import json
 
 import httpx
-from redis.asyncio import Redis
 
 from app.core.config import settings
-
-redis = Redis.from_url(settings.REDIS_URL, decode_responses=True)
+from app.core.redis import redis_manager
 
 
 async def check_cache(token: str) -> bool:
-    value = await redis.get(f"verification:{token}")
+    redis = redis_manager.get_client()
+    value = await redis.get(f"v:{token}")
     if not value:
         return False
     return True
 
 
 async def verify_account(token: str, phone_number: str) -> bool:
-    value = await redis.get(f"verification:{token}")
+    redis = redis_manager.get_client()
+    value = await redis.get(f"v:{token}")
     if not value:
         return False
     user_data = json.loads(value)
@@ -27,7 +27,7 @@ async def complete_verify(token: str) -> bool:
     try:
         async with httpx.AsyncClient() as client:
             response = await client.post(
-                f"{settings.BACKEND_URL}/auth/complete-register/{token}",
+                f"{settings.BACKEND_URL}{settings.API_V1_STR}/auth/complete-register/{token}",
                 timeout=10.0,
             )
             return response.is_success
