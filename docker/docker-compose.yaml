@@ -36,10 +36,10 @@ services:
     deploy:
       resources:
         limits:
-          memory: 64M
+          memory: 256M
           cpus: "0.5"
         reservations:
-          memory: 32M
+          memory: 64M
           cpus: "0.1"
     command: >
       sh -c '

@@ -47,3 +47,9 @@ def get_refresh_hash(refresh_token: str) -> str:
 
 def get_expires_at_refresh_token() -> datetime:
     return datetime.now(UTC) + timedelta(days=settings.REFRESH_TOKEN_EXPIRE_DAYS)
+
+
+def generate_verification_token() -> str:
+    """Генерация кода верификации для Telegram."""
+    alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+    return "".join(secrets.choice(alphabet) for _ in range(8))

@@ -1,5 +1,5 @@
 {
-  "include": ["app", "bot"],
+  "include": ["app"],
   "exclude": [
     "**/node_modules",
     "**/__pycache__",

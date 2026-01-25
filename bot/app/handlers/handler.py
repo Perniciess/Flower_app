@@ -1,23 +1,27 @@
 from aiogram import F, Router
-from aiogram.filters import CommandStart
-from aiogram.types import KeyboardButton, Message, ReplyKeyboardMarkup
+from aiogram.filters import CommandObject, CommandStart
+from aiogram.fsm.context import FSMContext
+from aiogram.types import Message
+
+from app.keyboards.phone import kb_phone
+from app.states.registration import Registration
 
 router = Router()
 
-kb_phone = ReplyKeyboardMarkup(
-    keyboard=[[KeyboardButton(text="📞 Отправить номер", request_contact=True)]],
-    resize_keyboard=True,
-    one_time_keyboard=True,
-)
 
-
-@router.message(CommandStart())
-async def command_start_handler(message: Message) -> None:
+@router.message(CommandStart(deep_link=True))
+async def command_start_handler(message: Message, command: CommandObject, state: FSMContext) -> None:
     user = message.from_user
     if user is None:
         raise ValueError()
+
+    token = command.args
+    await state.update_data(verification_token=token)
+
+    await state.set_state(Registration.waiting_for_phone)
+
     await message.answer(
-        f"Привет, {user.full_name}! Поделись своим номером телефона:",
+        f"Привет, {user.full_name}! Для регистрации нажми кнопку ниже:",
         reply_markup=kb_phone,
     )
 

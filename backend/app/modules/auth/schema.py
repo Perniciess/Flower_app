@@ -29,6 +29,16 @@ class AuthLogin(BaseModel):
 class AuthRegister(UserCreate):
     "Схема для регистрации пользователя."
 
+    @field_validator("phone_number")
+    @classmethod
+    def normalize_phone(cls, v: PhoneNumber) -> str:
+        s = str(v)
+        if s.startswith("tel:"):
+            s = s[4:]
+        s = s.replace(" ", "").replace("-", "")
+
+        return s
+
     @field_validator("name", mode="before")
     @classmethod
     def name_strip(cls, v: str) -> str:
@@ -52,6 +62,12 @@ class AuthRegister(UserCreate):
             raise ValueError("Пароль должен содержать хотя бы один спецсимвол")
 
         return v
+
+
+class RegisterResponse(BaseModel):
+    verification_token: str = Field(..., min_length=8, max_length=8, description="Токен подтверждения номера")
+    telegram_link: str = Field(..., description="Deeplink telegram")
+    expires_in: int = Field(..., ge=300, le=300, description="Срок истечения кода в секундах")
 
 
 class AccessToken(BaseModel):
