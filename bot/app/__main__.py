@@ -6,20 +6,23 @@ from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 
 from app.core.config import settings
+from app.core.redis import redis_manager
 from app.handlers.handler import router as router
-from app.storage.redis import storage
 
 
 async def main() -> None:
     logging.basicConfig(level=logging.INFO)
-
+    await redis_manager.init_pool()
     bot = Bot(
         token=settings.BOT_TOKEN,
         default=DefaultBotProperties(parse_mode=ParseMode.HTML),
     )
-    dp = Dispatcher(storage=storage)
+    dp = Dispatcher(storage=redis_manager.get_storage())
     dp.include_router(router)
-    await dp.start_polling(bot)
+    try:
+        await dp.start_polling(bot)
+    finally:
+        await redis_manager.close_pool()
 
 
 if __name__ == "__main__":

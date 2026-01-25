@@ -32,7 +32,9 @@ async def login(response: Response, data: AuthLogin, session: AsyncSession = Dep
 @auth_router.post("/logout", summary="Выйти из системы")
 async def logout(
     response: Response,
+    access_token: str = Cookie(),
     refresh_token: str = Cookie(),
+    redis: Redis = Depends(get_redis),
     session: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ) -> dict[str, str]:
@@ -41,7 +43,7 @@ async def logout(
 
     Необходимо быть авторизованным в системе.
     """
-    await auth_service.logout(session=session, refresh_token=refresh_token)
+    await auth_service.logout(session=session, redis=redis, access_token=access_token, refresh_token=refresh_token)
     remove_token(response)
     return {"message": "Выход из системы выполнен"}
 

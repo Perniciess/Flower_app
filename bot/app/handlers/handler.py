@@ -3,6 +3,7 @@ from aiogram.filters import CommandObject, CommandStart
 from aiogram.fsm.context import FSMContext
 from aiogram.types import Message
 
+from app.core.config import settings
 from app.keyboards.phone import kb_phone
 from app.service.registration import check_cache, complete_verify, verify_account
 from app.states.registration import Registration
@@ -10,11 +11,17 @@ from app.states.registration import Registration
 router = Router()
 
 
+@router.message(CommandStart())
+async def command_start_without_token(message: Message) -> None:
+    await message.answer(f"Для регистрации перейдите на сайт: {settings.WEBSITE_URL}")
+
+
 @router.message(CommandStart(deep_link=True))
 async def command_start_handler(message: Message, command: CommandObject, state: FSMContext) -> None:
     user = message.from_user
     if user is None:
-        raise ValueError()
+        await message.answer("Ошибка: не удалось определить пользователя")
+        return
 
     token = command.args
     if not token:
@@ -31,7 +38,12 @@ async def command_start_handler(message: Message, command: CommandObject, state:
 
     await state.set_state(Registration.waiting_for_phone)
 
-    await message.answer("Подтвердите номер телефона", reply_markup=kb_phone)
+    await message.answer("Подтвердите номер телефона в течение 5 минут", reply_markup=kb_phone)
+
+
+@router.message(Registration.waiting_for_phone)
+async def unknown_message(message: Message) -> None:
+    await message.answer("Нажмите кнопку ниже, чтобы отправить номер", reply_markup=kb_phone)
 
 
 @router.message(Registration.waiting_for_phone, F.text == "/phone")
@@ -45,6 +57,7 @@ async def got_phone(message: Message, state: FSMContext) -> None:
     user = message.from_user
 
     if not contact or not user:
+        await message.answer("Не удалось получить данные. Попробуйте ещё раз.")
         return
 
     if contact.user_id != user.id:
@@ -54,7 +67,10 @@ async def got_phone(message: Message, state: FSMContext) -> None:
     data = await state.get_data()
     token = data.get("verification_token")
     if not token:
+        await message.answer("Сессия истекла. Начните регистрацию заново на сайте.")
+        await state.clear()
         return
+
     verified = await verify_account(token=token, phone_number=contact.phone_number)
     if not verified:
         await message.answer("Ваш номер телефона не соответствует")
