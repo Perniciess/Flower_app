@@ -4,7 +4,7 @@ from pydantic import BaseModel, ConfigDict, Field
 
 
 class FlowerImageResponse(BaseModel):
-    """Схема ответа API с изображениями цветка."""
+    """Схема для ответа API с изображениями цветка."""
 
     model_config = ConfigDict(from_attributes=True)
 
@@ -38,7 +38,7 @@ class FlowerUpdate(BaseModel):
 
 
 class FlowerResponse(FlowerBase):
-    """Схема ответа API с данными цветка."""
+    """Схема для ответа API с данными цветка."""
 
     model_config = ConfigDict(from_attributes=True)
 

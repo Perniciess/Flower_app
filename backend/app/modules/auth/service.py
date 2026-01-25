@@ -21,6 +21,20 @@ from .schema import AuthLogin, AuthRegister, RegisterResponse, Tokens
 
 
 async def register(*, session: AsyncSession, redis: Redis, data: AuthRegister) -> RegisterResponse:
+    """
+    Начальная регистрация с генерацией deeplink для подтверждения номера в телеграме и проверке через Redis.
+
+    Args:
+        session: сессия базы данных
+        redis: сессия Redis
+        data: данные для регистрации пользователя
+
+    Returns:
+        RegisterResponse данные для продолжения верификации
+
+    Raises:
+        UserAlreadyExistsError: если пользователь с таким phone_number уже существует
+    """
     user_exist = await user_repository.get_user_by_phone(session=session, phone_number=data.phone_number)
     if user_exist:
         raise UserAlreadyExistsError(data.phone_number)
@@ -37,18 +51,33 @@ async def register(*, session: AsyncSession, redis: Redis, data: AuthRegister) -
     return RegisterResponse(verification_token=data_user["verification_token"], telegram_link=telegram_link, expires_in=300)
 
 
-async def complete_register(*, session: AsyncSession, redis: Redis, verification_token: str) -> Tokens:
+async def complete_register(*, session: AsyncSession, redis: Redis, verification_token: str) -> None:
+    """
+    Конец регистрации пользователя, после подтверждения номера в телеграме.
+
+    Args:
+        session: сессия базы данных
+        redis: сессия Redis
+        verification_token: токен проверки пользователя
+
+    Returns:
+        None
+
+    Raises:
+        InvalidTokenError: неправильный токен
+    """
     redis_data = await redis.get(f"v:{verification_token}")
     if redis_data is None:
         raise InvalidTokenError()
-    data_user = json.loads(redis_data)
+
+    try:
+        data_user = json.loads(redis_data)
+    except json.JSONDecodeError:
+        await redis.delete(f"v:{verification_token}")
+        raise InvalidTokenError() from None
+
+    await user_repository.create_user(session=session, data=data_user)
     await redis.delete(f"v:{verification_token}")
-    user = await user_repository.create_user(session=session, data=data_user)
-
-    access_token = create_access_token(user_id=user.id)
-    refresh_token = await _save_refresh_token(session=session, user_id=user.id)
-
-    return Tokens(access_token=access_token, refresh_token=refresh_token)
 
 
 async def login(*, session: AsyncSession, data: AuthLogin) -> Tokens:
@@ -63,7 +92,7 @@ async def login(*, session: AsyncSession, data: AuthLogin) -> Tokens:
         Tokens: access и refresh токены
 
     Raises:
-        UserNotFoundError: если пользователь с таким phone_number уже существует
+        UserNotFoundError: если пользователь с таким phone_number не существует
         PasswordsDoNotMatchError: если пароли не совпадают
     """
     user = await user_repository.get_user_by_phone(session=session, phone_number=data.phone_number)

@@ -13,7 +13,7 @@ if TYPE_CHECKING:
 
 
 class RefreshToken(Base):
-    """Сущность refresh токена"""
+    """Сущность refresh токена."""
 
     __tablename__ = "refresh_token"
 

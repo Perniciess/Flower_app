@@ -3,29 +3,42 @@ from decimal import Decimal
 from pydantic import BaseModel, ConfigDict, Field
 
 
-class CartResponse(BaseModel):
-    model_config = ConfigDict(from_attributes=True)
-
-    id: int = Field(..., description="Уникальный идентификатор корзины")
-    user_id: int = Field(..., description="Уникальный идентификатор пользователя")
-
-
 class CartItemBase(BaseModel):
+    """Базовые поля товара в корзин, используемые в других схемах."""
+
     cart_id: int = Field(..., description="Уникальный идентификатор корзины")
+    flower_id: int = Field(..., description="Идентификатор цветка")
     quantity: int = Field(..., description="Количество товара")
     price: Decimal = Field(..., description="Цена товара")
 
 
 class CartItemCreate(BaseModel):
+    """Схема для создания товара в корзине."""
+
     flower_id: int = Field(..., description="Уникальный идентификатор цветка")
     quantity: int = Field(default=1, ge=1)
 
 
 class CartItemUpdate(BaseModel):
+    """Схема для частичного обновления товара в корзине."""
+
     quantity: int | None = Field(default=None, description="Количество товара")
 
 
 class CartItemResponse(CartItemBase):
+    """Схема ответа API овтета товара в корзине."""
+
     model_config = ConfigDict(from_attributes=True)
 
     id: int = Field(..., description="Уникальный идентификатор товара корзины")
+
+
+class CartResponse(BaseModel):
+    """Схема API ответа корзины"""
+
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int = Field(..., description="Уникальный идентификатор корзины")
+    user_id: int = Field(..., description="Уникальный идентификатор пользователя")
+
+    cart_item: list[CartItemResponse] = Field(default_factory=list, description="Товары в корзине")

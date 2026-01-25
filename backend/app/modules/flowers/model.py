@@ -10,7 +10,7 @@ from app.database.base import Base
 
 
 class Flower(Base):
-    """Сущность цветка"""
+    """Сущность цветка."""
 
     __tablename__ = "flower"
 
@@ -27,7 +27,7 @@ class Flower(Base):
 
 
 class FlowerImage(Base):
-    """Сущность изображений цветка"""
+    """Сущность изображений цветка."""
 
     __tablename__ = "flower_image"
 

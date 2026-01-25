@@ -18,7 +18,7 @@ class Role(StrEnum):
 
 
 class User(Base):
-    """Сущность пользователя"""
+    """Сущность пользователя."""
 
     __tablename__ = "user"
 

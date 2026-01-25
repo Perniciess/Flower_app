@@ -28,7 +28,7 @@ class UserCreate(UserBase):
 
 
 class UserResponse(UserBase):
-    """Схема ответа API с данными пользователя."""
+    """Схема для ответа API с данными пользователя."""
 
     model_config = ConfigDict(from_attributes=True)
 

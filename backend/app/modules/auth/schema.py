@@ -5,7 +5,7 @@ from app.modules.users.schema import UserCreate
 
 
 class AuthLogin(BaseModel):
-    "Схема для авторизации пользователя."
+    """Схема для авторизации пользователя."""
 
     phone_number: PhoneNumber = Field(..., description="Номер телефона пользователя")
     password: str = Field(..., min_length=8, description="Пароль")
@@ -27,7 +27,7 @@ class AuthLogin(BaseModel):
 
 
 class AuthRegister(UserCreate):
-    "Схема для регистрации пользователя."
+    """Схема для регистрации пользователя."""
 
     @field_validator("phone_number")
     @classmethod
@@ -65,31 +65,33 @@ class AuthRegister(UserCreate):
 
 
 class RegisterResponse(BaseModel):
+    """Схема для ответа API после регистрации для продолжения подтверждения номера телефона в телеграме"""
+
     verification_token: str = Field(..., min_length=8, max_length=8, description="Токен подтверждения номера")
     telegram_link: str = Field(..., description="Deeplink telegram")
     expires_in: int = Field(..., ge=300, le=300, description="Срок истечения кода в секундах")
 
 
 class AccessToken(BaseModel):
-    "Схема access token."
+    """Схема для access token."""
 
     access_token: str = Field(..., description="JWT access токен")
 
 
 class RefreshToken(BaseModel):
-    "Схема refresh token."
+    """Схема для refresh token."""
 
     refresh_token: str = Field(..., description="JWT refresh токен")
 
 
 class Tokens(BaseModel):
-    "Схема пары токенов."
+    """Схема для пары токенов."""
 
     access_token: str = Field(..., description="JWT access токен")
     refresh_token: str = Field(..., description="JWT refresh токен")
 
 
 class TokenData(BaseModel):
-    "Данные, закодированные в токене."
+    """Схема для данных, закодированных в токене."""
 
     id: str = Field(..., description="ID пользователя")

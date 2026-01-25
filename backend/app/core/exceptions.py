@@ -58,3 +58,8 @@ class CartNotFoundError(Exception):
 class CartItemNotFoundError(Exception):
     def __init__(self, cart_item_id: int) -> None:
         super().__init__(f"Товар корзины с ID={cart_item_id} не найдена")
+
+
+class UserCartMissingError(Exception):
+    def __init__(self, user_id: int) -> None:
+        super().__init__(f"У пользователя с ID={user_id} нет корзины")

@@ -13,6 +13,7 @@ from .exceptions import (
     InvalidTokenError,
     PasswordsDoNotMatchError,
     UserAlreadyExistsError,
+    UserCartMissingError,
     UserNotFoundError,
 )
 
@@ -71,4 +72,9 @@ async def cart_not_found(request: Request, exc: Exception) -> JSONResponse:
 
 async def cart_item_not_found(request: Request, exc: Exception) -> JSONResponse:
     e = cast(CartItemNotFoundError, exc)
+    return JSONResponse(status_code=404, content={"detail": str(e)})
+
+
+async def user_cart_not_found(request: Request, exc: Exception) -> JSONResponse:
+    e = cast(UserCartMissingError, exc)
     return JSONResponse(status_code=404, content={"detail": str(e)})
