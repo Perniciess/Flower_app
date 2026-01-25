@@ -1,6 +1,6 @@
 from collections.abc import Sequence
 
-from fastapi import APIRouter, Depends, UploadFile
+from fastapi import APIRouter, Depends, Form, UploadFile
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.deps import require_admin
@@ -38,9 +38,9 @@ async def update_flower(
     flower_id: int, flower_data: FlowerUpdate, session: AsyncSession = Depends(get_db), current_user: User = Depends(require_admin)
 ) -> FlowerResponse:
     """
-    Изменение информации о цветке
+    Изменение информации о цветке.
 
-    Требует прав администратора
+    Требует прав администратора.
     """
     flower = await flower_service.update_flower(session=session, flower_id=flower_id, flower_data=flower_data)
     return flower
@@ -60,7 +60,7 @@ async def delete_flower(flower_id: int, session: AsyncSession = Depends(get_db),
 async def upload_image(
     flower_id: int,
     image: UploadFile,
-    sort_order: int = 0,
+    sort_order: int = Form(default=0),
     session: AsyncSession = Depends(get_db),
     current_user: User = Depends(require_admin),
 ) -> FlowerImageResponse:

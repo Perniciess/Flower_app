@@ -6,6 +6,7 @@ from .schema import Tokens
 
 
 def set_token(response: Response, tokens: Tokens) -> None:
+    """Устанавливаем access и refresh токены из cookie."""
     response.set_cookie(
         key="access_token",
         value=f"{tokens.access_token}",
@@ -26,6 +27,7 @@ def set_token(response: Response, tokens: Tokens) -> None:
 
 
 def remove_token(response: Response) -> None:
+    """Удаляем access и refresh токены из cookie."""
     response.delete_cookie(
         key="access_token",
         secure=settings.COOKIE_SECURE,

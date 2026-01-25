@@ -14,6 +14,8 @@ if TYPE_CHECKING:
 
 
 class Cart(Base):
+    """Сущность корзины."""
+
     __tablename__ = "cart"
 
     id: Mapped[int] = mapped_column(primary_key=True, index=True)
@@ -25,6 +27,8 @@ class Cart(Base):
 
 
 class CartItem(Base):
+    """Сущность товара в корзине."""
+
     __tablename__ = "cart_item"
     __table_args__ = (UniqueConstraint("cart_id", "flower_id", name="uq_cart_flower"), {})
 

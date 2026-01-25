@@ -41,7 +41,7 @@ async def logout(
     """
     Выход из системы.
 
-    Необходимо быть авторизованным в системе.
+    Требует авторизации.
     """
     await auth_service.logout(session=session, redis=redis, access_token=access_token, refresh_token=refresh_token)
     remove_token(response)
@@ -50,7 +50,11 @@ async def logout(
 
 @auth_router.post("/refresh", summary="Обновить токены")
 async def refresh_token(response: Response, refresh_token: str = Cookie(), session: AsyncSession = Depends(get_db)) -> dict[str, str]:
-    """Обновление токенов."""
+    """
+    Обновление токенов.
+
+    Требует авторизации.
+    """
     tokens = await auth_service.refresh_tokens(session=session, refresh_token=refresh_token)
     set_token(response=response, tokens=tokens)
     return {"message": "Успешная замена токенов"}
@@ -58,8 +62,8 @@ async def refresh_token(response: Response, refresh_token: str = Cookie(), sessi
 
 @auth_router.post("/complete-register/{verification_token}", summary="Завершение регистрации")
 async def complete_register(
-    response: Response, verification_token: str, redis: Redis = Depends(get_redis), session: AsyncSession = Depends(get_db)
+    verification_token: str, redis: Redis = Depends(get_redis), session: AsyncSession = Depends(get_db)
 ) -> dict[str, str]:
-    tokens = await auth_service.complete_register(session=session, redis=redis, verification_token=verification_token)
-    set_token(response=response, tokens=tokens)
+    """Завершение регистрации после подтверждения номера в телеграме."""
+    await auth_service.complete_register(session=session, redis=redis, verification_token=verification_token)
     return {"message": "Успешная регистрация"}

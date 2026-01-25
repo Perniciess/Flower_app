@@ -7,12 +7,11 @@ import anyio
 from fastapi import UploadFile
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.core.config import settings
 from app.core.exceptions import FlowerNotFoundError
 
 from . import repository as flower_repository
 from .schema import FlowerCreate, FlowerImageResponse, FlowerResponse, FlowerUpdate
-
-UPLOAD_DIR = Path("app/static/uploads/flowers")
 
 
 async def create_flower(*, session: AsyncSession, flower_data: FlowerCreate) -> FlowerResponse:
@@ -99,15 +98,15 @@ async def upload_image(*, session: AsyncSession, flower_id: int, image: UploadFi
     if not image.filename:
         raise ValueError("Файл без имени")
 
-    UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
+    settings.UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
 
     ext = Path(image.filename).suffix
     filename = f"{uuid.uuid4()}{ext}"
-    file_path = UPLOAD_DIR / filename
+    file_path = settings.UPLOAD_DIR / filename
 
     content = await image.read()
     async with await anyio.open_file(file_path, "wb") as f:
-        f.write(content)
+        await f.write(content)
 
     url = f"/static/uploads/flowers/{filename}"
     flower_image = await flower_repository.create_flower_image(session=session, flower_id=flower_id, url=url, sort_order=sort_order)
@@ -143,7 +142,7 @@ async def delete_flower_image(*, session: AsyncSession, image_id: int) -> bool:
     if url is None:
         raise FlowerNotFoundError(flower_id=image_id)
 
-    file_path = Path("app") / url.lstrip("/")
+    file_path = settings.ROOT_DIR / url.lstrip("/")
     if file_path.exists():
         file_path.unlink()
 

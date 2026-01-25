@@ -18,6 +18,7 @@ from app.core.exceptions import (
     InvalidTokenError,
     PasswordsDoNotMatchError,
     UserAlreadyExistsError,
+    UserCartMissingError,
     UserNotFoundError,
 )
 from app.core.handlers import (
@@ -29,6 +30,7 @@ from app.core.handlers import (
     insufficient_permission,
     invalid_token,
     password_not_match_handler,
+    user_cart_not_found,
     user_exists_handler,
     user_not_found_handler,
 )
@@ -121,3 +123,4 @@ app.add_exception_handler(ImageNotFoundError, image_not_found)
 app.add_exception_handler(CartAlreadyExistsError, cart_already_exists)
 app.add_exception_handler(CartNotFoundError, cart_not_found)
 app.add_exception_handler(CartItemNotFoundError, cart_item_not_found)
+app.add_exception_handler(UserCartMissingError, user_cart_not_found)

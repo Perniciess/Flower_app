@@ -1,3 +1,4 @@
+from pathlib import Path
 from typing import Annotated, Any, Literal
 
 from pydantic import (
@@ -46,6 +47,10 @@ class Settings(BaseSettings):
     REFRESH_TOKEN_BYTES: int = 64
     VERIFICATION_TOKEN_LENGTH: int = 8  # если изменить на больше, то нужно  менять схему RegisterResponse
     VERIFICATION_ALPHABET: str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+
+    # IMAGE PATH
+    UPLOAD_DIR: Path = Path("app/static/uploads/flowers")
+    ROOT_DIR: Path = Path("app")
 
     @computed_field
     @property
