@@ -5,17 +5,17 @@ from fastapi import Depends, FastAPI
 from fastapi.security import APIKeyHeader
 from sqlalchemy import text
 from starlette.middleware.cors import CORSMiddleware
-from starlette_csrf import CSRFMiddleware
+from starlette_csrf.middleware import CSRFMiddleware
 
 from app.core.config import settings
 from app.core.exceptions import (
-    CartAlreadyExistsException,
+    CartAlreadyExistsError,
     CartItemNotFoundError,
     CartNotFoundError,
     FlowerNotFoundError,
     ImageNotFoundError,
-    InsufficientPermission,
-    InvalidToken,
+    InsufficientPermissionError,
+    InvalidTokenError,
     PasswordsDoNotMatchError,
     UserAlreadyExistsError,
     UserNotFoundError,
@@ -32,7 +32,7 @@ from app.core.handlers import (
     user_exists_handler,
     user_not_found_handler,
 )
-from app.core.redis import close_redis_pool, get_redis, init_redis_pool
+from app.core.redis import get_redis, redis_manager
 from app.database.session import engine
 from app.modules.auth.router import auth_router
 from app.modules.carts.router import cart_router
@@ -50,7 +50,7 @@ async def lifespan(app: FastAPI):
         print(f"DB connection failed: {exc}")
         raise
     try:
-        await init_redis_pool()
+        await redis_manager.init_pool()
         redis = get_redis()
         await redis.ping()  # type: ignore[misc]
         await redis.aclose()
@@ -59,7 +59,7 @@ async def lifespan(app: FastAPI):
         print(f"Redis connection failed: {exc}")
         raise
     yield
-    await close_redis_pool()
+    await redis_manager.close_pool()
     await engine.dispose()
 
 
@@ -111,10 +111,10 @@ app.include_router(cart_router, dependencies=[Depends(csrf_header_scheme)])
 app.add_exception_handler(UserNotFoundError, user_not_found_handler)
 app.add_exception_handler(UserAlreadyExistsError, user_exists_handler)
 app.add_exception_handler(PasswordsDoNotMatchError, password_not_match_handler)
-app.add_exception_handler(InsufficientPermission, insufficient_permission)
-app.add_exception_handler(InvalidToken, invalid_token)
+app.add_exception_handler(InsufficientPermissionError, insufficient_permission)
+app.add_exception_handler(InvalidTokenError, invalid_token)
 app.add_exception_handler(FlowerNotFoundError, flower_not_found)
 app.add_exception_handler(ImageNotFoundError, image_not_found)
-app.add_exception_handler(CartAlreadyExistsException, cart_already_exists)
+app.add_exception_handler(CartAlreadyExistsError, cart_already_exists)
 app.add_exception_handler(CartNotFoundError, cart_not_found)
 app.add_exception_handler(CartItemNotFoundError, cart_item_not_found)

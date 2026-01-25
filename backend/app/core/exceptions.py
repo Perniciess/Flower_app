@@ -25,12 +25,12 @@ class PasswordsDoNotMatchError(Exception):
         super().__init__("Неправильный пароль")
 
 
-class InsufficientPermission(Exception):
+class InsufficientPermissionError(Exception):
     def __init__(self) -> None:
         super().__init__("Отсутствуют права на выполнение операции")
 
 
-class InvalidToken(Exception):
+class InvalidTokenError(Exception):
     def __init__(self) -> None:
         super().__init__("Невалидный токен")
 
@@ -45,7 +45,7 @@ class ImageNotFoundError(Exception):
         super().__init__(f"Изображение с ID={image_id} не найдено")
 
 
-class CartAlreadyExistsException(Exception):
+class CartAlreadyExistsError(Exception):
     def __init__(self, cart_id: int) -> None:
         super().__init__(f"Корзина с ID={cart_id} уже существует")
 

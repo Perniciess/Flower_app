@@ -1,6 +1,6 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.core.exceptions import CartAlreadyExistsException, CartItemNotFoundError, CartNotFoundError, InsufficientPermission
+from app.core.exceptions import CartAlreadyExistsError, CartItemNotFoundError, CartNotFoundError, InsufficientPermissionError
 from app.modules.flowers import service as flower_service
 from app.modules.users.model import Role, User
 
@@ -11,7 +11,7 @@ from .schema import CartItemResponse, CartItemUpdate, CartResponse
 async def create_cart(*, session: AsyncSession, user_id: int) -> CartResponse:
     cart_exists = await cart_repository.get_cart_by_user_id(session=session, user_id=user_id)
     if cart_exists:
-        raise CartAlreadyExistsException(cart_id=cart_exists.id)
+        raise CartAlreadyExistsError(cart_id=cart_exists.id)
 
     cart = await cart_repository.create_cart(session=session, user_id=user_id)
     return CartResponse.model_validate(cart)
@@ -32,7 +32,7 @@ async def create_cart_item(
 ) -> CartItemResponse:
     if target_user_id and target_user_id != current_user.id:
         if current_user.role != Role.ADMIN:
-            raise InsufficientPermission()
+            raise InsufficientPermissionError()
         user_id = target_user_id
     else:
         user_id = current_user.id
@@ -61,7 +61,7 @@ async def update_cart_item_quantity(*, session: AsyncSession, cart_item_id: int,
         raise CartItemNotFoundError(cart_item_id)
 
     if current_user.role != Role.ADMIN and cart_item.cart.user_id != current_user.id:
-        raise InsufficientPermission()
+        raise InsufficientPermissionError()
 
     cart_item.quantity = quantity
     await session.flush()

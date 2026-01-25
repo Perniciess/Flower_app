@@ -25,7 +25,7 @@ async def get_users(session: AsyncSession = Depends(get_db), current_user: User 
 
 
 @user_router.get("/me", response_model=UserResponse, summary="Получить активного пользователя")
-async def get_me(current_user=Depends(get_current_user)):
+async def get_me(current_user: User = Depends(get_current_user)):
     """
     Получить данные активного пользователя.
 

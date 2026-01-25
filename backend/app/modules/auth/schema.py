@@ -87,7 +87,6 @@ class Tokens(BaseModel):
 
     access_token: str = Field(..., description="JWT access токен")
     refresh_token: str = Field(..., description="JWT refresh токен")
-    token_type: str = Field(default="bearer", description="Тип токена")
 
 
 class TokenData(BaseModel):

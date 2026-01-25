@@ -8,7 +8,7 @@ from app.modules.users import repository as user_repository
 from app.modules.users.model import Role, User
 
 from .config import settings
-from .exceptions import InsufficientPermission
+from .exceptions import InsufficientPermissionError
 from .security import oauth2_scheme
 
 
@@ -47,7 +47,7 @@ class RoleChecker:
         if current_user.role in self.allowed_roles:
             return current_user
 
-        raise InsufficientPermission()
+        raise InsufficientPermissionError()
 
 
 require_admin = RoleChecker([Role.ADMIN])

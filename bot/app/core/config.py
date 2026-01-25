@@ -9,6 +9,8 @@ class Settings(BaseSettings):
     )
 
     BOT_TOKEN: str
+    REDIS_URL: str
+    BACKEND_URL: str
 
 
 settings = Settings()  # type: ignore

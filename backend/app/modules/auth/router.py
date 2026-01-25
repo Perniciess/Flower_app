@@ -52,3 +52,12 @@ async def refresh_token(response: Response, refresh_token: str = Cookie(), sessi
     tokens = await auth_service.refresh_tokens(session=session, refresh_token=refresh_token)
     set_token(response=response, tokens=tokens)
     return {"message": "Успешная замена токенов"}
+
+
+@auth_router.post("/complete-register/{verification_token}", summary="Завершение регистрации")
+async def complete_register(
+    response: Response, verification_token: str, redis: Redis = Depends(get_redis), session: AsyncSession = Depends(get_db)
+) -> dict[str, str]:
+    tokens = await auth_service.complete_register(session=session, redis=redis, verification_token=verification_token)
+    set_token(response=response, tokens=tokens)
+    return {"message": "Успешная регистрация"}

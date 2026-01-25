@@ -4,13 +4,13 @@ from fastapi import Request
 from fastapi.responses import JSONResponse
 
 from .exceptions import (
-    CartAlreadyExistsException,
+    CartAlreadyExistsError,
     CartItemNotFoundError,
     CartNotFoundError,
     FlowerNotFoundError,
     ImageNotFoundError,
-    InsufficientPermission,
-    InvalidToken,
+    InsufficientPermissionError,
+    InvalidTokenError,
     PasswordsDoNotMatchError,
     UserAlreadyExistsError,
     UserNotFoundError,
@@ -40,12 +40,12 @@ async def password_not_match_handler(request: Request, exc: Exception) -> JSONRe
 
 
 async def insufficient_permission(request: Request, exc: Exception) -> JSONResponse:
-    e = cast(InsufficientPermission, exc)
+    e = cast(InsufficientPermissionError, exc)
     return JSONResponse(status_code=403, content={"detail": str(e)})
 
 
 async def invalid_token(request: Request, exc: Exception) -> JSONResponse:
-    e = cast(InvalidToken, exc)
+    e = cast(InvalidTokenError, exc)
     return JSONResponse(status_code=403, content={"detail": str(e)})
 
 
@@ -60,7 +60,7 @@ async def image_not_found(request: Request, exc: Exception) -> JSONResponse:
 
 
 async def cart_already_exists(request: Request, exc: Exception) -> JSONResponse:
-    e = cast(CartAlreadyExistsException, exc)
+    e = cast(CartAlreadyExistsError, exc)
     return JSONResponse(status_code=404, content={"detail": str(e)})
 
 
