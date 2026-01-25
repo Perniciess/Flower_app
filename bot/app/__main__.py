@@ -7,6 +7,7 @@ from aiogram.enums import ParseMode
 
 from app.core.config import settings
 from app.handlers.handler import router as router
+from app.storage.redis import storage
 
 
 async def main() -> None:
@@ -16,7 +17,7 @@ async def main() -> None:
         token=settings.BOT_TOKEN,
         default=DefaultBotProperties(parse_mode=ParseMode.HTML),
     )
-    dp = Dispatcher()
+    dp = Dispatcher(storage=storage)
     dp.include_router(router)
     await dp.start_polling(bot)
 

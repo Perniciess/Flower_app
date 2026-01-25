@@ -8,7 +8,7 @@ from .schema import Tokens
 def set_token(response: Response, tokens: Tokens) -> None:
     response.set_cookie(
         key="access_token",
-        value=f"{tokens.token_type} {tokens.access_token}",
+        value=f"{tokens.access_token}",
         httponly=True,
         secure=settings.COOKIE_SECURE,
         samesite=settings.COOKIE_SAMESITE,

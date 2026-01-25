@@ -2,20 +2,30 @@ from redis.asyncio import ConnectionPool, Redis
 
 from .config import settings
 
-pool: ConnectionPool | None = None
+
+class RedisManager:
+    def __init__(self):
+        self.pool: ConnectionPool | None = None
+
+    async def init_pool(self) -> None:
+        """Инициализация пула. Вызывается при старте приложения."""
+        self.pool = ConnectionPool.from_url(f"{settings.REDIS_URL}", max_connections=10, decode_responses=True)
+
+    async def close_pool(self) -> None:
+        """Закрытие пула. Вызывается при остановке приложения."""
+        if self.pool:
+            await self.pool.disconnect()
+            self.pool = None
+
+    def get_client(self) -> Redis:
+        """Создает клиент из существующего пула."""
+        if self.pool is None:
+            raise RuntimeError("Redis pool is not initialized. Call init_pool() first.")
+        return Redis(connection_pool=self.pool)
 
 
-async def init_redis_pool() -> None:
-    global pool
-    pool = ConnectionPool.from_url(f"{settings.REDIS_URL}", max_connections=10, decode_responses=True)
-
-
-async def close_redis_pool() -> None:
-    if pool:
-        await pool.disconnect()
+redis_manager = RedisManager()
 
 
 def get_redis() -> Redis:
-    if pool is None:
-        raise RuntimeError("Redis pool is not initialized")
-    return Redis(connection_pool=pool)
+    return redis_manager.get_client()

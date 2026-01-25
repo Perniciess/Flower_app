@@ -3,6 +3,7 @@ from collections.abc import Sequence
 from decimal import Decimal
 from pathlib import Path
 
+import anyio
 from fastapi import UploadFile
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -105,7 +106,7 @@ async def upload_image(*, session: AsyncSession, flower_id: int, image: UploadFi
     file_path = UPLOAD_DIR / filename
 
     content = await image.read()
-    with open(file_path, "wb") as f:
+    async with await anyio.open_file(file_path, "wb") as f:
         f.write(content)
 
     url = f"/static/uploads/flowers/{filename}"

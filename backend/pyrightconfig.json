@@ -11,8 +11,20 @@
   ],
   "venvPath": ".",
   "venv": ".venv",
-  "reportMissingImports": true,
-  "reportMissingTypeStubs": false,
   "pythonVersion": "3.13",
-  "typeCheckingMode": "basic",
+  "typeCheckingMode": "strict",
+
+  "reportMissingImports": true,
+  "reportDeprecated": true,
+  "reportUnnecessaryTypeIgnoreComment": true,
+  "reportPrivateUsage": true,
+  "reportConstantRedefinition": true,
+
+  "reportUnknownMemberType": false,
+  "reportUnknownArgumentType": false,
+  "reportUnknownVariableType": false,
+  "reportUnknownParameterType": false,
+  "reportMissingTypeStubs": false,
+  "reportUnknownLambdaType": false,
+  "reportAny": false,
 }
