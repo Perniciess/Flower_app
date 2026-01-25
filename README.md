@@ -1,56 +1,87 @@
-# Flower Shop API
+# Flower Shop
 
-FastAPI backend для мобильного приложения магазина цветов.
+REST API и Telegram бот для магазина цветов.
 
 ## Описание
 
-REST API для управления каталогом цветов, корзиной покупок и заказами. Поддерживает регистрацию пользователей, аутентификацию и управление товарами.
+Проект состоит из двух частей:
+- **Backend** — REST API для управления каталогом цветов, корзиной и пользователями
+- **Bot** — Telegram бот для верификации номера телефона при регистрации
 
 ## Стек
 
-- **FastAPI** — современный веб-фреймворк для создания API
-- **SQLAlchemy 2.0** — ORM для работы с базой данных
-- **PostgreSQL** — реляционная база данных
-- **Alembic** — миграции базы данных
+### Backend
+- **FastAPI** — веб-фреймворк для API
+- **SQLAlchemy 2.0** — async ORM
+- **PostgreSQL** — база данных
+- **Redis** — JWT blacklist, verification tokens
+- **Alembic** — миграции
 - **Pydantic** — валидация данных
-- **pwdlib** — хэширование паролей
-- **asyncpg** — асинхронный драйвер PostgreSQL
+- **pwdlib** — хеширование паролей (Argon2)
+
+### Bot
+- **aiogram 3** — Telegram Bot API
+- **Redis** — FSM storage
 
 ## Структура проекта
+
 ```
-FlowerShop_FastAPI/
-├─ app/
-│ ├─ core/
-│ │ ├─ init.py
-│ │ ├─ config.py # Settings / env config
-│ │ ├─ deps.py # Dependencies
-│ │ ├─ security.py # JWT, password hashing
-│ │ ├─ exceptions.py # Custom exceptions
-│ │ └─ handlers.py # Exception handlers
-│ ├─ database/
-│ │ ├─ init.py
-│ │ ├─ base.py # DeclarativeBase
-│ │ └─ session.py # AsyncSession, engine, get_db
-│ ├─ modules/
-│ │ ├─ auth/
-│ │ │ ├─ init.py
-│ │ │ ├─ model.py # Auth model
-│ │ │ ├─ schema.py # Pydantic schemas
-│ │ │ ├─ repository.py # DB layer
-│ │ │ ├─ service.py # Business logic
-│ │ │ ├─ router.py # API endpoints
-│ │ │ └─ utils.py # Helper functions
-│ │ └─ users/
-│ │ ├─ init.py
-│ │ ├─ model.py # User model
-│ │ ├─ schema.py # Pydantic schemas
-│ │ ├─ repository.py # DB layer
-│ │ ├─ service.py # Business logic
-│ │ └─ router.py # API endpoints
-│ ├─ init.py
-│ └─ main.py # FastAPI app entrypoint
-├─ alembic/
-├─ docker/
-├─ DEVELOPMENT.md
-└─ README.md
+Flower_shop/
+├── backend/
+│   ├── app/
+│   │   ├── core/
+│   │   │   ├── config.py          # Settings
+│   │   │   ├── deps.py            # Dependencies (get_current_user)
+│   │   │   ├── exceptions.py      # Custom exceptions
+│   │   │   ├── handlers.py        # Exception handlers
+│   │   │   ├── redis.py           # Redis manager
+│   │   │   └── security.py        # JWT, password hashing, blacklist
+│   │   ├── database/
+│   │   │   ├── base.py            # DeclarativeBase
+│   │   │   └── session.py         # AsyncSession, engine
+│   │   ├── modules/
+│   │   │   ├── auth/              # Auth module
+│   │   │   │   ├── model.py      
+│   │   │   │   ├── schema.py      
+│   │   │   │   ├── repository.py  
+│   │   │   │   ├── service.py     
+│   │   │   │   ├── router.py    
+│   │   │   │   └── utils.py      
+│   │   │   ├── users/             # Users module
+│   │   │   │   ├── model.py      
+│   │   │   │   ├── schema.py
+│   │   │   │   ├── repository.py
+│   │   │   │   ├── service.py
+│   │   │   │   └── router.py
+│   │   │   ├── flowers/           # Flowers module
+│   │   │   │   ├── model.py       
+│   │   │   │   ├── schema.py
+│   │   │   │   ├── repository.py
+│   │   │   │   ├── service.py
+│   │   │   │   └── router.py
+│   │   │   └── carts/             # Carts module
+│   │   │       ├── model.py       
+│   │   │       ├── schema.py
+│   │   │       ├── repository.py
+│   │   │       ├── service.py
+│   │   │       └── router.py
+│   │   └── main.py                # FastAPI entrypoint
+│   └── alembic/                   # Migrations
+│
+├── bot/
+│   ├── app/
+│   │   ├── core/
+│   │   │   ├── config.py          # Settings
+│   │   │   └── redis.py           # RedisManager
+│   │   ├── handlers/
+│   │   │   └── handler.py         # Message handlers
+│   │   ├── keyboards/
+│   │   │   └── phone.py           # Contact keyboard
+│   │   ├── service/
+│   │   │   └── registration.py    # Backend API calls
+│   │   ├── states/
+│   │   │   └── registration.py    # FSM states
+│   │   └── __main__.py            # Bot entrypoint
+│
+└── docker/                        # Docker configs
 ```
