@@ -1,22 +1,23 @@
 from fastapi import APIRouter, Cookie, Depends, Response
+from redis.asyncio import Redis
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.deps import get_current_user
+from app.core.redis import get_redis
 from app.database.session import get_db
 from app.modules.users.model import User
-from app.modules.users.schema import UserResponse
 
 from . import service as auth_service
-from .schema import AuthLogin, AuthRegister
+from .schema import AuthLogin, AuthRegister, RegisterResponse
 from .utils import remove_token, set_token
 
 auth_router = APIRouter(prefix="/auth", tags=["auth"])
 
 
-@auth_router.post("/register", response_model=UserResponse, summary="Зарегистрироваться")
-async def register(data: AuthRegister, session: AsyncSession = Depends(get_db)) -> UserResponse:
+@auth_router.post("/register", response_model=RegisterResponse, summary="Зарегистрироваться")
+async def register(data: AuthRegister, redis: Redis = Depends(get_redis), session: AsyncSession = Depends(get_db)) -> RegisterResponse:
     """Регистрация пользователя."""
-    user = await auth_service.register(session=session, data=data)
+    user = await auth_service.register(session=session, redis=redis, data=data)
     return user
 
 

@@ -1,22 +1,25 @@
+import json
+
+from redis.asyncio import Redis
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.exceptions import InvalidToken, PasswordsDoNotMatchError, UserAlreadyExistsError, UserNotFoundError
 from app.core.security import (
     create_access_token,
     create_refresh_token,
+    generate_verification_token,
     get_expires_at_refresh_token,
     get_password_hash,
     get_refresh_hash,
     verify_password,
 )
 from app.modules.users import repository as user_repository
-from app.modules.users.schema import UserResponse
 
 from . import repository as auth_repository
-from .schema import AuthLogin, AuthRegister, Tokens
+from .schema import AuthLogin, AuthRegister, RegisterResponse, Tokens
 
 
-async def register(*, session: AsyncSession, data: AuthRegister) -> UserResponse:
+async def register(*, session: AsyncSession, redis: Redis, data: AuthRegister) -> RegisterResponse:
     """
     Регистрирует нового пользователя в базе данных.
 
@@ -34,10 +37,16 @@ async def register(*, session: AsyncSession, data: AuthRegister) -> UserResponse
     if user_exist:
         raise UserAlreadyExistsError(data.phone_number)
 
-    data_user = {"phone_number": data.phone_number, "name": data.name, "password_hash": get_password_hash(data.password)}
-
-    new_user = await user_repository.create_user(session=session, data=data_user)
-    return UserResponse.model_validate(new_user)
+    verification_token = generate_verification_token()
+    data_user = {
+        "phone_number": data.phone_number,
+        "name": data.name,
+        "password_hash": get_password_hash(data.password),
+        "verification_token": verification_token,
+    }
+    await redis.set(f"verification:{data.phone_number}", json.dumps(data_user), ex=300)
+    telegram_link = f"https://t.me/kupibuket74_bot?start={verification_token}"
+    return RegisterResponse(verification_token=data_user["verification_token"], telegram_link=telegram_link, expires_in=300)
 
 
 async def login(*, session: AsyncSession, data: AuthLogin) -> Tokens:
