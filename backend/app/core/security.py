@@ -19,37 +19,34 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login", auto_error=False)
 
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
+    """Сверка полученного пароля с хешированным из БД."""
     return password_hash.verify(plain_password, hashed_password)
 
 
 def get_password_hash(password: str) -> str:
+    """Получение хеша пароля argon2."""
     return password_hash.hash(password)
 
 
 def create_access_token(*, user_id: int) -> str:
-    """
-    Создание access токена
-
-    Args:
-        user_id: идентификатор пользователя
-
-    Returns:
-        str: access токен
-    """
+    """Создание access токена."""
     expire = datetime.now(UTC) + timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
     payload = {"sub": str(user_id), "exp": expire}
     return jwt.encode(payload, settings.SECRET_KEY, algorithm=settings.ALGORITHM)
 
 
 def create_refresh_token() -> str:
+    """Создание refresh токена"""
     return secrets.token_urlsafe(settings.REFRESH_TOKEN_BYTES)
 
 
 def get_refresh_hash(refresh_token: str) -> str:
+    """Получение хеша refresh токена."""
     return hashlib.sha256(refresh_token.encode()).hexdigest()
 
 
 def get_expires_at_refresh_token() -> datetime:
+    """Создание времени жизни refresh токена."""
     return datetime.now(UTC) + timedelta(days=settings.REFRESH_TOKEN_EXPIRE_DAYS)
 
 

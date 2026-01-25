@@ -37,6 +37,19 @@ async def create_cart(*, session: AsyncSession, user_id: int) -> CartResponse:
 
 
 async def get_current_user_cart(*, session: AsyncSession, user_id: int) -> CartResponse:
+    """
+    Получение корзины текущего пользователя.
+
+    Args:
+        session: сессия базы данных
+        user_id: идентификатор пользователя
+
+    Returns:
+        CartResponse о корзине пользователя
+
+    Raises:
+        UserCartMissingError: у пользователя нет корзины
+    """
     cart = await cart_repository.get_cart_by_user_id(session=session, user_id=user_id)
     if cart is None:
         raise UserCartMissingError(user_id=user_id)

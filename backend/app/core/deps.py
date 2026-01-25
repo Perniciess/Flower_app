@@ -19,6 +19,7 @@ async def get_current_user(
     redis: Redis = Depends(get_redis),
     header_token: str | None = Depends(oauth2_scheme),
 ):
+    """Получение активного пользователя из токена."""
     token = header_token or request.cookies.get("access_token")
 
     if not token:
@@ -44,6 +45,8 @@ async def get_current_user(
 
 
 class RoleChecker:
+    """RBAC класс, для работы с ролями."""
+
     def __init__(self, allowed_roles: list[Role]) -> None:
         self.allowed_roles = allowed_roles
 
