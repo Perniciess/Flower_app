@@ -1,7 +1,6 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.exceptions import (
-    CartAlreadyExistsError,
     CartItemNotFoundError,
     CartNotFoundError,
     InsufficientPermissionError,
@@ -12,28 +11,6 @@ from app.modules.users.model import Role, User
 
 from . import repository as cart_repository
 from .schema import CartItemResponse, CartItemUpdate, CartResponse
-
-
-async def create_cart(*, session: AsyncSession, user_id: int) -> CartResponse:
-    """
-    Создание корзины пользователя.
-
-    Args:
-        session: сессия базы данных
-        user_id: идентификатор пользователя
-
-    Returns:
-        CartResponse о корзине пользователя
-
-    Raises:
-        CartAlreadyExistsError: если корзина у пользователя уже есть
-    """
-    cart_exists = await cart_repository.get_cart_by_user_id(session=session, user_id=user_id)
-    if cart_exists:
-        raise CartAlreadyExistsError(cart_id=cart_exists.id)
-
-    cart = await cart_repository.create_cart(session=session, user_id=user_id)
-    return CartResponse.model_validate(cart)
 
 
 async def get_current_user_cart(*, session: AsyncSession, user_id: int) -> CartResponse:

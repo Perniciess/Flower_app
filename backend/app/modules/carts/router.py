@@ -11,17 +11,6 @@ from .schema import CartItemResponse, CartItemUpdate, CartResponse
 cart_router = APIRouter(prefix="/carts", tags=["carts"])
 
 
-@cart_router.post("/create", response_model=CartResponse, summary="Создать корзину")
-async def create_cart(user: User = Depends(require_client), session: AsyncSession = Depends(get_db)) -> CartResponse:
-    """
-    Создание корзины пользователя.
-
-    Требует авторизации.
-    """
-    cart = await cart_service.create_cart(session=session, user_id=user.id)
-    return cart
-
-
 @cart_router.get("", response_model=CartResponse, summary="Получить корзину текущего пользователя")
 async def get_current_user_cart(user: User = Depends(require_client), session: AsyncSession = Depends(get_db)) -> CartResponse:
     """

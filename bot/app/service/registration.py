@@ -9,9 +9,7 @@ from app.core.redis import redis_manager
 async def check_token(token: str, type: str) -> bool:
     redis = redis_manager.get_client()
     value = await redis.get(f"{type}:{token}")
-    if not value:
-        return False
-    return True
+    return value is not None
 
 
 async def verify(token: str, type: str, phone_number: str) -> bool:
