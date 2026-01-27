@@ -13,6 +13,7 @@ from app.database.session import engine
 from app.modules.auth.router import auth_router
 from app.modules.carts.router import cart_router
 from app.modules.flowers.router import flower_router
+from app.modules.orders.router import order_router
 from app.modules.users.router import user_router
 
 
@@ -86,4 +87,5 @@ api_router.include_router(auth_router)
 api_router.include_router(user_router)
 api_router.include_router(flower_router)
 api_router.include_router(cart_router)
+api_router.include_router(order_router)
 app.include_router(api_router, dependencies=[Depends(csrf_header_scheme)])

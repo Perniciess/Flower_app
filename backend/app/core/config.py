@@ -71,7 +71,7 @@ class Settings(BaseSettings):
 
     @computed_field
     @property
-    def sqlalchemy_database_uri(self) -> PostgresDsn:
+    def SQLALCHEMY_DATABASE_URI(self) -> PostgresDsn:
         return PostgresDsn.build(
             scheme="postgresql+asyncpg",
             username=self.POSTGRES_USER,
