@@ -8,7 +8,7 @@ from fastapi import UploadFile
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import settings
-from app.core.exceptions import FlowerNotFoundError
+from app.core.exceptions import FlowerNotFoundError, ImageNotFoundError
 
 from . import repository as flower_repository
 from .schema import FlowerCreate, FlowerImageResponse, FlowerResponse, FlowerUpdate
@@ -140,7 +140,7 @@ async def delete_flower_image(*, session: AsyncSession, image_id: int) -> bool:
     """
     url = await flower_repository.delete_flower_image(session=session, image_id=image_id)
     if url is None:
-        raise FlowerNotFoundError(flower_id=image_id)
+        raise ImageNotFoundError(image_id=image_id)
 
     file_path = settings.ROOT_DIR / url.lstrip("/")
     if file_path.exists():

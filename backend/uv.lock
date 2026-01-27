@@ -343,6 +343,7 @@ dependencies = [
     { name = "redis" },
     { name = "sqlalchemy" },
     { name = "starlette-csrf" },
+    { name = "websockets" },
 ]
 
 [package.metadata]
@@ -358,6 +359,7 @@ requires-dist = [
     { name = "redis", specifier = ">=7.1.0" },
     { name = "sqlalchemy", specifier = ">=2.0.45" },
     { name = "starlette-csrf", specifier = ">=3.0.0" },
+    { name = "websockets", specifier = ">=16.0" },
 ]
 
 [[package]]
