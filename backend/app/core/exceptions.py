@@ -51,8 +51,12 @@ class CartAlreadyExistsError(HTTPException):
 
 
 class CartNotFoundError(HTTPException):
-    def __init__(self, cart_id: int) -> None:
-        super().__init__(status_code=404, detail=f"Корзина с ID={cart_id} не найдена")
+    def __init__(self, cart_id: int | None = None, user_id: int | None = None) -> None:
+        if user_id is not None:
+            detail = f"Корзина пользователя c ID={user_id} не найдена"
+        else:
+            detail = f"Корзина с ID={cart_id} не найдена"
+        super().__init__(status_code=404, detail=detail)
 
 
 class CartItemNotFoundError(HTTPException):

@@ -5,7 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_asyn
 from app.core.config import settings
 
 engine = create_async_engine(
-    str(settings.sqlalchemy_database_uri),
+    str(settings.SQLALCHEMY_DATABASE_URI),
     echo=settings.ENVIRONMENT == "local",
     pool_size=20,
     max_overflow=10,
