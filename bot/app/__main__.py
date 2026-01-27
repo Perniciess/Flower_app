@@ -7,7 +7,7 @@ from aiogram.enums import ParseMode
 
 from app.core.config import settings
 from app.core.redis import redis_manager
-from app.handlers.handler import router as router
+from app.handlers import router
 
 
 async def main() -> None:

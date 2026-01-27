@@ -8,32 +8,6 @@ from starlette.middleware.cors import CORSMiddleware
 from starlette_csrf.middleware import CSRFMiddleware
 
 from app.core.config import settings
-from app.core.exceptions import (
-    CartAlreadyExistsError,
-    CartItemNotFoundError,
-    CartNotFoundError,
-    FlowerNotFoundError,
-    ImageNotFoundError,
-    InsufficientPermissionError,
-    InvalidTokenError,
-    PasswordsDoNotMatchError,
-    UserAlreadyExistsError,
-    UserCartMissingError,
-    UserNotFoundError,
-)
-from app.core.handlers import (
-    cart_already_exists,
-    cart_item_not_found,
-    cart_not_found,
-    flower_not_found,
-    image_not_found,
-    insufficient_permission,
-    invalid_token,
-    password_not_match_handler,
-    user_cart_not_found,
-    user_exists_handler,
-    user_not_found_handler,
-)
 from app.core.redis import get_redis, redis_manager
 from app.database.session import engine
 from app.modules.auth.router import auth_router
@@ -103,6 +77,7 @@ app.add_middleware(
         re.compile(r"/openapi.json"),
         re.compile(rf"{settings.API_V1_STR}/auth/login"),
         re.compile(rf"{settings.API_V1_STR}/auth/complete-register/.*"),
+        re.compile(rf"{settings.API_V1_STR}/auth/complete-reset-verification/.*"),
     ],
 )
 
@@ -112,15 +87,3 @@ api_router.include_router(user_router)
 api_router.include_router(flower_router)
 api_router.include_router(cart_router)
 app.include_router(api_router, dependencies=[Depends(csrf_header_scheme)])
-
-app.add_exception_handler(UserNotFoundError, user_not_found_handler)
-app.add_exception_handler(UserAlreadyExistsError, user_exists_handler)
-app.add_exception_handler(PasswordsDoNotMatchError, password_not_match_handler)
-app.add_exception_handler(InsufficientPermissionError, insufficient_permission)
-app.add_exception_handler(InvalidTokenError, invalid_token)
-app.add_exception_handler(FlowerNotFoundError, flower_not_found)
-app.add_exception_handler(ImageNotFoundError, image_not_found)
-app.add_exception_handler(CartAlreadyExistsError, cart_already_exists)
-app.add_exception_handler(CartNotFoundError, cart_not_found)
-app.add_exception_handler(CartItemNotFoundError, cart_item_not_found)
-app.add_exception_handler(UserCartMissingError, user_cart_not_found)

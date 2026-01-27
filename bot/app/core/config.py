@@ -13,6 +13,8 @@ class Settings(BaseSettings):
     BACKEND_URL: str
     WEBSITE_URL: str
     API_V1_STR: str = "/api/v1"
+    REGISTER: str = "/auth/complete-register/"
+    COMPLETE_RESET: str = "/auth/complete-reset-verification/"
 
 
 settings = Settings()  # type: ignore

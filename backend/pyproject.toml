@@ -16,6 +16,7 @@ dependencies = [
   "starlette-csrf>=3.0.0",
   "phonenumbers>=9.0.22",
   "sqlalchemy>=2.0.45",
+  "websockets>=16.0",
 ]
 
 
