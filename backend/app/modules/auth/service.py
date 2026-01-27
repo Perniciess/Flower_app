@@ -191,7 +191,7 @@ async def reset_password(*, session: AsyncSession, redis: Redis, phone_number: s
     reset_token = generate_verification_token()
     user_data = {
         "user_id": user_exist.id,
-        "phone": phone_number,
+        "phone_number": phone_number,
     }
     await redis.set(f"r:{reset_token}", json.dumps(user_data), ex=300)
     telegram_link = f"https://t.me/kupibuket74_bot?start=reset_{reset_token}"

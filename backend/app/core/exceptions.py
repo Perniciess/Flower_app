@@ -1,71 +1,65 @@
-class UserNotFoundError(Exception):
+from fastapi import HTTPException
+
+
+class UserNotFoundError(HTTPException):
     def __init__(self, *, user_id: int | None = None, phone_number: str | None = None) -> None:
-        if user_id is None and phone_number is None:
-            raise ValueError("UserNotFoundError requires user_id or phone_number")
-
-        self.user_id = user_id
-        self.phone_number = phone_number
-
         if user_id is not None:
-            msg = f"Пользователь с ID={user_id} не найден"
+            detail = f"Пользователь с ID={user_id} не найден"
         else:
-            msg = f"Пользователь с номером={phone_number} не найден"
+            detail = f"Пользователь с номером={phone_number} не найден"
+        super().__init__(status_code=404, detail=detail)
 
-        super().__init__(msg)
 
-
-class UserAlreadyExistsError(Exception):
+class UserAlreadyExistsError(HTTPException):
     def __init__(self, phone_number: str) -> None:
-        self.phone_number = phone_number
-        super().__init__(f"Пользователь с таким phone_number={phone_number} уже существует")
+        super().__init__(status_code=409, detail=f"Пользователь с таким phone_number={phone_number} уже существует")
 
 
-class UserNotUpdatedError(Exception):
+class UserNotUpdatedError(HTTPException):
     def __init__(self, user_id: int, message: str | None = None) -> None:
-        self.user_id = user_id
-        super().__init__(message or f"Не удалось обновить данные пользователя с user_id={user_id}")
+        super().__init__(status_code=400, detail=message or f"Не удалось обновить данные пользователя с user_id={user_id}")
 
 
-class PasswordsDoNotMatchError(Exception):
+class PasswordsDoNotMatchError(HTTPException):
     def __init__(self, message: str | None = None) -> None:
-        super().__init__(message or "Неправильный пароль")
+        super().__init__(status_code=400, detail=message or "Неправильный пароль")
 
 
-class InsufficientPermissionError(Exception):
+class InsufficientPermissionError(HTTPException):
     def __init__(self) -> None:
-        super().__init__("Отсутствуют права на выполнение операции")
+        super().__init__(status_code=403, detail="Отсутствуют права на выполнение операции")
 
 
-class InvalidTokenError(Exception):
+class InvalidTokenError(HTTPException):
     def __init__(self) -> None:
-        super().__init__("Невалидный токен")
+        super().__init__(status_code=403, detail="Невалидный токен")
 
 
-class FlowerNotFoundError(Exception):
+class FlowerNotFoundError(HTTPException):
     def __init__(self, flower_id: int) -> None:
-        super().__init__(f"Цветок с ID={flower_id} не найден")
+        super().__init__(status_code=404, detail=f"Цветок с ID={flower_id} не найден")
 
 
-class ImageNotFoundError(Exception):
+class ImageNotFoundError(HTTPException):
     def __init__(self, image_id: int) -> None:
-        super().__init__(f"Изображение с ID={image_id} не найдено")
+        super().__init__(status_code=404, detail=f"Изображение с ID={image_id} не найдено")
 
 
-class CartAlreadyExistsError(Exception):
+class CartAlreadyExistsError(HTTPException):
     def __init__(self, cart_id: int) -> None:
-        super().__init__(f"Корзина с ID={cart_id} уже существует")
+        super().__init__(status_code=409, detail=f"Корзина с ID={cart_id} уже существует")
 
 
-class CartNotFoundError(Exception):
+class CartNotFoundError(HTTPException):
     def __init__(self, cart_id: int) -> None:
-        super().__init__(f"Корзина с ID={cart_id} не найдена")
+        super().__init__(status_code=404, detail=f"Корзина с ID={cart_id} не найдена")
 
 
-class CartItemNotFoundError(Exception):
+class CartItemNotFoundError(HTTPException):
     def __init__(self, cart_item_id: int) -> None:
-        super().__init__(f"Товар корзины с ID={cart_item_id} не найдена")
+        super().__init__(status_code=404, detail=f"Товар корзины с ID={cart_item_id} не найден")
 
 
-class UserCartMissingError(Exception):
+class UserCartMissingError(HTTPException):
     def __init__(self, user_id: int) -> None:
-        super().__init__(f"У пользователя с ID={user_id} нет корзины")
+        super().__init__(status_code=404, detail=f"У пользователя с ID={user_id} нет корзины")
