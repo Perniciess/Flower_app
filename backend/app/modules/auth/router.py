@@ -8,7 +8,7 @@ from app.database.session import get_db
 from app.modules.users.model import User
 
 from . import service as auth_service
-from .schema import AuthLogin, AuthRegister, RegisterResponse
+from .schema import AuthChangePassword, AuthLogin, AuthRegister, RegisterResponse
 from .utils import remove_token, set_token
 
 auth_router = APIRouter(prefix="/auth", tags=["auth"])
@@ -67,3 +67,18 @@ async def complete_register(
     """Завершение регистрации после подтверждения номера в телеграме."""
     await auth_service.complete_register(session=session, redis=redis, verification_token=verification_token)
     return {"message": "Успешная регистрация"}
+
+
+@auth_router.post("/change_password", summary="Смена пароля")
+async def change_password(
+    response: Response,
+    data: AuthChangePassword,
+    redis: Redis = Depends(get_redis),
+    access_token: str = Cookie(),
+    current_user: User = Depends(get_current_user),
+    session: AsyncSession = Depends(get_db),
+) -> dict[str, str]:
+    remove_token(response=response)
+    tokens = await auth_service.change_password(session=session, redis=redis, access_token=access_token, user_id=current_user.id, data=data)
+    set_token(response=response, tokens=tokens)
+    return {"message": "Успешная смена пароля"}

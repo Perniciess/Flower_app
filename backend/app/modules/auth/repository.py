@@ -61,3 +61,16 @@ async def revoke_token(*, session: AsyncSession, token_id: int) -> bool:
     result = await session.execute(statement)
     await session.flush()
     return result.scalar_one_or_none() is not None
+
+
+async def revoke_all(*, session: AsyncSession, user_id: int) -> bool:
+    statement = (
+        update(RefreshToken)
+        .where(RefreshToken.user_id == user_id)
+        .where(RefreshToken.is_revoked.is_(False))
+        .values(is_revoked=True)
+        .returning(RefreshToken.id)
+    )
+    result = await session.execute(statement)
+    await session.flush()
+    return len(result.scalars().all()) > 0

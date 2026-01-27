@@ -20,9 +20,15 @@ class UserAlreadyExistsError(Exception):
         super().__init__(f"Пользователь с таким phone_number={phone_number} уже существует")
 
 
+class UserNotUpdatedError(Exception):
+    def __init__(self, user_id: int, message: str | None = None) -> None:
+        self.user_id = user_id
+        super().__init__(message or f"Не удалось обновить данные пользователя с user_id={user_id}")
+
+
 class PasswordsDoNotMatchError(Exception):
-    def __init__(self) -> None:
-        super().__init__("Неправильный пароль")
+    def __init__(self, message: str | None = None) -> None:
+        super().__init__(message or "Неправильный пароль")
 
 
 class InsufficientPermissionError(Exception):

@@ -15,6 +15,7 @@ from .exceptions import (
     UserAlreadyExistsError,
     UserCartMissingError,
     UserNotFoundError,
+    UserNotUpdatedError,
 )
 
 
@@ -28,6 +29,11 @@ async def user_not_found_handler(request: Request, exc: Exception) -> JSONRespon
         content["phone_number"] = e.phone_number
 
     return JSONResponse(status_code=404, content=content)
+
+
+async def user_not_updated_handler(request: Request, exc: Exception) -> JSONResponse:
+    e = cast(UserNotUpdatedError, exc)
+    return JSONResponse(status_code=404, content={"detail": str(e), "user_id": e.user_id})
 
 
 async def user_exists_handler(request: Request, exc: Exception) -> JSONResponse:
