@@ -1,6 +1,8 @@
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 from pydantic_extra_types.phone_numbers import PhoneNumber
 
+from app.core.utils import normalize_phone, password_strip_and_validate
+
 from .model import Role
 
 
@@ -13,12 +15,7 @@ class UserBase(BaseModel):
     @field_validator("phone_number")
     @classmethod
     def normalize_phone(cls, v: PhoneNumber) -> str:
-        s = str(v)
-        if s.startswith("tel:"):
-            s = s[4:]
-        s = s.replace(" ", "").replace("-", "")
-
-        return s
+        return normalize_phone(v)
 
 
 class UserCreate(UserBase):
@@ -46,28 +43,9 @@ class UserUpdate(BaseModel):
     @field_validator("phone_number")
     @classmethod
     def normalize_phone(cls, v: PhoneNumber) -> str:
-        s = str(v)
-        if s.startswith("tel:"):
-            s = s[4:]
-        s = s.replace(" ", "").replace("-", "")
-
-        return s
+        return normalize_phone(v)
 
     @field_validator("password", mode="before")
     @classmethod
     def password_strip_and_validate(cls, v: str) -> str:
-        v = v.strip()
-
-        if len(v) < 8:
-            raise ValueError("Пароль должен быть минимум 8 символов")
-
-        if not any(c.isdigit() for c in v):
-            raise ValueError("Пароль должен содержать хотя бы одну цифру")
-        if not any(c.islower() for c in v):
-            raise ValueError("Пароль должен содержать хотя бы одну строчную букву")
-        if not any(c.isupper() for c in v):
-            raise ValueError("Пароль должен содержать хотя бы одну заглавную букву")
-        if not any(not c.isalnum() for c in v):
-            raise ValueError("Пароль должен содержать хотя бы один спецсимвол")
-
-        return v
+        return password_strip_and_validate(v)
