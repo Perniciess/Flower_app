@@ -1,6 +1,7 @@
 from pydantic import BaseModel, Field, field_validator
 from pydantic_extra_types.phone_numbers import PhoneNumber
 
+from app.core.utils import normalize_phone, password_strip_and_validate
 from app.modules.users.schema import UserCreate
 
 
@@ -13,17 +14,12 @@ class AuthLogin(BaseModel):
     @field_validator("phone_number")
     @classmethod
     def normalize_phone(cls, v: PhoneNumber) -> str:
-        s = str(v)
-        if s.startswith("tel:"):
-            s = s[4:]
-        s = s.replace(" ", "").replace("-", "")
-
-        return s
+        return normalize_phone(v)
 
     @field_validator("password", mode="before")
     @classmethod
-    def password_strip(cls, v: str) -> str:
-        return v.strip()
+    def password_strip_and_validate(cls, v: str) -> str:
+        return password_strip_and_validate(v)
 
 
 class AuthRegister(UserCreate):
@@ -32,12 +28,7 @@ class AuthRegister(UserCreate):
     @field_validator("phone_number")
     @classmethod
     def normalize_phone(cls, v: PhoneNumber) -> str:
-        s = str(v)
-        if s.startswith("tel:"):
-            s = s[4:]
-        s = s.replace(" ", "").replace("-", "")
-
-        return s
+        return normalize_phone(v)
 
     @field_validator("name", mode="before")
     @classmethod
@@ -47,21 +38,7 @@ class AuthRegister(UserCreate):
     @field_validator("password", mode="before")
     @classmethod
     def password_strip_and_validate(cls, v: str) -> str:
-        v = v.strip()
-
-        if len(v) < 8:
-            raise ValueError("Пароль должен быть минимум 8 символов")
-
-        if not any(c.isdigit() for c in v):
-            raise ValueError("Пароль должен содержать хотя бы одну цифру")
-        if not any(c.islower() for c in v):
-            raise ValueError("Пароль должен содержать хотя бы одну строчную букву")
-        if not any(c.isupper() for c in v):
-            raise ValueError("Пароль должен содержать хотя бы одну заглавную букву")
-        if not any(not c.isalnum() for c in v):
-            raise ValueError("Пароль должен содержать хотя бы один спецсимвол")
-
-        return v
+        return password_strip_and_validate(v)
 
 
 class AuthChangePassword(BaseModel):
@@ -71,27 +48,30 @@ class AuthChangePassword(BaseModel):
     @field_validator("old_password", "new_password", mode="before")
     @classmethod
     def password_strip_and_validate(cls, v: str) -> str:
-        v = v.strip()
-
-        if len(v) < 8:
-            raise ValueError("Пароль должен быть минимум 8 символов")
-
-        if not any(c.isdigit() for c in v):
-            raise ValueError("Пароль должен содержать хотя бы одну цифру")
-        if not any(c.islower() for c in v):
-            raise ValueError("Пароль должен содержать хотя бы одну строчную букву")
-        if not any(c.isupper() for c in v):
-            raise ValueError("Пароль должен содержать хотя бы одну заглавную букву")
-        if not any(not c.isalnum() for c in v):
-            raise ValueError("Пароль должен содержать хотя бы один спецсимвол")
-
-        return v
+        return password_strip_and_validate(v)
 
 
-class RegisterResponse(BaseModel):
-    """Схема для ответа API после регистрации для продолжения подтверждения номера телефона в телеграме"""
+class AuthSetNewPassword(BaseModel):
+    reset_token: str = Field(..., min_length=8, max_length=8, description="Токен сброса пароля")
+    new_password: str = Field(..., min_length=8, description="Новый пароль")
 
-    verification_token: str = Field(..., min_length=8, max_length=8, description="Токен подтверждения номера")
+    @field_validator("new_password", mode="before")
+    @classmethod
+    def password_strip_and_validate(cls, v: str) -> str:
+        return password_strip_and_validate(v)
+
+
+class AuthPhone(BaseModel):
+    phone_number: PhoneNumber = Field(..., description="Номер телефона пользователя")
+
+    @field_validator("phone_number")
+    @classmethod
+    def normalize_phone(cls, v: PhoneNumber) -> str:
+        return normalize_phone(v)
+
+
+class VerificationDeepLink(BaseModel):
+    token: str = Field(..., min_length=8, max_length=8, description="Токен подтверждения сброса пароля")
     telegram_link: str = Field(..., description="Deeplink telegram")
     expires_in: int = Field(..., ge=300, le=300, description="Срок истечения кода в секундах")
 
