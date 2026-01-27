@@ -3,7 +3,7 @@ import json
 from redis.asyncio import Redis
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.core.exceptions import InvalidTokenError, PasswordsDoNotMatchError, UserAlreadyExistsError, UserNotFoundError
+from app.core.exceptions import InvalidTokenError, PasswordsDoNotMatchError, UserAlreadyExistsError, UserNotFoundError, UserNotUpdatedError
 from app.core.security import (
     add_to_blacklist,
     create_access_token,
@@ -17,7 +17,7 @@ from app.core.security import (
 from app.modules.users import repository as user_repository
 
 from . import repository as auth_repository
-from .schema import AuthLogin, AuthRegister, RegisterResponse, Tokens
+from .schema import AuthChangePassword, AuthLogin, AuthRegister, RegisterResponse, Tokens
 
 
 async def register(*, session: AsyncSession, redis: Redis, data: AuthRegister) -> RegisterResponse:
@@ -187,3 +187,29 @@ async def _save_refresh_token(*, session: AsyncSession, user_id: int) -> str:
 
     await auth_repository.create_refresh_token(session=session, data=token_data)
     return refresh_token
+
+
+async def change_password(*, session: AsyncSession, redis: Redis, access_token: str, user_id: int, data: AuthChangePassword) -> Tokens:
+    if data.old_password == data.new_password:
+        raise UserNotUpdatedError(user_id=user_id)
+
+    user = await user_repository.get_user_by_id(session=session, user_id=user_id)
+    if user is None:
+        raise UserNotFoundError(user_id=user_id)
+
+    if not verify_password(data.old_password, user.password_hash):
+        raise PasswordsDoNotMatchError("Неверный старый пароль")
+
+    new_password_hash = get_password_hash(data.new_password)
+    updated_user = await user_repository.update_user(session=session, user_id=user_id, data={"password_hash": new_password_hash})
+    if updated_user is None:
+        raise UserNotUpdatedError(user_id=user_id)
+
+    revoked = await auth_repository.revoke_all(session=session, user_id=user.id)
+    if not revoked:
+        raise InvalidTokenError()
+
+    new_access_token = create_access_token(user_id=user.id)
+    refresh_token = await _save_refresh_token(session=session, user_id=user.id)
+    await add_to_blacklist(redis=redis, access_token=access_token)
+    return Tokens(access_token=new_access_token, refresh_token=refresh_token)

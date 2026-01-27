@@ -23,9 +23,7 @@ async def create_user(*, session: AsyncSession, data: UserCreate) -> UserRespons
     Raises:
         UserAlreadyExistsError: если пользователь с таким phone_number уже существует
     """
-    user_exist = await user_repository.get_user_by_phone(
-        session=session, phone_number=data.phone_number
-    )
+    user_exist = await user_repository.get_user_by_phone(session=session, phone_number=data.phone_number)
     if user_exist:
         raise UserAlreadyExistsError(data.phone_number)
 
@@ -39,9 +37,7 @@ async def create_user(*, session: AsyncSession, data: UserCreate) -> UserRespons
     return UserResponse.model_validate(new_user)
 
 
-async def get_user_by_phone(
-    *, session: AsyncSession, phone_number: str
-) -> UserResponse:
+async def get_user_by_phone(*, session: AsyncSession, phone_number: str) -> UserResponse:
     """
     Получает пользователя по его номеру телефона.
 
@@ -55,18 +51,14 @@ async def get_user_by_phone(
     Raises:
         UserNotFoundError: если пользователь с таким номером не найден
     """
-    user = await user_repository.get_user_by_phone(
-        session=session, phone_number=phone_number
-    )
+    user = await user_repository.get_user_by_phone(session=session, phone_number=phone_number)
     if user is None:
         raise UserNotFoundError(phone_number=phone_number)
 
     return UserResponse.model_validate(user)
 
 
-async def update_user(
-    *, session: AsyncSession, user_id: int, data: UserUpdate
-) -> UserResponse:
+async def update_user(*, session: AsyncSession, user_id: int, data: UserUpdate) -> UserResponse:
     """
     Обновляет данные пользователя.
 
@@ -82,9 +74,11 @@ async def update_user(
         UserNotFoundError: если пользователь с таким phone_number не найден
     """
     patch = data.model_dump(exclude_unset=True)
-    user = await user_repository.update_user(
-        session=session, user_id=user_id, data=patch
-    )
+    password = patch.pop("password", None)
+    if password:
+        patch["password_hash"] = get_password_hash(password)
+
+    user = await user_repository.update_user(session=session, user_id=user_id, data=patch)
     if user is None:
         raise UserNotFoundError(user_id=user_id)
     return UserResponse.model_validate(user)

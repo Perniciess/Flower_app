@@ -20,6 +20,7 @@ from app.core.exceptions import (
     UserAlreadyExistsError,
     UserCartMissingError,
     UserNotFoundError,
+    UserNotUpdatedError,
 )
 from app.core.handlers import (
     cart_already_exists,
@@ -33,6 +34,7 @@ from app.core.handlers import (
     user_cart_not_found,
     user_exists_handler,
     user_not_found_handler,
+    user_not_updated_handler,
 )
 from app.core.redis import get_redis, redis_manager
 from app.database.session import engine
@@ -124,3 +126,4 @@ app.add_exception_handler(CartAlreadyExistsError, cart_already_exists)
 app.add_exception_handler(CartNotFoundError, cart_not_found)
 app.add_exception_handler(CartItemNotFoundError, cart_item_not_found)
 app.add_exception_handler(UserCartMissingError, user_cart_not_found)
+app.add_exception_handler(UserNotUpdatedError, user_not_updated_handler)

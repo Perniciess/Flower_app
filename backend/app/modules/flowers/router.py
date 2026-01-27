@@ -33,7 +33,7 @@ async def get_flowers(session: AsyncSession = Depends(get_db)) -> Sequence[Flowe
     return flowers
 
 
-@flower_router.patch("/{flower_id}", response_model=FlowerResponse, summary="Получить цветок по ID")
+@flower_router.patch("/{flower_id:int}", response_model=FlowerResponse, summary="Получить цветок по ID")
 async def update_flower(
     flower_id: int, flower_data: FlowerUpdate, session: AsyncSession = Depends(get_db), current_user: User = Depends(require_admin)
 ) -> FlowerResponse:
@@ -46,7 +46,7 @@ async def update_flower(
     return flower
 
 
-@flower_router.delete("/{flower_id}", status_code=204, summary="Удалить цветок")
+@flower_router.delete("/{flower_id:int}", status_code=204, summary="Удалить цветок")
 async def delete_flower(flower_id: int, session: AsyncSession = Depends(get_db), current_user: User = Depends(require_admin)):
     """
     Удаление цветка.
@@ -56,7 +56,7 @@ async def delete_flower(flower_id: int, session: AsyncSession = Depends(get_db),
     await flower_service.delete_flower(session=session, flower_id=flower_id)
 
 
-@flower_router.post("/images/{flower_id}", response_model=FlowerImageResponse, summary="Загрузить изображение цветка")
+@flower_router.post("/images/{flower_id:int}", response_model=FlowerImageResponse, summary="Загрузить изображение цветка")
 async def upload_image(
     flower_id: int,
     image: UploadFile,
@@ -80,7 +80,7 @@ async def get_flowers_images(session: AsyncSession = Depends(get_db)) -> Sequenc
     return images
 
 
-@flower_router.delete("/images/{image_id}", status_code=204, summary="Удалить изображение цветка")
+@flower_router.delete("/images/{image_id:int}", status_code=204, summary="Удалить изображение цветка")
 async def delete_flower_image(image_id: int, session: AsyncSession = Depends(get_db), current_user: User = Depends(require_admin)):
     """
     Удаление изображения цветка.

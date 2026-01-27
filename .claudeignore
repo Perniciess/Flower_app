@@ -4,7 +4,7 @@ __pycache__/
 *$py.class
 
 # Virtual env
-.venv/
+**/.venv/
 venv/
 ENV/
 
@@ -23,6 +23,8 @@ wheels/
 .coverage
 coverage.xml
 htmlcov/
+**/pyrightconfig.json
+**/pyproject.toml
 
 # IDE
 .vscode/
@@ -33,10 +35,6 @@ htmlcov/
 .DS_Store
 Thumbs.db
 
-# Env files / secrets
-.env
-.env.*
-!.env.example
 
 # FastAPI / logs
 *.log
@@ -45,12 +43,9 @@ Thumbs.db
 *.sqlite3
 
 # UV
-.uv/
+**/uv.lock
 uv.lock.bak
 
 # Alembic
-alembic/**/*.pyc
-
-
-**/CLAUDE.md
-**/.gitignore
+**/alembic
+**/alembic.ini

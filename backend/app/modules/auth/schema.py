@@ -64,6 +64,30 @@ class AuthRegister(UserCreate):
         return v
 
 
+class AuthChangePassword(BaseModel):
+    old_password: str = Field(..., min_length=8, description="Старый пароль")
+    new_password: str = Field(..., min_length=8, description="Новый пароль")
+
+    @field_validator("old_password", "new_password", mode="before")
+    @classmethod
+    def password_strip_and_validate(cls, v: str) -> str:
+        v = v.strip()
+
+        if len(v) < 8:
+            raise ValueError("Пароль должен быть минимум 8 символов")
+
+        if not any(c.isdigit() for c in v):
+            raise ValueError("Пароль должен содержать хотя бы одну цифру")
+        if not any(c.islower() for c in v):
+            raise ValueError("Пароль должен содержать хотя бы одну строчную букву")
+        if not any(c.isupper() for c in v):
+            raise ValueError("Пароль должен содержать хотя бы одну заглавную букву")
+        if not any(not c.isalnum() for c in v):
+            raise ValueError("Пароль должен содержать хотя бы один спецсимвол")
+
+        return v
+
+
 class RegisterResponse(BaseModel):
     """Схема для ответа API после регистрации для продолжения подтверждения номера телефона в телеграме"""
 
