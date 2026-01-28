@@ -69,6 +69,11 @@ class Settings(BaseSettings):
     # REDIS DATABASE
     REDIS_URL: str
 
+    YOOKASSA_SHOP_ID: str
+    YOOKASSA_SECRET_KEY: str
+
+    PAYMENT_RETURN_URL: str = f"{FRONTEND_HOST}/orders/payment-result"
+
     @computed_field
     @property
     def SQLALCHEMY_DATABASE_URI(self) -> PostgresDsn:
