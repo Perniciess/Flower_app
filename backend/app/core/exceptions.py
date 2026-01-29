@@ -80,5 +80,5 @@ class EmptyCartError(HTTPException):
 
 
 class PaymentCreationError(HTTPException):
-    def __init__(self, cart_id: int) -> None:
-        super().__init__(status_code=404, detail="Ошибка создания платежа в ЮKassa")
+    def __init__(self, order_id: int) -> None:
+        super().__init__(status_code=502, detail=f"Ошибка создания платежа для заказа с ID={order_id}")

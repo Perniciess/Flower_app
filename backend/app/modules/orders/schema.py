@@ -25,7 +25,22 @@ class OrderResponse(BaseModel):
 
     model_config = ConfigDict(from_attributes=True)
 
-    id: int = Field(..., description="Уникальный идентификатор корзины")
+    id: int = Field(..., description="Уникальный идентификатор заказа")
     user_id: int = Field(..., description="Уникальный идентификатор пользователя")
 
-    cart_item: list[OrderItemResponse] = Field(default_factory=list, description="Товары в корзине")
+    order_item: list[OrderItemResponse] = Field(default_factory=list, description="Товары в заказе")
+
+
+class OrderResponseWithPayment(OrderResponse):
+    payment_id: str = Field(..., description="Уникальный идентификатор оплаты")
+    confirmation_url: str = Field(..., description="Ссылка на оплату")
+
+
+class WebhookPaymentObject(BaseModel):
+    id: str
+    status: str
+
+
+class WebhookPayload(BaseModel):
+    event: str
+    object: WebhookPaymentObject

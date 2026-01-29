@@ -71,8 +71,13 @@ class Settings(BaseSettings):
 
     YOOKASSA_SHOP_ID: str
     YOOKASSA_SECRET_KEY: str
+    ORDER_EXPIRATION_MINUTES: int = 30
+    CAPTURE: bool = True  # True - автосписание, False - после подтверждения. Обговорить с Сашей
 
-    PAYMENT_RETURN_URL: str = f"{FRONTEND_HOST}/orders/payment-result"
+    @computed_field
+    @property
+    def PAYMENT_RETURN_URL(self) -> str:
+        return f"{self.FRONTEND_HOST}/orders/payment-result"
 
     @computed_field
     @property

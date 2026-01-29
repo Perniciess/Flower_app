@@ -67,3 +67,7 @@ async def update_cart_item_quantity(
         session=session, cart_item_id=cart_item_id, quantity=quantity, current_user=current_user
     )
     return cart_item
+
+
+@cart_router.delete("/cart_item/{cart_item_d}", summary="Удалить товар из корзины")
+async def delete_cart_item(cart_item_id: int)
