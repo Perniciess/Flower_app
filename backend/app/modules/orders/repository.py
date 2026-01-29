@@ -1,31 +1,35 @@
+import uuid
 from collections.abc import Sequence
 from datetime import UTC, datetime
 
 from sqlalchemy import delete, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import selectinload
 
 from app.modules.carts.model import Cart, CartItem
 
 from .model import Order, OrderItem, Status
 
 
-async def create_order(*, session: AsyncSession, user_id: int, cart: Cart, idempotency_key: str, expires_at: datetime) -> Order:
+async def create_order(*, session: AsyncSession, user_id: int, cart: Cart, idempotency_key: uuid.UUID, expires_at: datetime) -> Order:
     total_price = sum(item.quantity * item.price for item in cart.cart_item)
 
-    order = Order(user_id=user_id, total_price=total_price, idempotency_key=idempotency_key, expires_at=expires_at, status=Status.PENDING)
+    order = Order(
+        user_id=user_id,
+        total_price=total_price,
+        idempotency_key=idempotency_key,
+        expires_at=expires_at,
+        status=Status.PENDING,
+        order_item=[
+            OrderItem(
+                flower_id=item.flower_id,
+                quantity=item.quantity,
+                price=item.price,
+            )
+            for item in cart.cart_item
+        ],
+    )
     session.add(order)
-    await session.flush()
-
-    order_items = [
-        OrderItem(
-            order_id=order.id,
-            flower_id=item.flower_id,
-            quantity=item.quantity,
-            price=item.price,
-        )
-        for item in cart.cart_item
-    ]
-    session.add_all(order_items)
     await session.flush()
 
     return order
@@ -36,7 +40,7 @@ async def clear_cart(*, session: AsyncSession, cart_id: int) -> None:
 
 
 async def get_pending_order_by_user_id(*, session: AsyncSession, user_id: int) -> Order | None:
-    statement = select(Order).where(Order.user_id == user_id).where(Order.status == Status.PENDING)
+    statement = select(Order).options(selectinload(Order.order_item)).where(Order.user_id == user_id).where(Order.status == Status.PENDING)
     result = await session.execute(statement)
     return result.scalar_one_or_none()
 
@@ -49,6 +53,21 @@ async def get_order_by_payment_id(*, session: AsyncSession, payment_id: str) -> 
 
 async def update_order_status(*, session: AsyncSession, order_id: int, status: Status) -> Order | None:
     statement = update(Order).where(Order.id == order_id).values(status=status).returning(Order)
+    result = await session.execute(statement)
+    await session.flush()
+    return result.scalar_one_or_none()
+
+
+async def update_payment_id(*, session: AsyncSession, order_id: int, payment_id: str) -> Order | None:
+    statement = update(Order).where(Order.id == order_id).values(payment_id=payment_id).returning(Order)
+    result = await session.execute(statement)
+    await session.flush()
+    return result.scalar_one_or_none()
+
+
+async def mark_order_paid(*, session: AsyncSession, order_id: int) -> Order | None:
+    now = datetime.now(UTC)
+    statement = update(Order).where(Order.id == order_id).values(status=Status.PAID, paid_at=now).returning(Order)
     result = await session.execute(statement)
     await session.flush()
     return result.scalar_one_or_none()

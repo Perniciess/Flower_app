@@ -79,6 +79,7 @@ app.add_middleware(
         re.compile(rf"{settings.API_V1_STR}/auth/login"),
         re.compile(rf"{settings.API_V1_STR}/auth/complete-register/.*"),
         re.compile(rf"{settings.API_V1_STR}/auth/complete-reset-verification/.*"),
+        re.compile(rf"{settings.API_V1_STR}/orders/webhook"),
     ],
 )
 
