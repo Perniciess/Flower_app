@@ -34,7 +34,7 @@ async def get_flower(*, session: AsyncSession, flower_id: int) -> Flower | None:
 
 
 def get_flowers_query() -> Select[tuple[Flower]]:
-    return select(Flower).options(selectinload(Flower.images)).order_by(Flower.id)
+    return select(Flower).options(selectinload(Flower.images))
 
 
 async def update_flower(
