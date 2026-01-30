@@ -1,10 +1,16 @@
 import uuid
-from collections.abc import Sequence
 from datetime import UTC, datetime
 
+from fastapi_pagination import Page
+from fastapi_pagination.ext.sqlalchemy import paginate
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.core.exceptions import CartNotFoundError, EmptyCartError, OrderNotFoundError
+from app.core.exceptions import (
+    CartNotFoundError,
+    EmptyCartError,
+    OrderNotFoundError,
+    OrderNotUpdatedError,
+)
 from app.modules.carts import repository as cart_repository
 from app.modules.payments import service as payment_service
 
@@ -80,16 +86,20 @@ async def process_webhook(*, session: AsyncSession, payload: WebhookPayload) -> 
 
     if payload.event == "payment.succeeded":
         await order_repository.mark_order_paid(session=session, order_id=order.id)
+        cart = await cart_repository.get_cart_by_user_id(
+            session=session, user_id=order.user_id
+        )
+        if cart is not None:
+            await cart_repository.clear_cart(session=session, cart_id=cart.id)
     elif payload.event == "payment.canceled":
         await order_repository.update_order_status(
             session=session, order_id=order.id, status=Status.CANCELLED
         )
 
 
-async def get_orders(session: AsyncSession, user_id: int) -> Sequence[OrderResponse]:
-    orders = await order_repository.get_orders(session=session, user_id=user_id)
-
-    return [OrderResponse.model_validate(order) for order in orders]
+async def get_orders(session: AsyncSession, user_id: int) -> Page[OrderResponse]:
+    query = order_repository.get_orders_query(user_id=user_id)
+    return await paginate(session, query)
 
 
 async def get_order_by_id(session: AsyncSession, order_id: int) -> OrderResponse:
@@ -98,6 +108,21 @@ async def get_order_by_id(session: AsyncSession, order_id: int) -> OrderResponse
         raise OrderNotFoundError(order_id=order_id)
 
     return OrderResponse.model_validate(order)
+
+
+async def update_order_status(
+    session: AsyncSession, order_id: int, status: Status
+) -> OrderResponse:
+    order = await order_repository.get_order_by_id(session=session, order_id=order_id)
+    if order is None:
+        raise OrderNotFoundError(order_id=order_id)
+    updated = await order_repository.update_order_status(
+        session=session, order_id=order_id, status=status
+    )
+    if updated is None:
+        raise OrderNotUpdatedError(order_id=order_id)
+
+    return OrderResponse.model_validate(updated)
 
 
 def _build_response_with_payment(

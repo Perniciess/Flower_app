@@ -18,6 +18,8 @@ dependencies = [
   "sqlalchemy>=2.0.45",
   "websockets>=16.0",
   "yookassa>=3.10.0",
+  "fastapi-pagination>=0.15.8",
+  "alembic>=1.18.3",
 ]
 
 

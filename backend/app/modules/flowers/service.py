@@ -5,6 +5,8 @@ from pathlib import Path
 
 import anyio
 from fastapi import UploadFile
+from fastapi_pagination import Page
+from fastapi_pagination.ext.sqlalchemy import paginate
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import settings
@@ -36,7 +38,7 @@ async def create_flower(
     return FlowerResponse.model_validate(flower)
 
 
-async def get_flowers(*, session: AsyncSession) -> Sequence[FlowerResponse]:
+async def get_flowers(*, session: AsyncSession) -> Page[FlowerResponse]:
     """
     Получает список цветов из базы данных.
 
@@ -46,8 +48,8 @@ async def get_flowers(*, session: AsyncSession) -> Sequence[FlowerResponse]:
     Returns:
         Sequence[FlowerResponse] список цветов
     """
-    flowers = await flower_repository.get_flowers(session=session)
-    return [FlowerResponse.model_validate(flower) for flower in flowers]
+    query = flower_repository.get_flowers_query()
+    return await paginate(session, query)
 
 
 async def get_flower(*, session: AsyncSession, flower_id: int) -> FlowerResponse:

@@ -1,4 +1,4 @@
-from collections.abc import Mapping, Sequence
+from collections.abc import Mapping
 
 from sqlalchemy import select, update
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -29,14 +29,14 @@ async def get_user_by_id(*, session: AsyncSession, user_id: int) -> User | None:
     return user.scalar_one_or_none()
 
 
-async def update_user(*, session: AsyncSession, user_id: int, data: Mapping[str, object]) -> User | None:
+async def update_user(
+    *, session: AsyncSession, user_id: int, data: Mapping[str, object]
+) -> User | None:
     statement = update(User).where(User.id == user_id).values(**data).returning(User)
     result = await session.execute(statement)
     await session.flush()
     return result.scalar_one_or_none()
 
 
-async def get_users(*, session: AsyncSession) -> Sequence[User]:
-    statement = select(User).order_by(User.id)
-    users = await session.execute(statement)
-    return users.scalars().all()
+async def get_users():
+    return select(User).order_by(User.id)

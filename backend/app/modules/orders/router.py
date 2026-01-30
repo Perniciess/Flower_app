@@ -1,16 +1,17 @@
 import uuid
-from collections.abc import Sequence
 from datetime import UTC, datetime, timedelta
 
 from fastapi import APIRouter, Depends
+from fastapi_pagination import Page
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import settings
-from app.core.deps import require_client
+from app.core.deps import require_admin, require_client
 from app.database.session import get_db
 from app.modules.users.model import User
 
 from . import service as order_service
+from .model import Status
 from .schema import (
     CreateOrderRequest,
     OrderResponse,
@@ -48,13 +49,13 @@ async def yookassa_webhook(
 
 @order_router.get(
     "history",
-    response_model=Sequence[OrderResponse],
+    response_model=Page[OrderResponse],
     summary="История заказов пользователя",
 )
 async def get_orders(
     current_user: User = Depends(require_client),
     session: AsyncSession = Depends(get_db),
-) -> Sequence[OrderResponse]:
+) -> Page[OrderResponse]:
     orders = await order_service.get_orders(session=session, user_id=current_user.id)
     return orders
 
@@ -68,4 +69,19 @@ async def get_order_by_id(
     current_user: User = Depends(require_client),
 ) -> OrderResponse:
     order = await order_service.get_order_by_id(session=session, order_id=order_id)
+    return order
+
+
+@order_router.patch(
+    "/status/{order_id}", response_model=OrderResponse, summary="Обновить статус заказа"
+)
+async def update_order_status(
+    order_id: int,
+    status: Status,
+    session: AsyncSession = Depends(get_db),
+    current_user: User = Depends(require_admin),
+) -> OrderResponse:
+    order = await order_service.update_order_status(
+        session=session, order_id=order_id, status=status
+    )
     return order

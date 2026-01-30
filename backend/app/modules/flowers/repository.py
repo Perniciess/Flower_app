@@ -2,7 +2,7 @@ from collections.abc import Mapping, Sequence
 from decimal import Decimal
 from typing import Any
 
-from sqlalchemy import delete, select, update
+from sqlalchemy import Select, delete, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
@@ -33,10 +33,8 @@ async def get_flower(*, session: AsyncSession, flower_id: int) -> Flower | None:
     return flowers.scalar_one_or_none()
 
 
-async def get_flowers(*, session: AsyncSession) -> Sequence[Flower]:
-    statement = select(Flower).options(selectinload(Flower.images)).order_by(Flower.id)
-    flowers = await session.execute(statement)
-    return flowers.scalars().all()
+def get_flowers_query() -> Select[tuple[Flower]]:
+    return select(Flower).options(selectinload(Flower.images)).order_by(Flower.id)
 
 
 async def update_flower(

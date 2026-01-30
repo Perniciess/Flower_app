@@ -3,6 +3,7 @@ from contextlib import asynccontextmanager
 
 from fastapi import APIRouter, Depends, FastAPI
 from fastapi.security import APIKeyHeader
+from fastapi_pagination import add_pagination
 from sqlalchemy import text
 from starlette.middleware.cors import CORSMiddleware
 from starlette_csrf.middleware import CSRFMiddleware
@@ -90,3 +91,6 @@ api_router.include_router(flower_router)
 api_router.include_router(cart_router)
 api_router.include_router(order_router)
 app.include_router(api_router, dependencies=[Depends(csrf_header_scheme)])
+
+
+add_pagination(app)
