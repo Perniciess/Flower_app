@@ -10,12 +10,18 @@ from app.modules.payments import service as payment_service
 
 from . import repository as order_repository
 from .model import Order, Status
-from .schema import OrderResponse, OrderResponseWithPayment, WebhookPayload
+from .schema import (
+    CreateOrderRequest,
+    OrderResponse,
+    OrderResponseWithPayment,
+    WebhookPayload,
+)
 
 
 async def create_order(
     *,
     session: AsyncSession,
+    data: CreateOrderRequest,
     user_id: int,
     idempotency_key: uuid.UUID,
     expires_at: datetime,
@@ -50,6 +56,7 @@ async def create_order(
     order = await order_repository.create_order(
         session=session,
         user_id=user_id,
+        data=data,
         cart=cart,
         idempotency_key=idempotency_key,
         expires_at=expires_at,
