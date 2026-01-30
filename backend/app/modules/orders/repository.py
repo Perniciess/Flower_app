@@ -8,12 +8,14 @@ from sqlalchemy.orm import selectinload
 
 from app.modules.carts.model import Cart, CartItem
 
-from .model import Order, OrderItem, Status
+from .model import Delivery, MethodOfReceipt, Order, OrderItem, Status
+from .schema import CreateOrderRequest
 
 
 async def create_order(
     *,
     session: AsyncSession,
+    data: CreateOrderRequest,
     user_id: int,
     cart: Cart,
     idempotency_key: uuid.UUID,
@@ -21,9 +23,19 @@ async def create_order(
 ) -> Order:
     total_price = sum(item.quantity * item.price for item in cart.cart_item)
 
+    delivery = None
+    if data.method == MethodOfReceipt.DELIVERY:
+        delivery = Delivery(
+            address=data.address,
+            recipient_name=data.recipient_name,
+            recipient_phone=data.recipient_phone,
+            comment=data.comment,
+        )
+
     order = Order(
         user_id=user_id,
         total_price=total_price,
+        method_of_receipt=data.method,
         idempotency_key=idempotency_key,
         expires_at=expires_at,
         status=Status.PENDING,
@@ -35,6 +47,7 @@ async def create_order(
             )
             for item in cart.cart_item
         ],
+        delivery=delivery,
     )
     session.add(order)
     await session.flush()
