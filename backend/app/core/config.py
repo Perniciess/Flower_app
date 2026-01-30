@@ -49,7 +49,7 @@ class Settings(BaseSettings):
     VERIFICATION_ALPHABET: str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 
     # IMAGE PATH
-    UPLOAD_DIR: Path = Path("app/static/uploads/flowers")
+    UPLOAD_DIR: Path = Path("app/static/uploads/products")
     ROOT_DIR: Path = Path("app")
 
     @computed_field

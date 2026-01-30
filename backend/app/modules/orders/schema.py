@@ -18,7 +18,7 @@ class OrderItemBase(BaseModel):
     """Базовые поля товара в закзаа, используемые в других схемах."""
 
     order_id: int = Field(..., description="Уникальный идентификатор заказа")
-    flower_id: int = Field(..., description="Идентификатор цветка")
+    product_id: int = Field(..., description="Идентификатор товара")
     quantity: int = Field(..., description="Количество товара")
     price: Decimal = Field(..., description="Цена товара")
 
@@ -52,9 +52,7 @@ class OrderResponse(BaseModel):
     method_of_receipt: MethodOfReceipt = Field(..., description="Метод получения")
     delivery: DeliveryResponse | None = Field(None, description="Данные доставки")
 
-    order_item: list[OrderItemResponse] = Field(
-        default_factory=list, description="Товары в заказе"
-    )
+    order_item: list[OrderItemResponse] = Field(default_factory=list, description="Товары в заказе")
 
 
 class OrderResponseWithPayment(OrderResponse):

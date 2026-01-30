@@ -7,7 +7,7 @@ class CartItemBase(BaseModel):
     """Базовые поля товара в корзин, используемые в других схемах."""
 
     cart_id: int = Field(..., description="Уникальный идентификатор корзины")
-    flower_id: int = Field(..., description="Идентификатор цветка")
+    product_id: int = Field(..., description="Идентификатор товара")
     quantity: int = Field(..., description="Количество товара")
     price: Decimal = Field(..., description="Цена товара")
 
@@ -15,7 +15,7 @@ class CartItemBase(BaseModel):
 class CartItemCreate(BaseModel):
     """Схема для создания товара в корзине."""
 
-    flower_id: int = Field(..., description="Уникальный идентификатор цветка")
+    product_id: int = Field(..., description="Уникальный идентификатор товара")
     quantity: int = Field(default=1, ge=1)
 
 

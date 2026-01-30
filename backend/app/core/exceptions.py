@@ -2,9 +2,7 @@ from fastapi import HTTPException
 
 
 class UserNotFoundError(HTTPException):
-    def __init__(
-        self, *, user_id: int | None = None, phone_number: str | None = None
-    ) -> None:
+    def __init__(self, *, user_id: int | None = None, phone_number: str | None = None) -> None:
         if user_id is not None:
             detail = f"Пользователь с ID={user_id} не найден"
         else:
@@ -24,8 +22,7 @@ class UserNotUpdatedError(HTTPException):
     def __init__(self, user_id: int, message: str | None = None) -> None:
         super().__init__(
             status_code=400,
-            detail=message
-            or f"Не удалось обновить данные пользователя с user_id={user_id}",
+            detail=message or f"Не удалось обновить данные пользователя с user_id={user_id}",
         )
 
 
@@ -36,9 +33,7 @@ class PasswordsDoNotMatchError(HTTPException):
 
 class InsufficientPermissionError(HTTPException):
     def __init__(self) -> None:
-        super().__init__(
-            status_code=403, detail="Отсутствуют права на выполнение операции"
-        )
+        super().__init__(status_code=403, detail="Отсутствуют права на выполнение операции")
 
 
 class InvalidTokenError(HTTPException):
@@ -46,23 +41,19 @@ class InvalidTokenError(HTTPException):
         super().__init__(status_code=403, detail="Невалидный токен")
 
 
-class FlowerNotFoundError(HTTPException):
-    def __init__(self, flower_id: int) -> None:
-        super().__init__(status_code=404, detail=f"Цветок с ID={flower_id} не найден")
+class ProductNotFoundError(HTTPException):
+    def __init__(self, product_id: int) -> None:
+        super().__init__(status_code=404, detail=f"Товар с ID={product_id} не найден")
 
 
 class ImageNotFoundError(HTTPException):
     def __init__(self, image_id: int) -> None:
-        super().__init__(
-            status_code=404, detail=f"Изображение с ID={image_id} не найдено"
-        )
+        super().__init__(status_code=404, detail=f"Изображение с ID={image_id} не найдено")
 
 
 class CartAlreadyExistsError(HTTPException):
     def __init__(self, cart_id: int) -> None:
-        super().__init__(
-            status_code=409, detail=f"Корзина с ID={cart_id} уже существует"
-        )
+        super().__init__(status_code=409, detail=f"Корзина с ID={cart_id} уже существует")
 
 
 class CartNotFoundError(HTTPException):
@@ -76,16 +67,12 @@ class CartNotFoundError(HTTPException):
 
 class CartItemNotFoundError(HTTPException):
     def __init__(self, cart_item_id: int) -> None:
-        super().__init__(
-            status_code=404, detail=f"Товар корзины с ID={cart_item_id} не найден"
-        )
+        super().__init__(status_code=404, detail=f"Товар корзины с ID={cart_item_id} не найден")
 
 
 class UserCartMissingError(HTTPException):
     def __init__(self, user_id: int) -> None:
-        super().__init__(
-            status_code=404, detail=f"У пользователя с ID={user_id} нет корзины"
-        )
+        super().__init__(status_code=404, detail=f"У пользователя с ID={user_id} нет корзины")
 
 
 class OrderNotFoundError(HTTPException):
@@ -95,9 +82,7 @@ class OrderNotFoundError(HTTPException):
 
 class OrderNotUpdatedError(HTTPException):
     def __init__(self, order_id: int) -> None:
-        super().__init__(
-            status_code=404, detail=f"Не удалось изменить статус заказа с ID={order_id}"
-        )
+        super().__init__(status_code=404, detail=f"Не удалось изменить статус заказа с ID={order_id}")
 
 
 class EmptyCartError(HTTPException):

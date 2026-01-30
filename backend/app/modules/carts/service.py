@@ -6,7 +6,7 @@ from app.core.exceptions import (
     InsufficientPermissionError,
     UserCartMissingError,
 )
-from app.modules.flowers import service as flower_service
+from app.modules.products import service as product_service
 from app.modules.users.model import Role, User
 
 from . import repository as cart_repository
@@ -60,7 +60,7 @@ async def create_cart_item(
     session: AsyncSession,
     current_user: User,
     target_user_id: int | None = None,
-    flower_id: int,
+    product_id: int,
     quantity: int,
 ) -> CartItemResponse:
     """
@@ -84,15 +84,13 @@ async def create_cart_item(
     else:
         user_id = current_user.id
 
-    price = await flower_service.get_flower_price(session=session, flower_id=flower_id)
+    price = await product_service.get_product_price(session=session, product_id=product_id)
 
     cart = await cart_repository.get_cart_by_user_id(session=session, user_id=user_id)
     if not cart:
         cart = await cart_repository.create_cart(session=session, user_id=user_id)
 
-    cart_item_exists = await cart_repository.get_cart_item(
-        session=session, cart_id=cart.id, flower_id=flower_id
-    )
+    cart_item_exists = await cart_repository.get_cart_item(session=session, cart_id=cart.id, product_id=product_id)
     if cart_item_exists:
         cart_item_exists.quantity += quantity
         await session.flush()
@@ -101,7 +99,7 @@ async def create_cart_item(
     cart_item = await cart_repository.create_cart_item(
         session=session,
         cart_id=cart.id,
-        flower_id=flower_id,
+        product_id=product_id,
         quantity=quantity,
         price=price,
     )
@@ -127,9 +125,7 @@ async def update_cart_item_quantity(
         CartNotFoundError: корзина по ID не найдена
         InsufficientPermissionError: нет прав на изменение корзины
     """
-    cart_item = await cart_repository.get_cart_item_by_id(
-        session=session, cart_item_id=cart_item_id
-    )
+    cart_item = await cart_repository.get_cart_item_by_id(session=session, cart_item_id=cart_item_id)
     if cart_item is None:
         raise CartItemNotFoundError(cart_item_id)
 
@@ -142,9 +138,7 @@ async def update_cart_item_quantity(
 
 
 async def delete_cart_item(*, session: AsyncSession, cart_item_id: int) -> bool:
-    deleted = await cart_repository.delete_cart_item(
-        session=session, cart_item_id=cart_item_id
-    )
+    deleted = await cart_repository.delete_cart_item(session=session, cart_item_id=cart_item_id)
     if not deleted:
         raise CartItemNotFoundError(cart_item_id=cart_item_id)
     return True

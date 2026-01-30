@@ -11,7 +11,7 @@ from app.core.config import settings
 from app.database.base import Base  # <-- твой declarative_base()
 from app.modules.users.model import User
 from app.modules.auth.model import RefreshToken
-from app.modules.flowers.model import Flower, FlowerImage
+from app.modules.products.model import Product, ProductImage
 from app.modules.carts.model import Cart, CartItem
 from app.modules.orders.model import Order, OrderItem
 config = context.config

@@ -21,7 +21,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.database.base import Base
 
 if TYPE_CHECKING:
-    from app.modules.flowers.model import Flower
+    from app.modules.products.model import Product
 
 
 class Status(StrEnum):
@@ -75,13 +75,13 @@ class OrderItem(Base):
 
     __tablename__ = "order_item"
     __table_args__ = (
-        UniqueConstraint("order_id", "flower_id", name="uq_order_flower"),
+        UniqueConstraint("order_id", "product_id", name="uq_order_product"),
         {},
     )
 
     id: Mapped[int] = mapped_column(primary_key=True, index=True)
     order_id: Mapped[int] = mapped_column(ForeignKey("order.id", ondelete="CASCADE"))
-    flower_id: Mapped[int] = mapped_column(ForeignKey("flower.id", ondelete="CASCADE"))
+    product_id: Mapped[int] = mapped_column(ForeignKey("product.id", ondelete="CASCADE"))
     quantity: Mapped[int] = mapped_column()
     price: Mapped[Decimal] = mapped_column(DECIMAL(precision=10, scale=2))
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
@@ -90,7 +90,7 @@ class OrderItem(Base):
     )
 
     order: Mapped[Order] = relationship("Order", back_populates="order_item")
-    flower: Mapped[Flower] = relationship("Flower")
+    product: Mapped[Product] = relationship("Product")
 
 
 class Delivery(Base):

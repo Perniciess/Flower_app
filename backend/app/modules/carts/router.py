@@ -38,9 +38,9 @@ async def delete_cart(
     await cart_service.delete_cart(session=session, cart_id=cart_id)
 
 
-@cart_router.post("/cart_item/{flower_id}", summary="Добавить товар в корзину")
+@cart_router.post("/cart_item/{product_id}", summary="Добавить товар в корзину")
 async def create_cart_item(
-    flower_id: int,
+    product_id: int,
     quantity: int = Body(gt=0),
     current_user: User = Depends(require_client),
     target_user_id: int | None = Body(default=None),
@@ -55,7 +55,7 @@ async def create_cart_item(
         session=session,
         current_user=current_user,
         target_user_id=target_user_id,
-        flower_id=flower_id,
+        product_id=product_id,
         quantity=quantity,
     )
     return cart_item
