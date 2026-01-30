@@ -33,11 +33,6 @@ htmlcov/
 .DS_Store
 Thumbs.db
 
-# Env files / secrets
-.env
-.env.*
-!.env.example
-
 # FastAPI / logs
 *.log
 
@@ -51,6 +46,6 @@ uv.lock.bak
 # Alembic
 alembic/**/*.pyc
 
-
+**/.env
 **/CLAUDE.md
 **/.gitignore
