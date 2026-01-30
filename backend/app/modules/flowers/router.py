@@ -1,6 +1,7 @@
 from collections.abc import Sequence
 
 from fastapi import APIRouter, Depends, Form, UploadFile
+from fastapi_pagination import Page
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.deps import require_admin
@@ -31,11 +32,11 @@ async def create_flower(
 
 
 @flower_router.get(
-    "/", response_model=Sequence[FlowerResponse], summary="Получить список цветов"
+    "/", response_model=Page[FlowerResponse], summary="Получить список цветов"
 )
 async def get_flowers(
     session: AsyncSession = Depends(get_db),
-) -> Sequence[FlowerResponse]:
+) -> Page[FlowerResponse]:
     """Получение списка цветов"""
     flowers = await flower_service.get_flowers(session=session)
     return flowers

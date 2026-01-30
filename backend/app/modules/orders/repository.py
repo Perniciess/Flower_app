@@ -2,11 +2,11 @@ import uuid
 from collections.abc import Sequence
 from datetime import UTC, datetime
 
-from sqlalchemy import delete, select, update
+from sqlalchemy import Select, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
-from app.modules.carts.model import Cart, CartItem
+from app.modules.carts.model import Cart
 
 from .model import Delivery, MethodOfReceipt, Order, OrderItem, Status
 from .schema import CreateOrderRequest
@@ -55,10 +55,6 @@ async def create_order(
     return order
 
 
-async def clear_cart(*, session: AsyncSession, cart_id: int) -> None:
-    await session.execute(delete(CartItem).where(CartItem.cart_id == cart_id))
-
-
 async def get_pending_order_by_user_id(
     *, session: AsyncSession, user_id: int
 ) -> Order | None:
@@ -90,10 +86,8 @@ async def get_order_by_id(*, session: AsyncSession, order_id: int) -> Order | No
     return result.scalar_one_or_none()
 
 
-async def get_orders(*, session: AsyncSession, user_id: int) -> Sequence[Order]:
-    statement = select(Order).where(Order.user_id == user_id)
-    result = await session.execute(statement)
-    return result.scalars().all()
+def get_orders_query(user_id: int) -> Select[tuple[Order]]:
+    return select(Order).options(selectinload(Order.order_item)).where(Order.user_id == user_id).order_by(Order.id)
 
 
 async def update_order_status(
