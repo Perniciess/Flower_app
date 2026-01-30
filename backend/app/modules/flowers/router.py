@@ -1,6 +1,7 @@
 from collections.abc import Sequence
 
 from fastapi import APIRouter, Depends, Form, UploadFile
+from fastapi_filter import FilterDepends
 from fastapi_pagination import Page
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -9,6 +10,7 @@ from app.database.session import get_db
 from app.modules.users.model import User
 
 from . import service as flower_service
+from .filter import FlowerFilter
 from .schema import FlowerCreate, FlowerImageResponse, FlowerResponse, FlowerUpdate
 
 flower_router = APIRouter(prefix="/flowers", tags=["flowers"])
@@ -36,9 +38,12 @@ async def create_flower(
 )
 async def get_flowers(
     session: AsyncSession = Depends(get_db),
+    flower_filter: FlowerFilter = FilterDepends(FlowerFilter),
 ) -> Page[FlowerResponse]:
     """Получение списка цветов"""
-    flowers = await flower_service.get_flowers(session=session)
+    flowers = await flower_service.get_flowers(
+        session=session, flower_filter=flower_filter
+    )
     return flowers
 
 

@@ -11,6 +11,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import settings
 from app.core.exceptions import FlowerNotFoundError, ImageNotFoundError
+from app.modules.flowers.filter import FlowerFilter
 
 from . import repository as flower_repository
 from .schema import FlowerCreate, FlowerImageResponse, FlowerResponse, FlowerUpdate
@@ -38,7 +39,9 @@ async def create_flower(
     return FlowerResponse.model_validate(flower)
 
 
-async def get_flowers(*, session: AsyncSession) -> Page[FlowerResponse]:
+async def get_flowers(
+    *, session: AsyncSession, flower_filter: FlowerFilter
+) -> Page[FlowerResponse]:
     """
     Получает список цветов из базы данных.
 
@@ -49,7 +52,9 @@ async def get_flowers(*, session: AsyncSession) -> Page[FlowerResponse]:
         Sequence[FlowerResponse] список цветов
     """
     query = flower_repository.get_flowers_query()
-    return await paginate(session, query)
+    filtered_query = flower_filter.filter(query)
+    sorted_query = flower_filter.sort(filtered_query)
+    return await paginate(session, sorted_query)
 
 
 async def get_flower(*, session: AsyncSession, flower_id: int) -> FlowerResponse:
