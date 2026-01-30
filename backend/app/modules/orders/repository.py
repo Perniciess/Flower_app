@@ -55,9 +55,7 @@ async def create_order(
     return order
 
 
-async def get_pending_order_by_user_id(
-    *, session: AsyncSession, user_id: int
-) -> Order | None:
+async def get_pending_order_by_user_id(*, session: AsyncSession, user_id: int) -> Order | None:
     statement = (
         select(Order)
         .options(selectinload(Order.order_item))
@@ -68,20 +66,14 @@ async def get_pending_order_by_user_id(
     return result.scalar_one_or_none()
 
 
-async def get_order_by_payment_id(
-    *, session: AsyncSession, payment_id: str
-) -> Order | None:
+async def get_order_by_payment_id(*, session: AsyncSession, payment_id: str) -> Order | None:
     statement = select(Order).where(Order.payment_id == payment_id)
     result = await session.execute(statement)
     return result.scalar_one_or_none()
 
 
 async def get_order_by_id(*, session: AsyncSession, order_id: int) -> Order | None:
-    statement = (
-        select(Order)
-        .where(Order.id == order_id)
-        .options(selectinload(Order.order_item))
-    )
+    statement = select(Order).where(Order.id == order_id).options(selectinload(Order.order_item))
     result = await session.execute(statement)
     return result.scalar_one_or_none()
 
@@ -90,26 +82,23 @@ def get_orders_query(user_id: int) -> Select[tuple[Order]]:
     return select(Order).options(selectinload(Order.order_item)).where(Order.user_id == user_id).order_by(Order.id)
 
 
-async def update_order_status(
-    *, session: AsyncSession, order_id: int, status: Status
-) -> Order | None:
-    statement = (
-        update(Order).where(Order.id == order_id).values(status=status).returning(Order)
-    )
+def get_all_orders_query() -> Select[tuple[Order]]:
+    return select(Order).options(selectinload(Order.order_item)).order_by(Order.id)
+
+
+def get_all_paid_query() -> Select[tuple[Order]]:
+    return select(Order).options(selectinload(Order.order_item)).where(Order.status == Status.PAID).order_by(Order.id)
+
+
+async def update_order_status(*, session: AsyncSession, order_id: int, status: Status) -> Order | None:
+    statement = update(Order).where(Order.id == order_id).values(status=status).returning(Order)
     result = await session.execute(statement)
     await session.flush()
     return result.scalar_one_or_none()
 
 
-async def update_payment_id(
-    *, session: AsyncSession, order_id: int, payment_id: str
-) -> Order | None:
-    statement = (
-        update(Order)
-        .where(Order.id == order_id)
-        .values(payment_id=payment_id)
-        .returning(Order)
-    )
+async def update_payment_id(*, session: AsyncSession, order_id: int, payment_id: str) -> Order | None:
+    statement = update(Order).where(Order.id == order_id).values(payment_id=payment_id).returning(Order)
     result = await session.execute(statement)
     await session.flush()
     return result.scalar_one_or_none()
@@ -117,12 +106,7 @@ async def update_payment_id(
 
 async def mark_order_paid(*, session: AsyncSession, order_id: int) -> Order | None:
     now = datetime.now(UTC)
-    statement = (
-        update(Order)
-        .where(Order.id == order_id)
-        .values(status=Status.PAID, paid_at=now)
-        .returning(Order)
-    )
+    statement = update(Order).where(Order.id == order_id).values(status=Status.PAID, paid_at=now).returning(Order)
     result = await session.execute(statement)
     await session.flush()
     return result.scalar_one_or_none()
@@ -130,10 +114,6 @@ async def mark_order_paid(*, session: AsyncSession, order_id: int) -> Order | No
 
 async def get_expired_pending_orders(*, session: AsyncSession) -> Sequence[Order]:
     now = datetime.now(UTC)
-    statement = (
-        select(Order)
-        .where(Order.status == Status.PENDING)
-        .where(Order.expires_at < now)
-    )
+    statement = select(Order).where(Order.status == Status.PENDING).where(Order.expires_at < now)
     result = await session.execute(statement)
     return result.scalars().all()

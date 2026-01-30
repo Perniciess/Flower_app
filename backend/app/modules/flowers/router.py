@@ -27,37 +27,27 @@ async def create_flower(
 
     Требует прав администратора
     """
-    flower = await flower_service.create_flower(
-        session=session, flower_data=flower_data
-    )
+    flower = await flower_service.create_flower(session=session, flower_data=flower_data)
     return flower
 
 
-@flower_router.get(
-    "/", response_model=Page[FlowerResponse], summary="Получить список цветов"
-)
+@flower_router.get("/", response_model=Page[FlowerResponse], summary="Получить список цветов")
 async def get_flowers(
     session: AsyncSession = Depends(get_db),
     flower_filter: FlowerFilter = FilterDepends(FlowerFilter),
 ) -> Page[FlowerResponse]:
     """Получение списка цветов"""
-    flowers = await flower_service.get_flowers(
-        session=session, flower_filter=flower_filter
-    )
+    flowers = await flower_service.get_flowers(session=session, flower_filter=flower_filter)
     return flowers
 
 
-@flower_router.get(
-    "{flower_id}", response_model=FlowerResponse, summary="Получить один цветок"
-)
+@flower_router.get("/{flower_id}", response_model=FlowerResponse, summary="Получить один цветок")
 async def get_flower_by_id(flower_id: int, session: AsyncSession = Depends(get_db)):
     flower = await flower_service.get_flower(session=session, flower_id=flower_id)
     return flower
 
 
-@flower_router.patch(
-    "/{flower_id:int}", response_model=FlowerResponse, summary="Получить цветок по ID"
-)
+@flower_router.patch("/{flower_id:int}", response_model=FlowerResponse, summary="Получить цветок по ID")
 async def update_flower(
     flower_id: int,
     flower_data: FlowerUpdate,
@@ -69,9 +59,7 @@ async def update_flower(
 
     Требует прав администратора.
     """
-    flower = await flower_service.update_flower(
-        session=session, flower_id=flower_id, flower_data=flower_data
-    )
+    flower = await flower_service.update_flower(session=session, flower_id=flower_id, flower_data=flower_data)
     return flower
 
 
@@ -125,9 +113,7 @@ async def get_flowers_images(
     return images
 
 
-@flower_router.delete(
-    "/images/{image_id:int}", status_code=204, summary="Удалить изображение цветка"
-)
+@flower_router.delete("/images/{image_id:int}", status_code=204, summary="Удалить изображение цветка")
 async def delete_flower_image(
     image_id: int,
     session: AsyncSession = Depends(get_db),
