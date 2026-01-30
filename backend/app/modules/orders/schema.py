@@ -28,7 +28,9 @@ class OrderResponse(BaseModel):
     id: int = Field(..., description="Уникальный идентификатор заказа")
     user_id: int = Field(..., description="Уникальный идентификатор пользователя")
 
-    order_item: list[OrderItemResponse] = Field(default_factory=list, description="Товары в заказе")
+    order_item: list[OrderItemResponse] = Field(
+        default_factory=list, description="Товары в заказе"
+    )
 
 
 class OrderResponseWithPayment(OrderResponse):

@@ -11,8 +11,12 @@ from .schema import CartItemResponse, CartItemUpdate, CartResponse
 cart_router = APIRouter(prefix="/carts", tags=["carts"])
 
 
-@cart_router.get("", response_model=CartResponse, summary="Получить корзину текущего пользователя")
-async def get_current_user_cart(user: User = Depends(require_client), session: AsyncSession = Depends(get_db)) -> CartResponse:
+@cart_router.get(
+    "", response_model=CartResponse, summary="Получить корзину текущего пользователя"
+)
+async def get_current_user_cart(
+    user: User = Depends(require_client), session: AsyncSession = Depends(get_db)
+) -> CartResponse:
     """
     Получить корзину текущего пользователя.
 
@@ -23,7 +27,11 @@ async def get_current_user_cart(user: User = Depends(require_client), session: A
 
 
 @cart_router.delete("/{cart_id}", status_code=204, summary="Удалить корзину")
-async def delete_cart(cart_id: int, user: User = Depends(require_admin), session: AsyncSession = Depends(get_db)):
+async def delete_cart(
+    cart_id: int,
+    user: User = Depends(require_admin),
+    session: AsyncSession = Depends(get_db),
+):
     """
     Удаление корзины пользователя.
 
@@ -46,12 +54,20 @@ async def create_cart_item(
     Требует авторизации.
     """
     cart_item = await cart_service.create_cart_item(
-        session=session, current_user=current_user, target_user_id=target_user_id, flower_id=flower_id, quantity=quantity
+        session=session,
+        current_user=current_user,
+        target_user_id=target_user_id,
+        flower_id=flower_id,
+        quantity=quantity,
     )
     return cart_item
 
 
-@cart_router.patch("/cart_item/{cart_item_id}", response_model=CartItemUpdate, summary="Обновить количество товара в корзине")
+@cart_router.patch(
+    "/cart_item/{cart_item_id}",
+    response_model=CartItemUpdate,
+    summary="Обновить количество товара в корзине",
+)
 async def update_cart_item_quantity(
     cart_item_id: int,
     quantity: int = Body(..., ge=1, description="Новое количество товара"),
@@ -64,10 +80,18 @@ async def update_cart_item_quantity(
     Требует авторизации.
     """
     cart_item = await cart_service.update_cart_item_quantity(
-        session=session, cart_item_id=cart_item_id, quantity=quantity, current_user=current_user
+        session=session,
+        cart_item_id=cart_item_id,
+        quantity=quantity,
+        current_user=current_user,
     )
     return cart_item
 
 
 @cart_router.delete("/cart_item/{cart_item_d}", summary="Удалить товар из корзины")
-async def delete_cart_item(cart_item_id: int)
+async def delete_cart_item(
+    cart_item_id: int,
+    session: AsyncSession = Depends(get_db),
+    current_user: User = Depends(require_client),
+) -> None:
+    await cart_service.delete_cart_item(session=session, cart_item_id=cart_item_id)
