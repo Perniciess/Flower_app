@@ -13,8 +13,8 @@ from app.core.redis import get_redis, redis_manager
 from app.database.session import engine
 from app.modules.auth.router import auth_router
 from app.modules.carts.router import cart_router
-from app.modules.flowers.router import flower_router
 from app.modules.orders.router import order_router
+from app.modules.products.router import product_router
 from app.modules.users.router import user_router
 
 
@@ -47,7 +47,7 @@ app = FastAPI(
     openapi_tags=[
         {"name": "users", "description": "Операции с пользователями"},
         {"name": "auth", "description": "Аутентификация и авторизация"},
-        {"name": "flowers", "description": "Операции с цветами"},
+        {"name": "products", "description": "Операции с товарами"},
         {"name": "carts", "description": "Корзина покупок"},
     ],
     lifespan=lifespan,
@@ -87,7 +87,7 @@ app.add_middleware(
 api_router = APIRouter(prefix=settings.API_V1_STR)
 api_router.include_router(auth_router)
 api_router.include_router(user_router)
-api_router.include_router(flower_router)
+api_router.include_router(product_router)
 api_router.include_router(cart_router)
 api_router.include_router(order_router)
 app.include_router(api_router, dependencies=[Depends(csrf_header_scheme)])

@@ -41,7 +41,7 @@ async def create_order(
         status=Status.PENDING,
         order_item=[
             OrderItem(
-                flower_id=item.flower_id,
+                product_id=item.product_id,
                 quantity=item.quantity,
                 price=item.price,
             )
