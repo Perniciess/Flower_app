@@ -6,7 +6,15 @@ from decimal import Decimal
 from enum import StrEnum
 from typing import TYPE_CHECKING
 
-from sqlalchemy import DECIMAL, DateTime, Enum, ForeignKey, UniqueConstraint, func
+from sqlalchemy import (
+    DECIMAL,
+    DateTime,
+    Enum,
+    ForeignKey,
+    String,
+    UniqueConstraint,
+    func,
+)
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -25,6 +33,11 @@ class Status(StrEnum):
     CANCELLED = "cancelled"
 
 
+class MethodOfReceipt(StrEnum):
+    DELIVERY = "delivery"
+    PICK_UP = "pick_up"
+
+
 class Order(Base):
     """Сущность заказа."""
 
@@ -35,7 +48,7 @@ class Order(Base):
     user_id: Mapped[int] = mapped_column(ForeignKey("user.id", ondelete="CASCADE"))
     status: Mapped[Status] = mapped_column(Enum(Status), default=Status.PENDING)
     total_price: Mapped[Decimal] = mapped_column(DECIMAL(precision=10, scale=2))
-
+    method_of_receipt: Mapped[MethodOfReceipt] = mapped_column(Enum(MethodOfReceipt))
     payment_id: Mapped[str | None] = mapped_column()
     idempotency_key: Mapped[uuid.UUID] = mapped_column(
         UUID(as_uuid=True),
@@ -45,24 +58,56 @@ class Order(Base):
     expires_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
     paid_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=True)
 
-    order_item: Mapped[list[OrderItem]] = relationship("OrderItem", back_populates="order", cascade="all, delete-orphan")
-    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
-    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
+    order_item: Mapped[list[OrderItem]] = relationship(
+        "OrderItem", back_populates="order", cascade="all, delete-orphan"
+    )
+    delivery: Mapped[Delivery | None] = relationship(
+        "Delivery", back_populates="order", uselist=False, cascade="all, delete-orphan"
+    )
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now()
+    )
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now(), onupdate=func.now()
+    )
 
 
 class OrderItem(Base):
     """Сущность товара в заказе."""
 
     __tablename__ = "order_item"
-    __table_args__ = (UniqueConstraint("order_id", "flower_id", name="uq_order_flower"), {})
+    __table_args__ = (
+        UniqueConstraint("order_id", "flower_id", name="uq_order_flower"),
+        {},
+    )
 
     id: Mapped[int] = mapped_column(primary_key=True, index=True)
     order_id: Mapped[int] = mapped_column(ForeignKey("order.id", ondelete="CASCADE"))
     flower_id: Mapped[int] = mapped_column(ForeignKey("flower.id", ondelete="CASCADE"))
     quantity: Mapped[int] = mapped_column()
     price: Mapped[Decimal] = mapped_column(DECIMAL(precision=10, scale=2))
-    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
-    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now()
+    )
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now(), onupdate=func.now()
+    )
 
     order: Mapped[Order] = relationship("Order", back_populates="order_item")
     flower: Mapped[Flower] = relationship("Flower")
+
+
+class Delivery(Base):
+    __tablename__ = "delivery"
+
+    id: Mapped[int] = mapped_column(primary_key=True, index=True)
+    order_id: Mapped[int] = mapped_column(
+        ForeignKey("order.id", ondelete="CASCADE"), unique=True
+    )
+    address: Mapped[str] = mapped_column(String(512))
+    recipient_name: Mapped[str | None] = mapped_column(String(128))
+    recipient_phone: Mapped[str | None] = mapped_column(String(16))
+    comment: Mapped[str | None] = mapped_column(String(512))
+    delivery_date: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+
+    order: Mapped[Order] = relationship("Order", back_populates="delivery")
