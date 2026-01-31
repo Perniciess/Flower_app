@@ -27,27 +27,37 @@ async def create_product(
 
     Требует прав администратора
     """
-    product = await product_service.create_product(session=session, product_data=product_data)
+    product = await product_service.create_product(
+        session=session, product_data=product_data
+    )
     return product
 
 
-@product_router.get("/", response_model=Page[ProductResponse], summary="Получить список товаров")
+@product_router.get(
+    "/", response_model=Page[ProductResponse], summary="Получить список товаров"
+)
 async def get_products(
     session: AsyncSession = Depends(get_db),
     product_filter: ProductFilter = FilterDepends(ProductFilter),
 ) -> Page[ProductResponse]:
     """Получение списка товаров"""
-    products = await product_service.get_products(session=session, product_filter=product_filter)
+    products = await product_service.get_products(
+        session=session, product_filter=product_filter
+    )
     return products
 
 
-@product_router.get("/{product_id}", response_model=ProductResponse, summary="Получить один товар")
+@product_router.get(
+    "/{product_id:int}", response_model=ProductResponse, summary="Получить один товар"
+)
 async def get_product_by_id(product_id: int, session: AsyncSession = Depends(get_db)):
     product = await product_service.get_product(session=session, product_id=product_id)
     return product
 
 
-@product_router.patch("/{product_id:int}", response_model=ProductResponse, summary="Получить товар по ID")
+@product_router.patch(
+    "/{product_id:int}", response_model=ProductResponse, summary="Получить товар по ID"
+)
 async def update_product(
     product_id: int,
     product_data: ProductUpdate,
@@ -59,7 +69,9 @@ async def update_product(
 
     Требует прав администратора.
     """
-    product = await product_service.update_product(session=session, product_id=product_id, product_data=product_data)
+    product = await product_service.update_product(
+        session=session, product_id=product_id, product_data=product_data
+    )
     return product
 
 
@@ -113,7 +125,9 @@ async def get_products_images(
     return images
 
 
-@product_router.delete("/images/{image_id:int}", status_code=204, summary="Удалить изображение товара")
+@product_router.delete(
+    "/images/{image_id:int}", status_code=204, summary="Удалить изображение товара"
+)
 async def delete_product_image(
     image_id: int,
     session: AsyncSession = Depends(get_db),

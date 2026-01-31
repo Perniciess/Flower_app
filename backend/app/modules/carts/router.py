@@ -11,7 +11,9 @@ from .schema import CartItemResponse, CartItemUpdate, CartResponse
 cart_router = APIRouter(prefix="/carts", tags=["carts"])
 
 
-@cart_router.get("", response_model=CartResponse, summary="Получить корзину текущего пользователя")
+@cart_router.get(
+    "", response_model=CartResponse, summary="Получить корзину текущего пользователя"
+)
 async def get_current_user_cart(
     user: User = Depends(require_client), session: AsyncSession = Depends(get_db)
 ) -> CartResponse:
@@ -24,7 +26,7 @@ async def get_current_user_cart(
     return cart
 
 
-@cart_router.delete("/{cart_id}", status_code=204, summary="Удалить корзину")
+@cart_router.delete("/{cart_id:int}", status_code=204, summary="Удалить корзину")
 async def delete_cart(
     cart_id: int,
     user: User = Depends(require_admin),
@@ -38,7 +40,7 @@ async def delete_cart(
     await cart_service.delete_cart(session=session, cart_id=cart_id)
 
 
-@cart_router.post("/cart_item/{product_id}", summary="Добавить товар в корзину")
+@cart_router.post("/cart_item/{product_id:int}", summary="Добавить товар в корзину")
 async def create_cart_item(
     product_id: int,
     quantity: int = Body(gt=0),
@@ -62,7 +64,7 @@ async def create_cart_item(
 
 
 @cart_router.patch(
-    "/cart_item/{cart_item_id}",
+    "/cart_item/{cart_item_id:int}",
     response_model=CartItemUpdate,
     summary="Обновить количество товара в корзине",
 )
@@ -86,7 +88,7 @@ async def update_cart_item_quantity(
     return cart_item
 
 
-@cart_router.delete("/cart_item/{cart_item_id}", summary="Удалить товар из корзины")
+@cart_router.delete("/cart_item/{cart_item_id:int}", summary="Удалить товар из корзины")
 async def delete_cart_item(
     cart_item_id: int,
     session: AsyncSession = Depends(get_db),
