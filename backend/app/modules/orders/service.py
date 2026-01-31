@@ -34,6 +34,23 @@ async def create_order(
     idempotency_key: uuid.UUID,
     expires_at: datetime,
 ) -> OrderResponseWithPayment:
+    """
+    Создает заказ.
+
+    Args:
+        session: сессия базы данных
+        data: данные для создания заказа
+        user_id: идентификатор пользователя
+        idempotency_key: уникальный ключ, чтобы не создавать дубликаты заказа и оплаты
+        expires_at: время истечения оплаты заказа
+
+    Returns:
+        OrderResponseWithPayment с данными для оплаты заказа
+
+    Raises:
+        CartNotFoundError: если корзина пользователя не найдена
+        EmptyCartError: если корзина пустая
+    """
     cart = await cart_repository.get_cart_by_user_id(session=session, user_id=user_id)
     if cart is None:
         raise CartNotFoundError(user_id=user_id)
@@ -42,10 +59,7 @@ async def create_order(
         raise EmptyCartError(cart_id=cart.id)
 
     product_ids = [item.product_id for item in cart.cart_item]
-    products = [
-        await product_repository.get_product(session=session, product_id=pid)
-        for pid in product_ids
-    ]
+    products = [await product_repository.get_product(session=session, product_id=pid) for pid in product_ids]
     products = [p for p in products if p is not None]
     discount_map = await discount_service.enrich_products(session=session, products=products)
 
@@ -80,6 +94,15 @@ async def create_order(
 
 
 async def process_webhook(*, session: AsyncSession, payload: WebhookPayload) -> None:
+    """
+    Создает заказ.
+
+    Args:
+        session: сессия базы данных
+        payload: данные об уведомлении от юkassa
+    Returns:
+        None
+    """
     order = await order_repository.get_order_by_payment_id(session=session, payment_id=payload.object.id)
     if order is None:
         return
@@ -94,11 +117,29 @@ async def process_webhook(*, session: AsyncSession, payload: WebhookPayload) -> 
 
 
 async def get_orders(session: AsyncSession, user_id: int) -> Page[OrderResponse]:
+    """
+    Возвращает пагинированный список заказов.
+
+    Args:
+        session: сессия базы данных
+        user_id: идентификатор пользователя
+    Returns:
+        Page[OrderResponse] список заказов пользователя
+    """
     query = order_repository.get_orders_query(user_id=user_id)
     return await paginate(session, query)
 
 
 async def get_order_by_id(session: AsyncSession, order_id: int) -> OrderResponse:
+    """
+    Возвращает заказ.
+
+    Args:
+        session: сессия базы данных
+        order_id: идентификатор заказа
+    Returns:
+        OrderResponse информация о заказе
+    """
     order = await order_repository.get_order_by_id(session=session, order_id=order_id)
     if order is None:
         raise OrderNotFoundError(order_id=order_id)
@@ -107,6 +148,20 @@ async def get_order_by_id(session: AsyncSession, order_id: int) -> OrderResponse
 
 
 async def update_order_status(session: AsyncSession, order_id: int, status: Status) -> OrderResponse:
+    """
+    Изменяет статус заказа.
+
+    Args:
+        session: сессия базы данных
+        order_id: идентификатор заказа
+        status: новый статус заказа
+    Returns:
+        OrderResponse информация о заказе
+
+    Raises:
+        OrderNotFoundError: если заказ не найден
+        OrderNotUpdatedError: если не удалось обновить статус
+    """
     order = await order_repository.get_order_by_id(session=session, order_id=order_id)
     if order is None:
         raise OrderNotFoundError(order_id=order_id)
@@ -118,16 +173,42 @@ async def update_order_status(session: AsyncSession, order_id: int, status: Stat
 
 
 async def get_all_orders(session: AsyncSession) -> Page[OrderResponse]:
+    """
+    Вовзращает пагинированный список заказов.
+
+    Args:
+        session: сессия базы данных
+    Returns:
+        Page[OrderResponse] список заказов
+    """
     query = order_repository.get_all_orders_query()
     return await paginate(session, query)
 
 
 async def get_all_paid_orders(session: AsyncSession) -> Page[OrderResponse]:
+    """
+    Возвращает пагинированный список оплаченных заказов.
+
+    Args:
+        session: сессия базы данных
+    Returns:
+        Page[OrderResponse]
+    """
     query = order_repository.get_all_paid_query()
     return await paginate(session, query)
 
 
 def _build_response_with_payment(order: Order, payment_id: str, confirmation_url: str) -> OrderResponseWithPayment:
+    """
+    Собирает ответ заказа с данными оплаты.
+
+    Args:
+        order: заказ пользователя
+        payment_id: идентификатор оплаты
+        confirmation_url: ссылка на оплату юkassa
+    Returns:
+        OrderResponseWithPayment: информация для оплаты
+    """
     order_data = OrderResponse.model_validate(order).model_dump()
     order_data["payment_id"] = payment_id
     order_data["confirmation_url"] = confirmation_url

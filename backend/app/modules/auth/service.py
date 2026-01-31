@@ -4,7 +4,13 @@ from typing import Any
 from redis.asyncio import Redis
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.core.exceptions import InvalidTokenError, PasswordsDoNotMatchError, UserAlreadyExistsError, UserNotFoundError, UserNotUpdatedError
+from app.core.exceptions import (
+    InvalidTokenError,
+    PasswordsDoNotMatchError,
+    UserAlreadyExistsError,
+    UserNotFoundError,
+    UserNotUpdatedError,
+)
 from app.core.security import (
     add_to_blacklist,
     create_access_token,
@@ -129,7 +135,7 @@ async def logout(*, session: AsyncSession, redis: Redis, access_token: str, refr
 
 async def refresh_tokens(*, session: AsyncSession, refresh_token: str) -> Tokens:
     """
-    Обновление токенов
+    Обновляет токены
 
     Args:
         session: сессия базы данных
@@ -157,7 +163,28 @@ async def refresh_tokens(*, session: AsyncSession, refresh_token: str) -> Tokens
     return Tokens(access_token=access_token, refresh_token=new_refresh_token)
 
 
-async def change_password(*, session: AsyncSession, redis: Redis, access_token: str, user_id: int, data: AuthChangePassword) -> Tokens:
+async def change_password(
+    *, session: AsyncSession, redis: Redis, access_token: str, user_id: int, data: AuthChangePassword
+) -> Tokens:
+    """
+    Изменяет пароль пользователя
+
+    Args:
+        session: сессия базы данных
+        redis: сессия redis хранилища
+        access_token: переданный refresh токен
+        user_id: идентификатор пользователя
+        data: пароли
+
+    Returns:
+        Tokens: access и refresh токены
+
+    Raises:
+        UserNotUpdatedError: если пользователь передал 2 одинаковых пароля
+        UserNotFoundError: если пользователь не найден
+        PasswordsDoNotMatchError: если переданный старый пароль и пароль из БД не совпадают
+        InvalidToken: если переданный refresh токен не соответствует токену в БД
+    """
     if data.old_password == data.new_password:
         raise UserNotUpdatedError(user_id=user_id)
 
@@ -169,7 +196,9 @@ async def change_password(*, session: AsyncSession, redis: Redis, access_token: 
         raise PasswordsDoNotMatchError("Неверный старый пароль")
 
     new_password_hash = get_password_hash(data.new_password)
-    updated_user = await user_repository.update_user(session=session, user_id=user_id, data={"password_hash": new_password_hash})
+    updated_user = await user_repository.update_user(
+        session=session, user_id=user_id, data={"password_hash": new_password_hash}
+    )
     if updated_user is None:
         raise UserNotUpdatedError(user_id=user_id)
 
@@ -184,6 +213,20 @@ async def change_password(*, session: AsyncSession, redis: Redis, access_token: 
 
 
 async def reset_password(*, session: AsyncSession, redis: Redis, phone_number: str) -> VerificationDeepLink:
+    """
+    Начинает сброс пароля пользователя
+
+    Args:
+        session: сессия базы данных
+        redis: сессия redis хранилища
+        phone_number: номер телефона пользователя
+
+    Returns:
+        VerificationDeepLink: ссылка на ТГ-бота для сброса
+
+    Raises:
+        UserNotFoundError: если пользователь не найден
+    """
     user_exist = await user_repository.get_user_by_phone(session=session, phone_number=phone_number)
     if not user_exist:
         raise UserNotFoundError(phone_number=phone_number)
@@ -199,6 +242,17 @@ async def reset_password(*, session: AsyncSession, redis: Redis, phone_number: s
 
 
 async def complete_reset(*, redis: Redis, reset_token: str) -> None:
+    """
+    Завершает сброс пароля пользователя
+
+    Args:
+        session: сессия базы данных
+        redis: сессия redis хранилища
+        reset_token: токен сброса пароля
+
+    Returns:
+        None
+    """
     data_user = await _get_redis_data(redis, f"r:{reset_token}")
 
     ttl = await redis.ttl(f"r:{reset_token}")
@@ -208,6 +262,22 @@ async def complete_reset(*, redis: Redis, reset_token: str) -> None:
 
 
 async def set_new_password(*, session: AsyncSession, redis: Redis, reset_token: str, new_password: str) -> Tokens:
+    """
+    Устанавливает новый пароль
+
+    Args:
+        session: сессия базы данных
+        redis: сессия redis хранилища
+        reset_token: токен сброса пароля
+        new_password: новый пароль пользователя
+
+    Returns:
+        Tokens: access и refresh токены
+
+    Raises:
+        InvalidTokenError: если токен сброса не совпадает с токеном из хранилища
+        UserNotUpdatedError: если пользователь не нгайден
+    """
     data_user = await _get_redis_data(redis, f"r:{reset_token}")
 
     if not data_user.get("verified"):
@@ -215,7 +285,9 @@ async def set_new_password(*, session: AsyncSession, redis: Redis, reset_token: 
 
     user_id = data_user["user_id"]
     new_password_hash = get_password_hash(new_password)
-    updated_user = await user_repository.update_user(session=session, user_id=user_id, data={"password_hash": new_password_hash})
+    updated_user = await user_repository.update_user(
+        session=session, user_id=user_id, data={"password_hash": new_password_hash}
+    )
     if updated_user is None:
         raise UserNotUpdatedError(user_id=user_id)
 
@@ -229,7 +301,7 @@ async def set_new_password(*, session: AsyncSession, redis: Redis, reset_token: 
 
 async def _save_refresh_token(*, session: AsyncSession, user_id: int) -> str:
     """
-    Cохранение refresh токена
+    Cохраняет refresh токен
 
     Args:
         session: сессия базы данных
@@ -253,6 +325,19 @@ async def _save_refresh_token(*, session: AsyncSession, user_id: int) -> str:
 
 
 async def _get_redis_data(redis: Redis, key: str) -> dict[str, Any]:
+    """
+    Получает данные из redis по токену
+
+    Args:
+        redis: сессия хранилища redis
+        key: токен для подтверждения
+
+    Returns:
+        JSON с данными из redis
+
+    Raises:
+        InvalidTokenError: по ключу в хранилище ничего не найдено
+    """
     raw = await redis.get(key)
     if raw is None:
         raise InvalidTokenError()

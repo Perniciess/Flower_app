@@ -56,7 +56,7 @@ async def create_category(session: AsyncSession, category_data: CategoryCreate) 
 
 async def get_category_by_id(session: AsyncSession, category_id: int) -> CategoryResponse:
     """
-    Получает категорию по ID из базы данных.
+    Возвращает категорию по ID из базы данных.
 
     Args:
         session: сессия базы данных
@@ -76,7 +76,7 @@ async def get_category_by_id(session: AsyncSession, category_id: int) -> Categor
 
 async def get_category_by_slug(session: AsyncSession, slug: str) -> CategoryResponse:
     """
-    Получает категорию по slug из базы данных.
+    Возвращает категорию по slug из базы данных.
 
     Args:
         session: сессия базы данных
@@ -145,7 +145,7 @@ async def get_all_active_categories(
     session: AsyncSession,
 ) -> Sequence[CategoryResponse]:
     """
-    Получает список всех активных категорий.
+    Возвращает список всех активных категорий.
 
     Args:
         session: сессия базы данных

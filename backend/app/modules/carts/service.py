@@ -17,7 +17,7 @@ from .schema import CartItemResponse, CartItemUpdate, CartResponse
 
 async def get_current_user_cart(*, session: AsyncSession, user_id: int) -> CartResponse:
     """
-    Получение корзины текущего пользователя.
+    Возвращает корзину текущего пользователя.
 
     Args:
         session: сессия базы данных
@@ -37,7 +37,7 @@ async def get_current_user_cart(*, session: AsyncSession, user_id: int) -> CartR
 
 async def delete_cart(*, session: AsyncSession, cart_id: int) -> None:
     """
-    Удаление корзины пользователя.
+    Удаляет корзину пользователя.
 
     Args:
         session: сессия базы данных
@@ -66,7 +66,7 @@ async def create_cart_item(
     quantity: int,
 ) -> CartItemResponse:
     """
-    Добавление товара в корзину пользователя.
+    Добавляет товар в корзину пользователя.
 
     Args:
         session: сессия базы данных
@@ -121,7 +121,7 @@ async def update_cart_item_quantity(
     *, session: AsyncSession, cart_item_id: int, quantity: int, current_user: User
 ) -> CartItemUpdate:
     """
-    Увеличение количества конкретного товара в корзине пользователя.
+    Изменяет количество конкретного товара в корзине пользователя.
 
     Args:
         session: сессия базы данных
@@ -150,7 +150,7 @@ async def update_cart_item_quantity(
 
 async def delete_cart_item(*, session: AsyncSession, cart_item_id: int) -> None:
     """
-    Удаление товара из корзины.
+    Удаляет товара из корзины.
 
     Args:
         session: сессия базы данных

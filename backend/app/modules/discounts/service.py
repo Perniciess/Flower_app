@@ -15,7 +15,7 @@ from .schema import DiscountCreate, DiscountResponse, DiscountUpdate
 
 async def create_discount(*, session: AsyncSession, discount_data: DiscountCreate) -> DiscountResponse:
     """
-    Создание акции, если указан product_id то скидка на 1 товар, иначе скидка на категорию.
+    Создаёт акцию, если указан product_id то скидка на 1 товар, иначе скидка на категорию.
 
     Args:
         session: сессия базы данных
@@ -46,7 +46,7 @@ async def create_discount(*, session: AsyncSession, discount_data: DiscountCreat
 
 async def get_discount(*, session: AsyncSession, discount_id: int) -> DiscountResponse:
     """
-    Получение информации об акции по идентификатору.
+    Возвращает информацию об акции по идентификатору.
 
     Args:
         session: сессия базы данных
@@ -200,12 +200,28 @@ async def enrich_products(
 
 
 def _calc_percentage(original_price: Decimal, new_price: Decimal) -> Decimal:
-    """Вычисляет процент скидки по исходной и новой цене."""
+    """
+    Вычисляет процент скидки по исходной и новой цене.
+
+    Args:
+        original_price: старая цена
+        new_price: новая цена
+    Returns:
+        Decimal: % скидки
+    """
     return ((original_price - new_price) / original_price * 100).quantize(Decimal("0.01"))
 
 
 def _apply_discount(price: Decimal, discount: Discount) -> Decimal:
-    """Применяет скидку к цене: возвращает new_price или рассчитывает цену по проценту."""
+    """
+    Применяет скидку к цене: возвращает new_price или рассчитывает цену по проценту.
+
+    Args:
+        price: старая цена
+        discount: % скидки
+    Returns:
+        Decimal: новая цена
+    """
     if discount.new_price is not None:
         return discount.new_price
     if discount.percentage is None:

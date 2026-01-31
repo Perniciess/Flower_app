@@ -18,7 +18,7 @@ async def create_discount(
     current_user: User = Depends(require_admin),
 ) -> DiscountResponse:
     """
-    Создание акции.
+    Создать акцию.
 
     Требует прав администратора.
     """
@@ -31,7 +31,7 @@ async def get_discounts(
     current_user: User = Depends(require_admin),
 ) -> Page[DiscountResponse]:
     """
-    Получение списка всех акции.
+    Получить список всех акций.
 
     Требует прав администратора.
     """
@@ -45,7 +45,7 @@ async def get_discount(
     current_user: User = Depends(require_admin),
 ) -> DiscountResponse:
     """
-    Получение акции по ID.
+    Получить акцию по ID.
 
     Требует прав администратора.
     """
@@ -60,7 +60,7 @@ async def update_discount(
     current_user: User = Depends(require_admin),
 ) -> DiscountResponse:
     """
-    Обновить информацию об акции.
+    Обновить информации об акции.
 
     Требует прав администратора.
     """
