@@ -35,10 +35,16 @@ class UserResponse(UserBase):
 class UserUpdate(BaseModel):
     """Схема для частичного обновления пользователя."""
 
-    phone_number: PhoneNumber | None = Field(default=None, description="Номер телефона пользователя")
-    name: str | None = Field(default=None, min_length=1, max_length=64, description="Имя пользователя")
+    phone_number: PhoneNumber | None = Field(
+        default=None, description="Номер телефона пользователя"
+    )
+    name: str | None = Field(
+        default=None, min_length=1, max_length=64, description="Имя пользователя"
+    )
     role: Role | None = Field(default=None, description="Роль пользователя")
-    password: str | None = Field(default=None, min_length=8, description="Пароль пользователя")
+    password: str | None = Field(
+        default=None, min_length=8, description="Пароль пользователя"
+    )
 
     @field_validator("phone_number")
     @classmethod

@@ -14,6 +14,8 @@ from app.modules.auth.model import RefreshToken
 from app.modules.products.model import Product, ProductImage
 from app.modules.carts.model import Cart, CartItem
 from app.modules.orders.model import Order, OrderItem
+from app.modules.categories.model import Category
+
 config = context.config
 
 if config.config_file_name is not None:

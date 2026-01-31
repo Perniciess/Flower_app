@@ -20,7 +20,7 @@ def parse_cors(v: Any) -> list[str] | str:
 
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
-        env_file=".env",
+        env_file="../.env",
         env_ignore_empty=True,
         extra="ignore",
     )
@@ -41,21 +41,28 @@ class Settings(BaseSettings):
     ENVIRONMENT: Literal["local", "staging", "production"] = "local"
     COOKIE_SECURE: bool = False
     COOKIE_SAMESITE: Literal["lax", "strict", "none"] = "strict"
-    BACKEND_CORS_ORIGINS: Annotated[list[AnyUrl] | str, BeforeValidator(parse_cors)] = []
+    BACKEND_CORS_ORIGINS: Annotated[
+        list[AnyUrl] | str, BeforeValidator(parse_cors)
+    ] = []
 
     # SECURITY.PY
     REFRESH_TOKEN_BYTES: int = 64
-    VERIFICATION_TOKEN_LENGTH: int = 8  # если изменить на больше, то нужно  менять схему RegisterResponse
+    VERIFICATION_TOKEN_LENGTH: int = (
+        8  # если изменить на больше, то нужно  менять схему RegisterResponse
+    )
     VERIFICATION_ALPHABET: str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 
     # IMAGE PATH
     UPLOAD_DIR: Path = Path("app/static/uploads/products")
+    CATEGORY_UPLOAD_DIR: Path = Path("app/static/uploads/categories")
     ROOT_DIR: Path = Path("app")
 
     @computed_field
     @property
     def all_cors_origins(self) -> list[str]:
-        return [str(origin).rstrip("/") for origin in self.BACKEND_CORS_ORIGINS] + [self.FRONTEND_HOST]
+        return [str(origin).rstrip("/") for origin in self.BACKEND_CORS_ORIGINS] + [
+            self.FRONTEND_HOST
+        ]
 
     PROJECT_NAME: str
 
@@ -72,7 +79,9 @@ class Settings(BaseSettings):
     YOOKASSA_SHOP_ID: str
     YOOKASSA_SECRET_KEY: str
     ORDER_EXPIRATION_MINUTES: int = 30
-    CAPTURE: bool = True  # True - автосписание, False - после подтверждения. Обговорить с Сашей
+    CAPTURE: bool = (
+        True  # True - автосписание, False - после подтверждения. Обговорить с Сашей
+    )
 
     @computed_field
     @property
