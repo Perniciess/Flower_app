@@ -4,6 +4,8 @@ from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 
 class DiscountBase(BaseModel):
+    """Базовые поля акции, используемые в других схемах."""
+
     name: str = Field(..., description="Название акции")
     product_id: int | None = Field(default=None, description="Уникальный идентификатор товара")
     category_id: int | None = Field(default=None, description="Уникальный идентификатор категории")
@@ -13,6 +15,8 @@ class DiscountBase(BaseModel):
 
 
 class DiscountCreate(DiscountBase):
+    """Схема для создания акции."""
+
     @model_validator(mode="after")
     def validate_target_and_value(self) -> "DiscountCreate":
         has_product = self.product_id is not None
@@ -32,6 +36,8 @@ class DiscountCreate(DiscountBase):
 
 
 class DiscountUpdate(BaseModel):
+    """Схема для обновления информации об акции."""
+
     name: str | None = Field(default=None, description="Название акции")
     percentage: Decimal | None = Field(default=None, ge=0, le=100, description="Процент скидки")
     new_price: Decimal | None = Field(default=None, ge=0, description="Новая цена товара")
@@ -39,12 +45,9 @@ class DiscountUpdate(BaseModel):
 
 
 class DiscountResponse(DiscountBase):
+    """Схема API ответа с информацией об акции"""
+
     model_config = ConfigDict(from_attributes=True)
 
     id: int = Field(..., description="Уникальный идентификатор акции")
     discount_type: str = Field(..., description="Тип скидки")
-
-
-class DiscountBrief(BaseModel):
-    percentage: Decimal | None
-    new_price: Decimal | None

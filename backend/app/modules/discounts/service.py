@@ -14,6 +14,19 @@ from .schema import DiscountCreate, DiscountResponse, DiscountUpdate
 
 
 async def create_discount(*, session: AsyncSession, discount_data: DiscountCreate) -> DiscountResponse:
+    """
+    Создание акции, если указан product_id то скидка на 1 товар, иначе скидка на категорию.
+
+    Args:
+        session: сессия базы данных
+        discount_data: данные для создания акции
+
+    Returns:
+        DiscountResponse об акции
+
+    Raises:
+        ProductNotFoundError: если товар не найден по идентификатору при создании акции на 1 товар
+    """
     discount_type = DiscountType.PRODUCT if discount_data.product_id else DiscountType.CATEGORY
 
     if discount_data.product_id and discount_data.new_price is not None:
@@ -32,6 +45,19 @@ async def create_discount(*, session: AsyncSession, discount_data: DiscountCreat
 
 
 async def get_discount(*, session: AsyncSession, discount_id: int) -> DiscountResponse:
+    """
+    Получение информации об акции по идентификатору.
+
+    Args:
+        session: сессия базы данных
+        discount_id: идентификатор акции
+
+    Returns:
+        DiscountResponse об акции
+
+    Raises:
+        DiscountNotFoundError: если акция не найдена
+    """
     discount = await discount_repository.get_discount(session=session, discount_id=discount_id)
     if not discount:
         raise DiscountNotFoundError(discount_id=discount_id)
@@ -39,6 +65,15 @@ async def get_discount(*, session: AsyncSession, discount_id: int) -> DiscountRe
 
 
 async def get_discounts(*, session: AsyncSession) -> Page[DiscountResponse]:
+    """
+    Возвращает пагинированный список всех акций.
+
+    Args:
+        session: сессия базы данных
+
+    Returns:
+        Page[DiscountResponse] с пагинированным списком акций
+    """
     query = discount_repository.get_discounts_query()
     return await paginate(session, query)
 
@@ -46,6 +81,20 @@ async def get_discounts(*, session: AsyncSession) -> Page[DiscountResponse]:
 async def update_discount(
     *, session: AsyncSession, discount_id: int, discount_data: DiscountUpdate
 ) -> DiscountResponse:
+    """
+    Обновляет информацию о категории в базе данных.
+
+    Args:
+        session: сессия базы данных
+        discount_id: идентификатор акции
+        discount_data: новые данные акции
+
+    Returns:
+        DiscountResponse с данными обновленной акции
+
+    Raises:
+        DiscountNotFoundError: если акция не существует
+    """
     existing = await discount_repository.get_discount(session=session, discount_id=discount_id)
     if not existing:
         raise DiscountNotFoundError(discount_id=discount_id)
@@ -65,7 +114,20 @@ async def update_discount(
     return DiscountResponse.model_validate(discount)
 
 
-async def delete_discount(*, session: AsyncSession, discount_id: int) -> bool:
+async def delete_discount(*, session: AsyncSession, discount_id: int) -> None:
+    """
+    Удаляет акцию.
+
+    Args:
+        session: сессия базы данных
+        discount_id: идентификатор акции
+
+    Returns:
+        None
+
+    Raises:
+        DiscountNotFoundError: если акция не существует
+    """
     existing = await discount_repository.get_discount(session=session, discount_id=discount_id)
     if not existing:
         raise DiscountNotFoundError(discount_id=discount_id)
@@ -73,12 +135,24 @@ async def delete_discount(*, session: AsyncSession, discount_id: int) -> bool:
     deleted = await discount_repository.delete_discount(session=session, discount_id=discount_id)
     if not deleted:
         raise DiscountNotFoundError(discount_id=discount_id)
-    return True
 
 
 async def enrich_products(
     *, session: AsyncSession, products: Sequence[Product]
 ) -> dict[int, tuple[Decimal | None, Discount | None]]:
+    """
+    Дополняет список товаров информацией о скидках.
+
+    Для каждого товара ищет активную скидку: сначала персональную (на товар),
+    затем по категории. Возвращает словарь с итоговой ценой и объектом скидки.
+
+    Args:
+        session: сессия базы данных
+        products: список товаров для обогащения
+
+    Returns:
+        Словарь {product_id: (цена со скидкой, скидка)} — значения (None, None), если скидки нет.
+    """
     if not products:
         return {}
 
@@ -126,10 +200,12 @@ async def enrich_products(
 
 
 def _calc_percentage(original_price: Decimal, new_price: Decimal) -> Decimal:
+    """Вычисляет процент скидки по исходной и новой цене."""
     return ((original_price - new_price) / original_price * 100).quantize(Decimal("0.01"))
 
 
 def _apply_discount(price: Decimal, discount: Discount) -> Decimal:
+    """Применяет скидку к цене: возвращает new_price или рассчитывает цену по проценту."""
     if discount.new_price is not None:
         return discount.new_price
     if discount.percentage is None:
