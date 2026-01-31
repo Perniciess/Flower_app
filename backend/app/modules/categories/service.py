@@ -11,6 +11,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.config import settings
 from app.core.exceptions import (
     CategoryAlreadyExistsError,
+    CategoryCycleError,
     CategoryNotExistsError,
     CategoryParentNotFoundError,
 )
@@ -26,6 +27,20 @@ from .schema import (
 
 
 async def create_category(session: AsyncSession, category_data: CategoryCreate) -> CategoryResponse:
+    """
+    Создает новую категорию в базе данных.
+
+    Args:
+        session: сессия базы данных
+        category_data: данные для создания категории
+
+    Returns:
+        CategoryResponse с данными созданной категории
+
+    Raises:
+        CategoryAlreadyExistsError: если категория уже существует
+        CategoryParentNotFoundError: если заданная родительская категория не существует
+    """
     category_exist = await category_repository.get_category_by_slug(session=session, slug=category_data.slug)
     if category_exist is not None:
         raise CategoryAlreadyExistsError(slug=category_data.slug)
@@ -40,6 +55,19 @@ async def create_category(session: AsyncSession, category_data: CategoryCreate) 
 
 
 async def get_category_by_id(session: AsyncSession, category_id: int) -> CategoryResponse:
+    """
+    Получает категорию по ID из базы данных.
+
+    Args:
+        session: сессия базы данных
+        category_id: идентификатор категории
+
+    Returns:
+        CategoryResponse с данными созданной категории
+
+    Raises:
+        CategoryNotExistsError: если категория не существует
+    """
     category = await category_repository.get_category_by_id(session, category_id)
     if not category:
         raise CategoryNotExistsError(category_id=category_id)
@@ -47,6 +75,19 @@ async def get_category_by_id(session: AsyncSession, category_id: int) -> Categor
 
 
 async def get_category_by_slug(session: AsyncSession, slug: str) -> CategoryResponse:
+    """
+    Получает категорию по slug из базы данных.
+
+    Args:
+        session: сессия базы данных
+        slug: slug категории
+
+    Returns:
+        CategoryResponse с данными созданной категории
+
+    Raises:
+        CategoryNotExistsError: если категория не существует
+    """
     category = await category_repository.get_category_by_slug(session=session, slug=slug)
     if category is None:
         raise CategoryNotExistsError(slug=slug)
@@ -55,6 +96,23 @@ async def get_category_by_slug(session: AsyncSession, slug: str) -> CategoryResp
 
 
 async def update_category(session: AsyncSession, category_id: int, category_data: CategoryUpdate) -> CategoryResponse:
+    """
+    Обновляет информацию о категории в базе данных.
+
+    Args:
+        session: сессия базы данных
+        category_id: идентификатор категории
+        category_data: новые данные категории
+
+    Returns:
+        CategoryResponse с данными созданной категории
+
+    Raises:
+        CategoryNotExistsError: если категория не существует
+        CategoryAlreadyExistsError: когда категории задается новый slug, но категория с таким slug уже существует
+        CategoryParentNotFoundError: если задается новая родительская категория, которой не существует
+        CategoryCycleError: если родительская и дочерняя категории создают циклическую зависимость
+    """
     category = await category_repository.get_category_by_id(session, category_id)
     if not category:
         raise CategoryNotExistsError(category_id=category_id)
@@ -71,9 +129,7 @@ async def update_category(session: AsyncSession, category_id: int, category_data
 
         has_cycle = await _check_circular_dependency(session, category_id, category_data.parent_id)
         if has_cycle:
-            raise ValueError(
-                f"Циклическая зависимость: категория {category_id} не может быть дочерней для {category_data.parent_id}"
-            )
+            raise CategoryCycleError(category_id=category_id, parent_id=category_data.parent_id)
 
     updated_category = await category_repository.update_category(
         session=session, category_id=category_id, category_data=category_data
@@ -88,16 +144,44 @@ async def update_category(session: AsyncSession, category_id: int, category_data
 async def get_all_active_categories(
     session: AsyncSession,
 ) -> Sequence[CategoryResponse]:
+    """
+    Получает список всех активных категорий.
+
+    Args:
+        session: сессия базы данных
+
+    Returns:
+        Sequence[CategoryResponse] список с данными активных категорий
+    """
     categories = await category_repository.get_all_active_categories(session=session)
     return [CategoryResponse.model_validate(category) for category in categories]
 
 
 async def get_all_categories(session: AsyncSession) -> Page[CategoryResponse]:
+    """
+    Возвращает пагинированный список всех категорий.
+
+    Args:
+        session: сессия базы данных
+
+    Returns:
+        Page[CategoryResponse] с пагинированным списком категорий
+    """
     query = category_repository.get_categories_query()
     return await paginate(session, query)
 
 
 async def get_category_tree(session: AsyncSession, only_active: bool = True) -> list[CategoryWithChildren]:
+    """
+    Возвращает дерево категорий, рекурсивно собирая дочерние элементы.
+
+    Args:
+        session: сессия базы данных
+        only_active: если True, возвращает только активные категории
+
+    Returns:
+        CategoryWithChildren список корневых категорий с вложенными дочерними элементами
+    """
     root_categories = await category_repository.get_root_categories(session=session, only_active=only_active)
 
     async def build_tree(category: Category) -> CategoryWithChildren:
@@ -114,7 +198,20 @@ async def get_category_tree(session: AsyncSession, only_active: bool = True) -> 
     return [await build_tree(cat) for cat in root_categories]
 
 
-async def delete_category_by_id(session: AsyncSession, category_id: int) -> bool:
+async def delete_category_by_id(session: AsyncSession, category_id: int) -> None:
+    """
+    Удаляет категорию по ID и ее изображение.
+
+    Args:
+        session: сессия базы данных
+        category_id: идентификатор категории
+
+    Returns:
+        None
+
+    Raises:
+        CategoryNotExistsError: если категория не существует
+    """
     category = await category_repository.get_category_by_id(session, category_id)
     if not category:
         raise CategoryNotExistsError(category_id=category_id)
@@ -129,10 +226,21 @@ async def delete_category_by_id(session: AsyncSession, category_id: int) -> bool
     if not deleted:
         raise CategoryNotExistsError(category_id=category_id)
 
-    return True
-
 
 async def delete_image(*, session: AsyncSession, category_id: int) -> CategoryResponse:
+    """
+    Удаляет изображение категории.
+
+    Args:
+        session: сессия базы данных
+        category_id: идентификатор категории
+
+    Returns:
+        CategoryResponse с данными о категории
+
+    Raises:
+        CategoryNotExistsError: если категория не существует
+    """
     category = await category_repository.get_category_by_id(session, category_id)
     if not category:
         raise CategoryNotExistsError(category_id=category_id)
@@ -150,6 +258,21 @@ async def delete_image(*, session: AsyncSession, category_id: int) -> CategoryRe
 
 
 async def upload_image(*, session: AsyncSession, category_id: int, image: UploadFile) -> CategoryResponse:
+    """
+    Загружает изображение категории.
+
+    Args:
+        session: сессия базы данных
+        category_id: идентификатор категории
+        image: файл изображения
+
+    Returns:
+        CategoryResponse с данными о категории
+
+    Raises:
+        CategoryNotExistsError: если категория не существует
+        ValueError: если у файла нет названия
+    """
     category = await category_repository.get_category_by_id(session, category_id)
     if not category:
         raise CategoryNotExistsError(category_id=category_id)
@@ -181,6 +304,20 @@ async def upload_image(*, session: AsyncSession, category_id: int, image: Upload
 
 
 async def _check_circular_dependency(session: AsyncSession, category_id: int, parent_id: int) -> bool:
+    """
+    Проверяет наличие циклической зависимости при назначении нового родителя категории.
+
+    Поднимается по цепочке родителей от parent_id вверх. Если на пути встречается
+    category_id — значит, назначение создаст цикл.
+
+    Args:
+        session: сессия базы данных
+        category_id: идентификатор категории, которой назначается новый родитель
+        parent_id: идентификатор предполагаемого родителя
+
+    Returns:
+        True, если обнаружен цикл, иначе False
+    """
     if category_id == parent_id:
         return True
 

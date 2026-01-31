@@ -5,9 +5,9 @@ from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 
 class CategoryBase(BaseModel):
-    name: str = Field(
-        ..., description="Название категории", min_length=1, max_length=255
-    )
+    """Базовые поля категории, используемые в других схемах."""
+
+    name: str = Field(..., description="Название категории", min_length=1, max_length=255)
     slug: str = Field(
         ...,
         description="URL-friendly идентификатор категории",
@@ -34,13 +34,15 @@ class CategoryBase(BaseModel):
 
 
 class CategoryCreate(CategoryBase):
+    """Схема для создания категории."""
+
     is_active: bool = Field(default=False, description="Статус активности категории")
 
 
 class CategoryUpdate(BaseModel):
-    name: str | None = Field(
-        default=None, description="Название категории", min_length=1, max_length=255
-    )
+    """Схема для обновление категории."""
+
+    name: str | None = Field(default=None, description="Название категории", min_length=1, max_length=255)
     slug: str | None = Field(
         default=None,
         description="URL-friendly идентификатор категории",
@@ -50,9 +52,7 @@ class CategoryUpdate(BaseModel):
     description: str | None = Field(default=None, description="Описание категории")
     image_url: str | None = Field(default=None, description="URL изображения категории")
     parent_id: int | None = Field(default=None, description="ID родительской категории")
-    is_active: bool | None = Field(
-        default=None, description="Статус активности категории"
-    )
+    is_active: bool | None = Field(default=None, description="Статус активности категории")
     sort_order: int | None = Field(default=None, description="Порядок сортировки")
 
     @field_validator("slug")
@@ -73,6 +73,8 @@ class CategoryUpdate(BaseModel):
 
 
 class CategoryResponse(CategoryBase):
+    """Схема ответа API ответа с информацией о категории."""
+
     model_config = ConfigDict(from_attributes=True)
 
     id: int = Field(..., description="Уникальный идентификатор категории")
@@ -82,9 +84,9 @@ class CategoryResponse(CategoryBase):
 
 
 class CategoryWithChildren(CategoryResponse):
-    children: list["CategoryWithChildren"] = Field(
-        default_factory=list, description="Подкатегории"
-    )
+    """Схема ответа API ответа об древовидной структура категорий."""
+
+    children: list["CategoryWithChildren"] = Field(default_factory=list, description="Подкатегории")
 
 
 CategoryWithChildren.model_rebuild()
