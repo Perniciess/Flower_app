@@ -26,7 +26,7 @@ class CartItemUpdate(BaseModel):
 
 
 class CartItemResponse(CartItemBase):
-    """Схема ответа API ответа товара в корзине."""
+    """Схема ответа API ответа с информацией об товаре в корзине."""
 
     model_config = ConfigDict(from_attributes=True)
 
@@ -34,7 +34,7 @@ class CartItemResponse(CartItemBase):
 
 
 class CartResponse(BaseModel):
-    """Схема API ответа корзины"""
+    """Схема API ответа с информацией о корзине"""
 
     model_config = ConfigDict(from_attributes=True)
 

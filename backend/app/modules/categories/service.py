@@ -105,7 +105,7 @@ async def update_category(session: AsyncSession, category_id: int, category_data
         category_data: новые данные категории
 
     Returns:
-        CategoryResponse с данными созданной категории
+        CategoryResponse с данными обновленной категории
 
     Raises:
         CategoryNotExistsError: если категория не существует

@@ -21,6 +21,8 @@ class DiscountType(StrEnum):
 
 
 class Discount(Base):
+    """Сущность акции."""
+
     __tablename__ = "discount"
     __table_args__ = (
         CheckConstraint(
