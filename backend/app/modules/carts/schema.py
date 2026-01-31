@@ -26,7 +26,7 @@ class CartItemUpdate(BaseModel):
 
 
 class CartItemResponse(CartItemBase):
-    """Схема ответа API овтета товара в корзине."""
+    """Схема ответа API ответа товара в корзине."""
 
     model_config = ConfigDict(from_attributes=True)
 

@@ -123,6 +123,14 @@ class CategoryNotExistsError(HTTPException):
         super().__init__(status_code=404, detail=detail)
 
 
+class CategoryCycleError(HTTPException):
+    def __init__(self, category_id: int, parent_id: int) -> None:
+        super().__init__(
+            status_code=409,
+            detail=f"Циклическая зависимость: категория {category_id} не может быть дочерней для {parent_id}",
+        )
+
+
 class DiscountNotFoundError(HTTPException):
     def __init__(self, discount_id: int) -> None:
         super().__init__(status_code=404, detail=f"Скидка с ID={discount_id} не найдена")

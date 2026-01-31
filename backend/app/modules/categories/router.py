@@ -24,6 +24,11 @@ async def create_category(
     session: AsyncSession = Depends(get_db),
     current_user: User = Depends(require_admin),
 ) -> CategoryResponse:
+    """
+    Создание категории.
+
+    Требует прав администратора.
+    """
     category = await category_service.create_category(session=session, category_data=category_data)
     return category
 
@@ -36,6 +41,9 @@ async def create_category(
 async def get_all_active_categories(
     session: AsyncSession = Depends(get_db),
 ) -> Sequence[CategoryResponse]:
+    """
+    Получить список всех активных.
+    """
     categories = await category_service.get_all_active_categories(session=session)
     return categories
 
@@ -49,6 +57,11 @@ async def get_all_categories_admin(
     current_user: User = Depends(require_admin),
     session: AsyncSession = Depends(get_db),
 ) -> Page[CategoryResponse]:
+    """
+    Получение списка всех категорий.
+
+    Требует прав администратора.
+    """
     categories = await category_service.get_all_categories(session=session)
     return categories
 
@@ -62,6 +75,9 @@ async def get_category_tree(
     session: AsyncSession = Depends(get_db),
     only_active: bool = True,
 ) -> list[CategoryWithChildren]:
+    """
+    Получить дерево категорий.
+    """
     return await category_service.get_category_tree(session=session, only_active=only_active)
 
 
@@ -71,6 +87,9 @@ async def get_category_tree(
     summary="Получить категорию по ID",
 )
 async def get_category_by_id(category_id: int, session: AsyncSession = Depends(get_db)) -> CategoryResponse:
+    """
+    Получить категорию по ID.
+    """
     return await category_service.get_category_by_id(session=session, category_id=category_id)
 
 
@@ -85,6 +104,11 @@ async def update_category(
     session: AsyncSession = Depends(get_db),
     current_user: User = Depends(require_admin),
 ) -> CategoryResponse:
+    """
+    Обновить данные в категории.
+
+    Требует прав администратора.
+    """
     return await category_service.update_category(session=session, category_id=category_id, category_data=category_data)
 
 
@@ -93,7 +117,12 @@ async def delete_category_by_id(
     category_id: int,
     session: AsyncSession = Depends(get_db),
     current_user: User = Depends(require_admin),
-):
+) -> None:
+    """
+    Удаление категории.
+
+    Требует прав администратора.
+    """
     await category_service.delete_category_by_id(session=session, category_id=category_id)
 
 
@@ -108,6 +137,11 @@ async def upload_category_image(
     session: AsyncSession = Depends(get_db),
     current_user: User = Depends(require_admin),
 ) -> CategoryResponse:
+    """
+    Загрузка изображения категории.
+
+    Требует прав администратора.
+    """
     category = await category_service.upload_image(session=session, category_id=category_id, image=image)
     return category
 
@@ -122,10 +156,18 @@ async def delete_category_image(
     session: AsyncSession = Depends(get_db),
     current_user: User = Depends(require_admin),
 ) -> CategoryResponse:
+    """
+    Удаление изображение категории.
+
+    Требует прав администратора.
+    """
     return await category_service.delete_image(session=session, category_id=category_id)
 
 
 @category_router.get("/{slug}", response_model=CategoryResponse, summary="Получить категорию по slug")
 async def get_category_by_slug(slug: str, session: AsyncSession = Depends(get_db)) -> CategoryResponse:
+    """
+    Получить категорию по slug.
+    """
     category = await category_service.get_category_by_slug(session=session, slug=slug)
     return category
