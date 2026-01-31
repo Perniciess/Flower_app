@@ -54,22 +54,16 @@ class Category(Base):
     is_active: Mapped[bool] = mapped_column(Boolean, default=True)
     sort_order: Mapped[int] = mapped_column(Integer, default=0, index=True)
 
-    created_at: Mapped[datetime] = mapped_column(
-        DateTime(timezone=True), server_default=func.now()
-    )
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
     updated_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now(), onupdate=func.now()
     )
 
-    products: Mapped[list["Product"]] = relationship(
-        "Product", secondary=product_category, back_populates="categories"
-    )
+    products: Mapped[list["Product"]] = relationship("Product", secondary=product_category, back_populates="categories")
 
     parent: Mapped["Category | None"] = relationship(
         "Category",
         remote_side=[id],
         back_populates="children",
     )
-    children: Mapped[list["Category"]] = relationship(
-        "Category", back_populates="parent", cascade="all, delete-orphan"
-    )
+    children: Mapped[list["Category"]] = relationship("Category", back_populates="parent", cascade="all, delete-orphan")

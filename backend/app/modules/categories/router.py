@@ -18,17 +18,13 @@ from .schema import (
 category_router = APIRouter(prefix="/category", tags=["category"])
 
 
-@category_router.post(
-    "/create", response_model=CategoryResponse, summary="Создание категории"
-)
+@category_router.post("/create", response_model=CategoryResponse, summary="Создание категории")
 async def create_category(
     category_data: CategoryCreate,
     session: AsyncSession = Depends(get_db),
     current_user: User = Depends(require_admin),
 ) -> CategoryResponse:
-    category = await category_service.create_category(
-        session=session, category_data=category_data
-    )
+    category = await category_service.create_category(session=session, category_data=category_data)
     return category
 
 
@@ -66,9 +62,7 @@ async def get_category_tree(
     session: AsyncSession = Depends(get_db),
     only_active: bool = True,
 ) -> list[CategoryWithChildren]:
-    return await category_service.get_category_tree(
-        session=session, only_active=only_active
-    )
+    return await category_service.get_category_tree(session=session, only_active=only_active)
 
 
 @category_router.get(
@@ -76,12 +70,8 @@ async def get_category_tree(
     response_model=CategoryResponse,
     summary="Получить категорию по ID",
 )
-async def get_category_by_id(
-    category_id: int, session: AsyncSession = Depends(get_db)
-) -> CategoryResponse:
-    return await category_service.get_category_by_id(
-        session=session, category_id=category_id
-    )
+async def get_category_by_id(category_id: int, session: AsyncSession = Depends(get_db)) -> CategoryResponse:
+    return await category_service.get_category_by_id(session=session, category_id=category_id)
 
 
 @category_router.patch(
@@ -95,22 +85,16 @@ async def update_category(
     session: AsyncSession = Depends(get_db),
     current_user: User = Depends(require_admin),
 ) -> CategoryResponse:
-    return await category_service.update_category(
-        session=session, category_id=category_id, category_data=category_data
-    )
+    return await category_service.update_category(session=session, category_id=category_id, category_data=category_data)
 
 
-@category_router.delete(
-    "/{category_id:int}", status_code=204, summary="Удалить категорию"
-)
+@category_router.delete("/{category_id:int}", status_code=204, summary="Удалить категорию")
 async def delete_category_by_id(
     category_id: int,
     session: AsyncSession = Depends(get_db),
     current_user: User = Depends(require_admin),
 ):
-    await category_service.delete_category_by_id(
-        session=session, category_id=category_id
-    )
+    await category_service.delete_category_by_id(session=session, category_id=category_id)
 
 
 @category_router.post(
@@ -124,17 +108,24 @@ async def upload_category_image(
     session: AsyncSession = Depends(get_db),
     current_user: User = Depends(require_admin),
 ) -> CategoryResponse:
-    category = await category_service.upload_image(
-        session=session, category_id=category_id, image=image
-    )
+    category = await category_service.upload_image(session=session, category_id=category_id, image=image)
     return category
 
 
-@category_router.get(
-    "/{slug}", response_model=CategoryResponse, summary="Получить категорию по slug"
+@category_router.delete(
+    "/{category_id:int}/image",
+    response_model=CategoryResponse,
+    summary="Удалить изображение категории",
 )
-async def get_category_by_slug(
-    slug: str, session: AsyncSession = Depends(get_db)
+async def delete_category_image(
+    category_id: int,
+    session: AsyncSession = Depends(get_db),
+    current_user: User = Depends(require_admin),
 ) -> CategoryResponse:
+    return await category_service.delete_image(session=session, category_id=category_id)
+
+
+@category_router.get("/{slug}", response_model=CategoryResponse, summary="Получить категорию по slug")
+async def get_category_by_slug(slug: str, session: AsyncSession = Depends(get_db)) -> CategoryResponse:
     category = await category_service.get_category_by_slug(session=session, slug=slug)
     return category
