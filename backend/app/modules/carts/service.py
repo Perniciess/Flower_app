@@ -72,12 +72,15 @@ async def create_cart_item(
         session: сессия базы данных
         current_user: активный пользователь
         target_user_id: пользователь, которому в корзину добавится товар
+        product_id: идентификатор товара
+        quantity: количество добавляемого товара
 
     Returns:
         CartItemResponse, данные об добавленном товаре
 
     Raises:
-        CartNotFoundError: корзина по ID не найдена
+        ProductNotFoundError: не найден товар по ID
+        InsufficientPermissionError: недостаточно прав для удаления корзины
     """
     if target_user_id and target_user_id != current_user.id:
         if current_user.role != Role.ADMIN:
@@ -145,8 +148,20 @@ async def update_cart_item_quantity(
     return CartItemUpdate.model_validate(cart_item)
 
 
-async def delete_cart_item(*, session: AsyncSession, cart_item_id: int) -> bool:
+async def delete_cart_item(*, session: AsyncSession, cart_item_id: int) -> None:
+    """
+    Удаление товара из корзины.
+
+    Args:
+        session: сессия базы данных
+        cart_item_id: идентификтаор товара в корзине
+
+    Returns:
+        None
+
+    Raises:
+        CartItemNotFoundError: товар корзины по ID не найден
+    """
     deleted = await cart_repository.delete_cart_item(session=session, cart_item_id=cart_item_id)
     if not deleted:
         raise CartItemNotFoundError(cart_item_id=cart_item_id)
-    return True
