@@ -44,3 +44,5 @@ class ProductResponse(ProductBase):
 
     id: int = Field(..., description="Уникальный идентификатор товара")
     images: list[ProductImageResponse] = Field(default_factory=list, description="Изображения товара")
+    discounted_price: Decimal | None = Field(default=None, description="Цена со скидкой")
+    discount_percentage: Decimal | None = Field(default=None, description="Процент скидки")

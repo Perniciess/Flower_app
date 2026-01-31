@@ -11,6 +11,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import settings
 from app.core.exceptions import ImageNotFoundError, ProductNotFoundError
+from app.modules.discounts import service as discount_service
 from app.modules.products.filter import ProductFilter
 
 from . import repository as product_repository
@@ -28,32 +29,42 @@ async def create_product(*, session: AsyncSession, product_data: ProductCreate) 
     Returns:
         ProductResponse с данными созданного цветка
     """
-    product = await product_repository.create_product(session=session, product_data=product_data.model_dump())
+    product = await product_repository.create_product(session=session, product_data=product_data)
     product = await product_repository.get_product_by_id(session=session, product_id=product.id)
     return ProductResponse.model_validate(product)
 
 
 async def get_products(*, session: AsyncSession, product_filter: ProductFilter) -> Page[ProductResponse]:
-    """
-    Получает список товаров из базы данных.
-
-    Args:
-        session: сессия базы данных
-
-    Returns:
-        Page[ProductResponse] список товаров с пагинацией
-    """
     query = product_repository.get_products_query()
     filtered_query = product_filter.filter(query)
     sorted_query = product_filter.sort(filtered_query)
-    return await paginate(session, sorted_query)
+    page = await paginate(session, sorted_query)
+
+    discount_map = await discount_service.enrich_products(session=session, products=page.items)
+
+    enriched_items = []
+    for product in page.items:
+        response = ProductResponse.model_validate(product)
+        discounted_price, discount = discount_map.get(product.id, (None, None))
+        response.discounted_price = discounted_price
+        response.discount_percentage = discount.percentage if discount else None
+        enriched_items.append(response)
+
+    page.items = enriched_items
+    return page
 
 
 async def get_product(*, session: AsyncSession, product_id: int) -> ProductResponse:
     product = await product_repository.get_product(session=session, product_id=product_id)
     if product is None:
         raise ProductNotFoundError(product_id=product_id)
-    return ProductResponse.model_validate(product)
+
+    discount_map = await discount_service.enrich_products(session=session, products=[product])
+    response = ProductResponse.model_validate(product)
+    discounted_price, discount = discount_map.get(product.id, (None, None))
+    response.discounted_price = discounted_price
+    response.discount_percentage = discount.percentage if discount else None
+    return response
 
 
 async def update_product(*, session: AsyncSession, product_id: int, product_data: ProductUpdate) -> ProductResponse:
@@ -71,7 +82,7 @@ async def update_product(*, session: AsyncSession, product_id: int, product_data
     product = await product_repository.update_product(
         session=session,
         product_id=product_id,
-        product_data=product_data.model_dump(exclude_unset=True),
+        product_data=product_data,
     )
     return ProductResponse.model_validate(product)
 

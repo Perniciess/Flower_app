@@ -4,9 +4,11 @@ from app.core.exceptions import (
     CartItemNotFoundError,
     CartNotFoundError,
     InsufficientPermissionError,
+    ProductNotFoundError,
     UserCartMissingError,
 )
-from app.modules.products import service as product_service
+from app.modules.discounts import service as discount_service
+from app.modules.products import repository as product_repository
 from app.modules.users.model import Role, User
 
 from . import repository as cart_repository
@@ -84,7 +86,13 @@ async def create_cart_item(
     else:
         user_id = current_user.id
 
-    price = await product_service.get_product_price(session=session, product_id=product_id)
+    product = await product_repository.get_product(session=session, product_id=product_id)
+    if not product:
+        raise ProductNotFoundError(product_id=product_id)
+
+    discount_map = await discount_service.enrich_products(session=session, products=[product])
+    discounted_price, _ = discount_map.get(product.id, (None, None))
+    price = discounted_price if discounted_price is not None else product.price
 
     cart = await cart_repository.get_cart_by_user_id(session=session, user_id=user_id)
     if not cart:

@@ -12,7 +12,9 @@ from app.core.exceptions import (
     OrderNotUpdatedError,
 )
 from app.modules.carts import repository as cart_repository
+from app.modules.discounts import service as discount_service
 from app.modules.payments import service as payment_service
+from app.modules.products import repository as product_repository
 
 from . import repository as order_repository
 from .model import Order, Status
@@ -38,6 +40,19 @@ async def create_order(
 
     if not cart.cart_item:
         raise EmptyCartError(cart_id=cart.id)
+
+    product_ids = [item.product_id for item in cart.cart_item]
+    products = [
+        await product_repository.get_product(session=session, product_id=pid)
+        for pid in product_ids
+    ]
+    products = [p for p in products if p is not None]
+    discount_map = await discount_service.enrich_products(session=session, products=products)
+
+    for item in cart.cart_item:
+        discounted_price, _ = discount_map.get(item.product_id, (None, None))
+        if discounted_price is not None:
+            item.price = discounted_price
 
     pending_order = await order_repository.get_pending_order_by_user_id(session=session, user_id=user_id)
     if pending_order is not None:
