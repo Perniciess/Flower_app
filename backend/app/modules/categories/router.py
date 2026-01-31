@@ -25,7 +25,7 @@ async def create_category(
     current_user: User = Depends(require_admin),
 ) -> CategoryResponse:
     """
-    Создание категории.
+    Создать категорию.
 
     Требует прав администратора.
     """
@@ -58,7 +58,7 @@ async def get_all_categories_admin(
     session: AsyncSession = Depends(get_db),
 ) -> Page[CategoryResponse]:
     """
-    Получение списка всех категорий.
+    Получить список всех категорий.
 
     Требует прав администратора.
     """

@@ -35,6 +35,16 @@ async def create_product(*, session: AsyncSession, product_data: ProductCreate) 
 
 
 async def get_products(*, session: AsyncSession, product_filter: ProductFilter) -> Page[ProductResponse]:
+    """
+    Возвращает отфильтрованный пагинированный список товаров из базы данных.
+
+    Args:
+        session: сессия базы данных
+        product_filter: фильтр товара
+
+    Returns:
+        Page[ProductResponse] список товаров
+    """
     query = product_repository.get_products_query()
     filtered_query = product_filter.filter(query)
     sorted_query = product_filter.sort(filtered_query)
@@ -55,6 +65,19 @@ async def get_products(*, session: AsyncSession, product_filter: ProductFilter) 
 
 
 async def get_product(*, session: AsyncSession, product_id: int) -> ProductResponse:
+    """
+    Возвращает товар из базы данных.
+
+    Args:
+        session: сессия базы данных
+        product_id: идентификатор товара
+
+    Returns:
+        ProductResponse информация о товаре
+
+    Raises:
+        ProductNotFoundError: если товар не найден
+    """
     product = await product_repository.get_product(session=session, product_id=product_id)
     if product is None:
         raise ProductNotFoundError(product_id=product_id)

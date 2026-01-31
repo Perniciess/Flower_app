@@ -31,7 +31,7 @@ async def delete_cart(
     session: AsyncSession = Depends(get_db),
 ):
     """
-    Удаление корзины пользователя.
+    Удалить корзину пользователя.
 
     Требует авторизации.
     """
@@ -47,7 +47,7 @@ async def create_cart_item(
     session: AsyncSession = Depends(get_db),
 ) -> CartItemResponse:
     """
-    Добавление товара в корзину.
+    Добавить товар в корзину.
 
     Требует авторизации.
     """
@@ -73,7 +73,7 @@ async def update_cart_item_quantity(
     session: AsyncSession = Depends(get_db),
 ) -> CartItemUpdate:
     """
-    Изменение количества товара в корзине.
+    Изменить количество товара в корзине.
 
     Требует авторизации.
     """
@@ -93,7 +93,7 @@ async def delete_cart_item(
     current_user: User = Depends(require_client),
 ) -> None:
     """
-    Удаление товара из корзины.
+    Удалить товар из корзины.
 
     Требует авторизации.
     """

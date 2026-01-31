@@ -16,6 +16,20 @@ def create_yookassa_payment(
     order_id: int,
     idempotency_key: uuid.UUID,
 ) -> tuple[str, str]:
+    """
+    Создаёт платёж в ЮKassa.
+
+    Args:
+        amount: сумма платежа
+        order_id: идентификатор заказа
+        idempotency_key: ключ идемпотентности для предотвращения дублирования платежа
+
+    Returns:
+        Кортеж: идентификатор платежа, ссылка на оплату
+
+    Raises:
+        PaymentCreationError: если ЮKassa не вернула идентификатор или ссылку на оплату
+    """
     payment = Payment.create(
         {
             "amount": {"value": f"{amount:.2f}", "currency": "RUB"},
@@ -37,7 +51,15 @@ def create_yookassa_payment(
 
 
 def find_yookassa_payment(payment_id: str) -> tuple[str, str | None]:
-    """Возвращает (status, confirmation_url | None) для существующего платежа."""
+    """
+    Возвращает статус и ссылку на оплату существующего платежа.
+
+    Args:
+        payment_id: идентификатор платежа
+
+    Returns:
+        Кортеж: статус платежа, ссылка на оплату или None
+    """
     payment = Payment.find_one(payment_id)
     confirmation_url: str | None = None
     if payment.confirmation is not None:
