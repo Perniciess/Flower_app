@@ -33,7 +33,7 @@ async def create_category(session: AsyncSession, category_data: CategoryCreate) 
 
 async def update_category(*, session: AsyncSession, category_id: int, category_data: CategoryUpdate) -> Category | None:
     statement = (
-        update(Category).where(Category.id == category_id).values(**category_data.model_dump()).returning(Category)
+        update(Category).where(Category.id == category_id).values(**category_data.model_dump(exclude_unset=True)).returning(Category)
     )
 
     result = await session.execute(statement)

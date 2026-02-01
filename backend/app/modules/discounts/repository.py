@@ -26,7 +26,7 @@ def get_discounts_query() -> Select[tuple[Discount]]:
 
 async def update_discount(*, session: AsyncSession, discount_id: int, discount_data: DiscountUpdate) -> Discount | None:
     statement = (
-        update(Discount).where(Discount.id == discount_id).values(**discount_data.model_dump()).returning(Discount)
+        update(Discount).where(Discount.id == discount_id).values(**discount_data.model_dump(exclude_unset=True)).returning(Discount)
     )
     result = await session.execute(statement)
     await session.flush()

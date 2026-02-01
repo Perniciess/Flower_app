@@ -83,7 +83,7 @@ async def get_order_by_id(
 
     Требует авторизации.
     """
-    order = await order_service.get_order_by_id(session=session, order_id=order_id)
+    order = await order_service.get_order_by_id(session=session, order_id=order_id, current_user=current_user)
     return order
 
 
@@ -96,14 +96,33 @@ async def update_order_status(
     order_id: int,
     status: Status,
     session: AsyncSession = Depends(get_db),
-    current_user: User = Depends(require_client),
+    current_user: User = Depends(require_admin),
 ) -> OrderResponse:
     """
     Обновить статус заказа.
 
-    Требует авторизации.
+    Требует прав администратора.
     """
     order = await order_service.update_order_status(session=session, order_id=order_id, status=status)
+    return order
+
+
+@order_router.patch(
+    "/{order_id:int}/cancel",
+    response_model=OrderResponse,
+    summary="Отменить заказ",
+)
+async def cancel_order(
+    order_id: int,
+    session: AsyncSession = Depends(get_db),
+    current_user: User = Depends(require_client),
+) -> OrderResponse:
+    """
+    Отменить заказ.
+
+    Требует авторизации.
+    """
+    order = await order_service.cancel_order(session=session, order_id=order_id, user_id=current_user.id)
     return order
 
 
@@ -114,7 +133,7 @@ async def update_order_status(
 )
 async def get_all_paid_orders(session: AsyncSession = Depends(get_db), current_user: User = Depends(require_admin)):
     """
-    Получить список оплаченныз заказов.
+    Получить список оплаченных заказов.
 
     Требует прав администратора.
     """

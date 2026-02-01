@@ -15,6 +15,7 @@ from app.core.exceptions import (
     CategoryNotExistsError,
     CategoryParentNotFoundError,
 )
+from app.core.utils import validate_image
 
 from . import repository as category_repository
 from .model import Category
@@ -271,14 +272,13 @@ async def upload_image(*, session: AsyncSession, category_id: int, image: Upload
 
     Raises:
         CategoryNotExistsError: если категория не существует
-        ValueError: если у файла нет названия
+        ValueError: если файл невалидный
     """
     category = await category_repository.get_category_by_id(session, category_id)
     if not category:
         raise CategoryNotExistsError(category_id=category_id)
 
-    if not image.filename:
-        raise ValueError("Файл без имени")
+    ext = validate_image(image)
 
     if category.image_url:
         old_filename = Path(category.image_url).name
@@ -287,8 +287,6 @@ async def upload_image(*, session: AsyncSession, category_id: int, image: Upload
             old_path.unlink()
 
     settings.CATEGORY_UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
-
-    ext = Path(image.filename).suffix
     filename = f"{uuid.uuid4()}{ext}"
     file_path = settings.CATEGORY_UPLOAD_DIR / filename
 

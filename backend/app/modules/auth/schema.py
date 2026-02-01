@@ -52,7 +52,7 @@ class AuthChangePassword(BaseModel):
 
 
 class AuthSetNewPassword(BaseModel):
-    reset_token: str = Field(..., min_length=8, max_length=8, description="Токен сброса пароля")
+    reset_token: str = Field(..., description="Токен сброса пароля")
     new_password: str = Field(..., min_length=8, description="Новый пароль")
 
     @field_validator("new_password", mode="before")
@@ -71,7 +71,7 @@ class AuthPhone(BaseModel):
 
 
 class VerificationDeepLink(BaseModel):
-    token: str = Field(..., min_length=8, max_length=8, description="Токен подтверждения сброса пароля")
+    token: str = Field(..., description="Токен подтверждения сброса пароля")
     telegram_link: str = Field(..., description="Deeplink telegram")
     expires_in: int = Field(..., ge=300, le=300, description="Срок истечения кода в секундах")
 

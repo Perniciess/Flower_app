@@ -73,6 +73,16 @@ async def get_product_price(*, session: AsyncSession, product_id: int) -> Decima
     return result.scalar_one_or_none()
 
 
+async def get_products_by_ids(*, session: AsyncSession, product_ids: list[int]) -> Sequence[Product]:
+    statement = (
+        select(Product)
+        .where(Product.id.in_(product_ids))
+        .options(selectinload(Product.images), selectinload(Product.categories))
+    )
+    result = await session.execute(statement)
+    return result.scalars().all()
+
+
 async def get_product_by_id(*, session: AsyncSession, product_id: int) -> Product | None:
     statement = select(Product).options(selectinload(Product.images)).where(Product.id == product_id)
     result = await session.execute(statement)

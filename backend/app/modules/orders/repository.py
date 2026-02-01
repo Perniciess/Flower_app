@@ -1,6 +1,7 @@
 import uuid
 from collections.abc import Sequence
 from datetime import UTC, datetime
+from decimal import Decimal
 
 from sqlalchemy import Select, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -18,10 +19,11 @@ async def create_order(
     data: CreateOrderRequest,
     user_id: int,
     cart: Cart,
+    price_map: dict[int, Decimal],
     idempotency_key: uuid.UUID,
     expires_at: datetime,
 ) -> Order:
-    total_price = sum(item.quantity * item.price for item in cart.cart_item)
+    total_price = sum(item.quantity * price_map[item.product_id] for item in cart.cart_item)
 
     delivery = None
     if data.delivery is not None:
@@ -43,7 +45,7 @@ async def create_order(
             OrderItem(
                 product_id=item.product_id,
                 quantity=item.quantity,
-                price=item.price,
+                price=price_map[item.product_id],
             )
             for item in cart.cart_item
         ],

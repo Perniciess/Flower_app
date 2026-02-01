@@ -1,7 +1,6 @@
 import uuid
 from collections.abc import Sequence
 from decimal import Decimal
-from pathlib import Path
 
 import anyio
 from fastapi import UploadFile
@@ -11,6 +10,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import settings
 from app.core.exceptions import ImageNotFoundError, ProductNotFoundError
+from app.core.utils import validate_image
 from app.modules.discounts import service as discount_service
 from app.modules.products.filter import ProductFilter
 
@@ -143,14 +143,11 @@ async def upload_image(
         ProductImageResponse с данными изображения товара
 
     Raises:
-        ValueError: если файл без имени
+        ValueError: если файл невалидный
     """
-    if not image.filename:
-        raise ValueError("Файл без имени")
+    ext = validate_image(image)
 
     settings.UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
-
-    ext = Path(image.filename).suffix
     filename = f"{uuid.uuid4()}{ext}"
     file_path = settings.UPLOAD_DIR / filename
 
