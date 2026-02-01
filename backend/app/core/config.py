@@ -45,7 +45,7 @@ class Settings(BaseSettings):
 
     # SECURITY.PY
     REFRESH_TOKEN_BYTES: int = 64
-    VERIFICATION_TOKEN_BYTES = 16
+    VERIFICATION_TOKEN_BYTES: int = 16
 
     # IMAGE PATH
     UPLOAD_DIR: Path = Path("app/static/uploads/products")
