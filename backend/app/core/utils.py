@@ -56,6 +56,6 @@ def password_strip_and_validate(v: str) -> str:
         raise ValueError("Пароль должен содержать хотя бы одну строчную букву")
     if not any(c.isupper() for c in v):
         raise ValueError("Пароль должен содержать хотя бы одну заглавную букву")
-    if not any(not c.isalnum() for c in v):
+    if all(c.isalnum() for c in v):
         raise ValueError("Пароль должен содержать хотя бы один спецсимвол")
     return v

@@ -21,6 +21,7 @@ dependencies = [
   "fastapi-pagination>=0.15.8",
   "alembic>=1.18.3",
   "fastapi-filter[sqlalchemy]>=2.0.1",
+  "slowapi>=0.1.9",
 ]
 
 

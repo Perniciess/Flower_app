@@ -35,8 +35,8 @@ class CartItem(Base):
     __table_args__ = (UniqueConstraint("cart_id", "product_id", name="uq_cart_product"), {})
 
     id: Mapped[int] = mapped_column(primary_key=True, index=True)
-    cart_id: Mapped[int] = mapped_column(ForeignKey("cart.id", ondelete="CASCADE"))
-    product_id: Mapped[int] = mapped_column(ForeignKey("product.id", ondelete="CASCADE"))
+    cart_id: Mapped[int] = mapped_column(ForeignKey("cart.id", ondelete="CASCADE"), index=True)
+    product_id: Mapped[int] = mapped_column(ForeignKey("product.id", ondelete="CASCADE"), index=True)
     quantity: Mapped[int] = mapped_column()
     price: Mapped[Decimal] = mapped_column(DECIMAL(precision=10, scale=2))
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())

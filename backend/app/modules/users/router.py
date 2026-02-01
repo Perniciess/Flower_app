@@ -12,9 +12,7 @@ from .schema import UserResponse, UserUpdate
 user_router = APIRouter(prefix="/users", tags=["users"])
 
 
-@user_router.get(
-    "/", response_model=Page[UserResponse], summary="Получить список всех пользователей"
-)
+@user_router.get("/", response_model=Page[UserResponse], summary="Получить список всех пользователей")
 async def get_users(
     session: AsyncSession = Depends(get_db), current_user: User = Depends(require_admin)
 ) -> Page[UserResponse]:
@@ -27,9 +25,7 @@ async def get_users(
     return users
 
 
-@user_router.get(
-    "/me", response_model=UserResponse, summary="Получить активного пользователя"
-)
+@user_router.get("/me", response_model=UserResponse, summary="Получить активного пользователя")
 async def get_me(current_user: User = Depends(get_current_user)):
     """
     Получить данные активного пользователя.
@@ -39,9 +35,7 @@ async def get_me(current_user: User = Depends(get_current_user)):
     return current_user
 
 
-@user_router.get(
-    "/{user_id:int}", response_model=UserResponse, summary="Получить пользователя по ID"
-)
+@user_router.get("/{user_id}", response_model=UserResponse, summary="Получить пользователя по ID")
 async def get_user_by_id(
     user_id: int,
     session: AsyncSession = Depends(get_db),
@@ -56,7 +50,7 @@ async def get_user_by_id(
 
 
 @user_router.patch(
-    "/{user_id:int}",
+    "/{user_id}",
     response_model=UserResponse,
     summary="Обновить данные пользователя",
 )

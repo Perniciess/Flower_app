@@ -41,14 +41,14 @@ async def get_products(
     return products
 
 
-@product_router.get("/{product_id:int}", response_model=ProductResponse, summary="Получить один товар")
+@product_router.get("/{product_id}", response_model=ProductResponse, summary="Получить один товар")
 async def get_product_by_id(product_id: int, session: AsyncSession = Depends(get_db)):
     """Получить товар по ID."""
     product = await product_service.get_product(session=session, product_id=product_id)
     return product
 
 
-@product_router.patch("/{product_id:int}", response_model=ProductResponse, summary="Получить товар по ID")
+@product_router.patch("/{product_id}", response_model=ProductResponse, summary="Получить товар по ID")
 async def update_product(
     product_id: int,
     product_data: ProductUpdate,
@@ -64,7 +64,7 @@ async def update_product(
     return product
 
 
-@product_router.delete("/{product_id:int}", status_code=204, summary="Удалить товар")
+@product_router.delete("/{product_id}", status_code=204, summary="Удалить товар")
 async def delete_product(
     product_id: int,
     session: AsyncSession = Depends(get_db),
@@ -79,7 +79,7 @@ async def delete_product(
 
 
 @product_router.post(
-    "/images/{product_id:int}",
+    "/images/{product_id}",
     response_model=ProductImageResponse,
     summary="Загрузить изображение товара",
 )
@@ -114,7 +114,7 @@ async def get_products_images(
     return images
 
 
-@product_router.delete("/images/{image_id:int}", status_code=204, summary="Удалить изображение товара")
+@product_router.delete("/images/{image_id}", status_code=204, summary="Удалить изображение товара")
 async def delete_product_image(
     image_id: int,
     session: AsyncSession = Depends(get_db),

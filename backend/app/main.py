@@ -1,14 +1,17 @@
 import re
 from contextlib import asynccontextmanager
 
-from fastapi import APIRouter, Depends, FastAPI
+from fastapi import APIRouter, Depends, FastAPI, Request
 from fastapi.security import APIKeyHeader
 from fastapi_pagination import add_pagination
+from slowapi import _rate_limit_exceeded_handler
+from slowapi.errors import RateLimitExceeded
 from sqlalchemy import text
 from starlette.middleware.cors import CORSMiddleware
 from starlette_csrf.middleware import CSRFMiddleware
 
 from app.core.config import settings
+from app.core.limiter import limiter
 from app.core.redis import get_redis, redis_manager
 from app.database.session import engine
 from app.modules.auth.router import auth_router
@@ -57,6 +60,10 @@ app = FastAPI(
     swagger_ui_parameters={"defaultModelsExpandDepth": -1},
 )
 
+# Rate limiting configuration
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+
 csrf_header_scheme = APIKeyHeader(name=settings.CSRF_HEADER_NAME, auto_error=False)
 
 if settings.all_cors_origins:
@@ -70,7 +77,7 @@ if settings.all_cors_origins:
 
 app.add_middleware(
     CSRFMiddleware,
-    cookie_httponly=False,
+    cookie_httponly=True,
     secret=settings.CSRF_SECRET_KEY,
     cookie_name=settings.CSRF_COOKIE_NAME,
     header_name=settings.CSRF_HEADER_NAME,
@@ -80,10 +87,10 @@ app.add_middleware(
     exempt_urls=[
         re.compile(r"/docs"),
         re.compile(r"/openapi.json"),
-        re.compile(rf"{settings.API_V1_STR}/auth/login"),
-        re.compile(rf"{settings.API_V1_STR}/auth/complete-register/.*"),
-        re.compile(rf"{settings.API_V1_STR}/auth/complete-reset-verification/.*"),
-        re.compile(rf"{settings.API_V1_STR}/orders/webhook"),
+        re.compile(re.escape(settings.API_V1_STR) + r"/auth/login"),
+        re.compile(re.escape(settings.API_V1_STR) + r"/auth/complete-register/.*"),
+        re.compile(re.escape(settings.API_V1_STR) + r"/auth/complete-reset-verification/.*"),
+        re.compile(re.escape(settings.API_V1_STR) + r"/orders/webhook"),
     ],
 )
 

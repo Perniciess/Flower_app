@@ -75,21 +75,33 @@ async def get_order_by_payment_id(*, session: AsyncSession, payment_id: str) -> 
 
 
 async def get_order_by_id(*, session: AsyncSession, order_id: int) -> Order | None:
-    statement = select(Order).where(Order.id == order_id).options(selectinload(Order.order_item))
+    statement = (
+        select(Order).where(Order.id == order_id).options(selectinload(Order.order_item), selectinload(Order.delivery))
+    )
     result = await session.execute(statement)
     return result.scalar_one_or_none()
 
 
 def get_orders_query(user_id: int) -> Select[tuple[Order]]:
-    return select(Order).options(selectinload(Order.order_item)).where(Order.user_id == user_id).order_by(Order.id)
+    return (
+        select(Order)
+        .options(selectinload(Order.order_item), selectinload(Order.delivery))
+        .where(Order.user_id == user_id)
+        .order_by(Order.id)
+    )
 
 
 def get_all_orders_query() -> Select[tuple[Order]]:
-    return select(Order).options(selectinload(Order.order_item)).order_by(Order.id)
+    return select(Order).options(selectinload(Order.order_item), selectinload(Order.delivery)).order_by(Order.id)
 
 
 def get_all_paid_query() -> Select[tuple[Order]]:
-    return select(Order).options(selectinload(Order.order_item)).where(Order.status == Status.PAID).order_by(Order.id)
+    return (
+        select(Order)
+        .options(selectinload(Order.order_item), selectinload(Order.delivery))
+        .where(Order.status == Status.PAID)
+        .order_by(Order.id)
+    )
 
 
 async def update_order_status(*, session: AsyncSession, order_id: int, status: Status) -> Order | None:

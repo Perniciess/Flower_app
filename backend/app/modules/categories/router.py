@@ -4,7 +4,8 @@ from fastapi import APIRouter, Depends, UploadFile
 from fastapi_pagination import Page
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.core.deps import get_db, require_admin
+from app.core.deps import require_admin
+from app.database.session import get_db
 from app.modules.users.model import User
 
 from . import service as category_service
@@ -82,7 +83,7 @@ async def get_category_tree(
 
 
 @category_router.get(
-    "/{category_id:int}",
+    "/{category_id}",
     response_model=CategoryResponse,
     summary="Получить категорию по ID",
 )
@@ -94,7 +95,7 @@ async def get_category_by_id(category_id: int, session: AsyncSession = Depends(g
 
 
 @category_router.patch(
-    "/{category_id:int}",
+    "/{category_id}",
     response_model=CategoryResponse,
     summary="Обновить категорию",
 )
@@ -112,7 +113,7 @@ async def update_category(
     return await category_service.update_category(session=session, category_id=category_id, category_data=category_data)
 
 
-@category_router.delete("/{category_id:int}", status_code=204, summary="Удалить категорию")
+@category_router.delete("/{category_id}", status_code=204, summary="Удалить категорию")
 async def delete_category_by_id(
     category_id: int,
     session: AsyncSession = Depends(get_db),
@@ -127,7 +128,7 @@ async def delete_category_by_id(
 
 
 @category_router.post(
-    "/{category_id:int}/image",
+    "/{category_id}/image",
     response_model=CategoryResponse,
     summary="Загрузить изображение категории",
 )
@@ -147,7 +148,7 @@ async def upload_category_image(
 
 
 @category_router.delete(
-    "/{category_id:int}/image",
+    "/{category_id}/image",
     response_model=CategoryResponse,
     summary="Удалить изображение категории",
 )
