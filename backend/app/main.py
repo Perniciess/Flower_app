@@ -10,19 +10,19 @@ from sqlalchemy import text
 from starlette.middleware.cors import CORSMiddleware
 from starlette_csrf.middleware import CSRFMiddleware
 
+from app.api.v1.auth_router import auth_router
+from app.api.v1.carts_router import cart_router
+from app.api.v1.categories_router import category_router
+from app.api.v1.discounts_router import discount_router
+from app.api.v1.favourites_router import favourite_router
+from app.api.v1.orders_router import order_router
+from app.api.v1.pickups_router import pickup_point_router
+from app.api.v1.products_router import product_router
+from app.api.v1.users_router import user_router
 from app.core.config import settings
 from app.core.limiter import limiter
 from app.core.redis import get_redis, redis_manager
-from app.database.session import engine
-from app.modules.auth.router import auth_router
-from app.modules.carts.router import cart_router
-from app.modules.categories.router import category_router
-from app.modules.discounts.router import discount_router
-from app.modules.favourites.router import favourite_router
-from app.modules.orders.router import order_router
-from app.modules.pickup_points.router import pickup_point_router
-from app.modules.products.router import product_router
-from app.modules.users.router import user_router
+from app.db.session import engine
 
 
 @asynccontextmanager

@@ -30,7 +30,7 @@ class Settings(BaseSettings):
     SECRET_KEY: str
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 15
     REFRESH_TOKEN_EXPIRE_DAYS: int = 30
-
+    VERIFICATION_TOKEN_EXPIRY_SECONDS: int = 300  # seconds
     CSRF_SECRET_KEY: str
     CSRF_COOKIE_NAME: str = "csrftoken"
     CSRF_HEADER_NAME: str = "x-csrftoken"
@@ -45,6 +45,7 @@ class Settings(BaseSettings):
 
     # SECURITY.PY
     REFRESH_TOKEN_BYTES: int = 64
+    VERIFICATION_TOKEN_BYTES = 16
 
     # IMAGE PATH
     UPLOAD_DIR: Path = Path("app/static/uploads/products")
