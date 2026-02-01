@@ -3,13 +3,13 @@ from decimal import Decimal
 
 from fastapi_pagination import Page
 from fastapi_pagination.ext.sqlalchemy import paginate
-from schemas.discounts_schema import DiscountCreate, DiscountResponse, DiscountUpdate
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.exceptions import DiscountNotFoundError, ProductNotFoundError
 from app.models.discounts_model import Discount, DiscountType
 from app.models.products_model import Product
 from app.repository import discounts_repository
+from app.schemas.discounts_schema import DiscountCreate, DiscountResponse, DiscountUpdate
 
 
 async def create_discount(*, session: AsyncSession, discount_data: DiscountCreate) -> DiscountResponse:
