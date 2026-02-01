@@ -14,6 +14,8 @@ from app.database.session import engine
 from app.modules.auth.router import auth_router
 from app.modules.carts.router import cart_router
 from app.modules.categories.router import category_router
+from app.modules.discounts.router import discount_router
+from app.modules.favourites.router import favourite_router
 from app.modules.orders.router import order_router
 from app.modules.products.router import product_router
 from app.modules.users.router import user_router
@@ -92,6 +94,8 @@ api_router.include_router(product_router)
 api_router.include_router(cart_router)
 api_router.include_router(order_router)
 api_router.include_router(category_router)
+api_router.include_router(favourite_router)
+api_router.include_router(discount_router)
 app.include_router(api_router, dependencies=[Depends(csrf_header_scheme)])
 
 

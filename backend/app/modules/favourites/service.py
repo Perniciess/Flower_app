@@ -1,0 +1,36 @@
+from collections.abc import Sequence
+
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from app.core.exceptions import FavouriteItemAlreadyExistsError, FavouriteItemNotFoundError, ProductNotFoundError
+from app.modules.products.service import product_repository
+
+from . import repository as favourite_repository
+from .schema import FavouriteResponse
+
+
+async def add_to_favourite(*, session: AsyncSession, product_id: int, user_id: int) -> FavouriteResponse:
+    product_exist = await product_repository.get_product(session=session, product_id=product_id)
+    if product_exist is None:
+        raise ProductNotFoundError(product_id=product_id)
+
+    favourite_exist = await favourite_repository.get_favourite_by_product(
+        session=session, user_id=user_id, product_id=product_id
+    )
+    if favourite_exist is not None:
+        raise FavouriteItemAlreadyExistsError(product_id=product_id)
+
+    favourite = await favourite_repository.add_to_favourite(session=session, product_id=product_id, user_id=user_id)
+    return FavouriteResponse.model_validate(favourite)
+
+
+async def get_favourite_list(*, session: AsyncSession, user_id: int) -> Sequence[FavouriteResponse]:
+    favourites = await favourite_repository.get_favourite_list(session=session, user_id=user_id)
+    return [FavouriteResponse.model_validate(favourite) for favourite in favourites]
+
+
+async def delete_from_favourites(*, session: AsyncSession, user_id: int, product_id: int):
+    deleted = await favourite_repository.delete_from_favourite(session=session, user_id=user_id, product_id=product_id)
+    if not deleted:
+        raise FavouriteItemNotFoundError(product_id=product_id)
+    return True

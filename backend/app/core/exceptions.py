@@ -134,3 +134,13 @@ class CategoryCycleError(HTTPException):
 class DiscountNotFoundError(HTTPException):
     def __init__(self, discount_id: int) -> None:
         super().__init__(status_code=404, detail=f"Скидка с ID={discount_id} не найдена")
+
+
+class FavouriteItemAlreadyExistsError(HTTPException):
+    def __init__(self, product_id: int) -> None:
+        super().__init__(status_code=409, detail=f"Товар с ID={product_id} уже есть в понравившихся")
+
+
+class FavouriteItemNotFoundError(HTTPException):
+    def __init__(self, product_id: int) -> None:
+        super().__init__(status_code=404, detail=f"Товар с ID={product_id} не найден в понравившихся")
