@@ -97,4 +97,4 @@ async def delete_cart_item(
 
     Требует авторизации.
     """
-    await cart_service.delete_cart_item(session=session, cart_item_id=cart_item_id)
+    await cart_service.delete_cart_item(session=session, cart_item_id=cart_item_id, current_user=current_user)

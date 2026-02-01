@@ -4,6 +4,7 @@ from typing import Any
 from redis.asyncio import Redis
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.core.config import settings
 from app.core.exceptions import (
     InvalidTokenError,
     PasswordsDoNotMatchError,
@@ -54,7 +55,7 @@ async def register(*, session: AsyncSession, redis: Redis, data: AuthRegister) -
         "verification_token": verification_token,
     }
     await redis.set(f"v:{verification_token}", json.dumps(data_user), ex=300)
-    telegram_link = f"https://t.me/kupibuket74_bot?start={verification_token}"
+    telegram_link = f"{settings.VERIFICATION}{verification_token}"
     return VerificationDeepLink(token=data_user["verification_token"], telegram_link=telegram_link, expires_in=300)
 
 
@@ -237,7 +238,7 @@ async def reset_password(*, session: AsyncSession, redis: Redis, phone_number: s
         "phone_number": phone_number,
     }
     await redis.set(f"r:{reset_token}", json.dumps(user_data), ex=300)
-    telegram_link = f"https://t.me/kupibuket74_bot?start=reset_{reset_token}"
+    telegram_link = f"{settings.RESET}{reset_token}"
     return VerificationDeepLink(token=reset_token, telegram_link=telegram_link, expires_in=300)
 
 

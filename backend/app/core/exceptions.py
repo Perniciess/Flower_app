@@ -38,7 +38,7 @@ class InsufficientPermissionError(HTTPException):
 
 class InvalidTokenError(HTTPException):
     def __init__(self) -> None:
-        super().__init__(status_code=403, detail="Невалидный токен")
+        super().__init__(status_code=401, detail="Невалидный токен")
 
 
 class ProductNotFoundError(HTTPException):
@@ -82,12 +82,12 @@ class OrderNotFoundError(HTTPException):
 
 class OrderNotUpdatedError(HTTPException):
     def __init__(self, order_id: int) -> None:
-        super().__init__(status_code=404, detail=f"Не удалось изменить статус заказа с ID={order_id}")
+        super().__init__(status_code=409, detail=f"Не удалось изменить статус заказа с ID={order_id}")
 
 
 class EmptyCartError(HTTPException):
     def __init__(self, cart_id: int) -> None:
-        super().__init__(status_code=404, detail=f"Корзина с ID={cart_id} пустая")
+        super().__init__(status_code=400, detail=f"Корзина с ID={cart_id} пустая")
 
 
 class PaymentCreationError(HTTPException):
@@ -109,7 +109,7 @@ class CategoryAlreadyExistsError(HTTPException):
 class CategoryParentNotFoundError(HTTPException):
     def __init__(self, parent_id: int) -> None:
         super().__init__(
-            status_code=409,
+            status_code=404,
             detail=f"Родительская категория с ID={parent_id} не найдена",
         )
 

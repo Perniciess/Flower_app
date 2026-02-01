@@ -1,5 +1,6 @@
 import uuid
 from datetime import UTC, datetime
+from decimal import Decimal
 
 from fastapi_pagination import Page
 from fastapi_pagination.ext.sqlalchemy import paginate
@@ -8,6 +9,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.exceptions import (
     CartNotFoundError,
     EmptyCartError,
+    InsufficientPermissionError,
     OrderNotFoundError,
     OrderNotUpdatedError,
 )
@@ -15,6 +17,7 @@ from app.modules.carts import repository as cart_repository
 from app.modules.discounts import service as discount_service
 from app.modules.payments import service as payment_service
 from app.modules.products import repository as product_repository
+from app.modules.users.model import Role, User
 
 from . import repository as order_repository
 from .model import Order, Status
@@ -59,14 +62,13 @@ async def create_order(
         raise EmptyCartError(cart_id=cart.id)
 
     product_ids = [item.product_id for item in cart.cart_item]
-    products = [await product_repository.get_product(session=session, product_id=pid) for pid in product_ids]
-    products = [p for p in products if p is not None]
+    products = await product_repository.get_products_by_ids(session=session, product_ids=product_ids)
     discount_map = await discount_service.enrich_products(session=session, products=products)
 
+    price_map: dict[int, Decimal] = {}
     for item in cart.cart_item:
         discounted_price, _ = discount_map.get(item.product_id, (None, None))
-        if discounted_price is not None:
-            item.price = discounted_price
+        price_map[item.product_id] = discounted_price if discounted_price is not None else item.price
 
     pending_order = await order_repository.get_pending_order_by_user_id(session=session, user_id=user_id)
     if pending_order is not None:
@@ -82,6 +84,7 @@ async def create_order(
         user_id=user_id,
         data=data,
         cart=cart,
+        price_map=price_map,
         idempotency_key=idempotency_key,
         expires_at=expires_at,
     )
@@ -95,7 +98,8 @@ async def create_order(
 
 async def process_webhook(*, session: AsyncSession, payload: WebhookPayload) -> None:
     """
-    Создает заказ.
+    Если оплата прошла, то помечает заказ как оплаченный и очищает корзину пользователя.
+    Если оплату отменили, то обновляет статус заказа как отмененный.
 
     Args:
         session: сессия базы данных
@@ -130,7 +134,7 @@ async def get_orders(session: AsyncSession, user_id: int) -> Page[OrderResponse]
     return await paginate(session, query)
 
 
-async def get_order_by_id(session: AsyncSession, order_id: int) -> OrderResponse:
+async def get_order_by_id(session: AsyncSession, order_id: int, current_user: User) -> OrderResponse:
     """
     Возвращает заказ.
 
@@ -143,7 +147,8 @@ async def get_order_by_id(session: AsyncSession, order_id: int) -> OrderResponse
     order = await order_repository.get_order_by_id(session=session, order_id=order_id)
     if order is None:
         raise OrderNotFoundError(order_id=order_id)
-
+    if order.user_id != current_user.id and current_user.role != Role.ADMIN:
+        raise InsufficientPermissionError()
     return OrderResponse.model_validate(order)
 
 
@@ -172,9 +177,24 @@ async def update_order_status(session: AsyncSession, order_id: int, status: Stat
     return OrderResponse.model_validate(updated)
 
 
+async def cancel_order(session: AsyncSession, order_id: int, user_id: int) -> OrderResponse:
+    order = await order_repository.get_order_by_id(session=session, order_id=order_id)
+    if order is None:
+        raise OrderNotFoundError(order_id=order_id)
+    if order.user_id != user_id:
+        raise InsufficientPermissionError()
+    if order.status not in (Status.PENDING, Status.PAID):
+        raise OrderNotUpdatedError(order_id=order_id)
+
+    updated = await order_repository.update_order_status(session=session, order_id=order_id, status=Status.CANCELLED)
+    if updated is None:
+        raise OrderNotUpdatedError(order_id=order_id)
+    return OrderResponse.model_validate(updated)
+
+
 async def get_all_orders(session: AsyncSession) -> Page[OrderResponse]:
     """
-    Вовзращает пагинированный список заказов.
+    Возвращает пагинированный список заказов.
 
     Args:
         session: сессия базы данных

@@ -10,6 +10,7 @@ from app.database.base import Base
 
 if TYPE_CHECKING:
     from app.modules.auth.model import RefreshToken
+    from app.modules.favourites.model import Favourite
 
 
 class Role(StrEnum):
@@ -30,6 +31,11 @@ class User(Base):
 
     refresh_tokens: Mapped[list[RefreshToken]] = relationship(
         "RefreshToken",
+        back_populates="user",
+        cascade="all, delete-orphan",
+    )
+    favourites: Mapped[list[Favourite]] = relationship(
+        "Favourite",
         back_populates="user",
         cascade="all, delete-orphan",
     )

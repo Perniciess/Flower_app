@@ -1,4 +1,20 @@
+from pathlib import Path
+
+from fastapi import UploadFile
 from pydantic_extra_types.phone_numbers import PhoneNumber
+
+ALLOWED_IMAGE_TYPES = {
+    "image/jpeg",
+    "image/png",
+    "image/webp",
+}
+
+ALLOWED_IMAGE_EXTENSIONS = {
+    ".jpg",
+    ".jpeg",
+    ".png",
+    ".webp",
+}
 
 
 def normalize_phone(v: PhoneNumber) -> str:
@@ -6,6 +22,21 @@ def normalize_phone(v: PhoneNumber) -> str:
     if s.startswith("tel:"):
         s = s[4:]
     return s.replace(" ", "").replace("-", "")
+
+
+def validate_image(image: UploadFile) -> str:
+    """Валидирует загружаемое изображение и возвращает расширение файла."""
+    if not image.filename:
+        raise ValueError("Файл без имени")
+
+    ext = Path(image.filename).suffix.lower()
+    if ext not in ALLOWED_IMAGE_EXTENSIONS:
+        raise ValueError(f"Недопустимое расширение файла: {ext}")
+
+    if image.content_type not in ALLOWED_IMAGE_TYPES:
+        raise ValueError(f"Недопустимый тип файла: {image.content_type}")
+
+    return ext
 
 
 def password_strip_and_validate(v: str) -> str:

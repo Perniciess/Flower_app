@@ -32,10 +32,9 @@ async def delete_cart(*, session: AsyncSession, cart_id: int) -> bool:
     return result.scalar_one_or_none() is not None
 
 
-async def clear_cart(*, session: AsyncSession, cart_id: int) -> bool:
+async def clear_cart(*, session: AsyncSession, cart_id: int) -> None:
     statement = delete(CartItem).where(CartItem.cart_id == cart_id)
-    result = await session.execute(statement)
-    return result.scalar_one_or_none() is not None
+    await session.execute(statement)
 
 
 async def create_cart_item(
