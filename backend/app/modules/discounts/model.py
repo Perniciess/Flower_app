@@ -46,8 +46,8 @@ class Discount(Base):
     new_price: Mapped[Decimal | None] = mapped_column(DECIMAL(precision=10, scale=2))
     is_active: Mapped[bool] = mapped_column(Boolean, default=True)
 
-    product_id: Mapped[int | None] = mapped_column(ForeignKey("product.id", ondelete="CASCADE"))
-    category_id: Mapped[int | None] = mapped_column(ForeignKey("category.id", ondelete="CASCADE"))
+    product_id: Mapped[int | None] = mapped_column(ForeignKey("product.id", ondelete="CASCADE"), index=True)
+    category_id: Mapped[int | None] = mapped_column(ForeignKey("category.id", ondelete="CASCADE"), index=True)
 
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
     updated_at: Mapped[datetime] = mapped_column(

@@ -4,6 +4,9 @@ from pydantic_extra_types.phone_numbers import PhoneNumber
 from app.core.utils import normalize_phone, password_strip_and_validate
 from app.modules.users.schema import UserCreate
 
+# Константы
+VERIFICATION_TOKEN_EXPIRY_SECONDS = 300  # 5 минут
+
 
 class AuthLogin(BaseModel):
     """Схема для авторизации пользователя."""
@@ -73,7 +76,12 @@ class AuthPhone(BaseModel):
 class VerificationDeepLink(BaseModel):
     token: str = Field(..., description="Токен подтверждения сброса пароля")
     telegram_link: str = Field(..., description="Deeplink telegram")
-    expires_in: int = Field(..., ge=300, le=300, description="Срок истечения кода в секундах")
+    expires_in: int = Field(
+        ...,
+        ge=VERIFICATION_TOKEN_EXPIRY_SECONDS,
+        le=VERIFICATION_TOKEN_EXPIRY_SECONDS,
+        description="Срок истечения кода в секундах",
+    )
 
 
 class AccessToken(BaseModel):

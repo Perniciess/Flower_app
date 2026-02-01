@@ -151,7 +151,7 @@ async def refresh_tokens(*, session: AsyncSession, refresh_token: str) -> Tokens
     refresh_hash = get_refresh_hash(refresh_token)
 
     token = await auth_repository.get_refresh_token_for_update(session=session, token_hash=refresh_hash)
-    if token is None:
+    if token is None or token.is_revoked:
         raise InvalidTokenError()
 
     revoked = await auth_repository.revoke_token(session=session, token_id=token.id)

@@ -1,12 +1,13 @@
 import uuid
 from datetime import UTC, datetime, timedelta
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Request
 from fastapi_pagination import Page
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import settings
 from app.core.deps import require_admin, require_client
+from app.core.limiter import limiter
 from app.database.session import get_db
 from app.modules.users.model import User
 
@@ -23,7 +24,9 @@ order_router = APIRouter(prefix="/orders", tags=["orders"])
 
 
 @order_router.post("/create", summary="Создание заказа", response_model=OrderResponseWithPayment)
+@limiter.limit("10/minute")
 async def create_order(
+    request: Request,
     data: CreateOrderRequest,
     user: User = Depends(require_client),
     session: AsyncSession = Depends(get_db),
@@ -42,8 +45,9 @@ async def create_order(
     )
 
 
-@order_router.post("/webhook", summary="Webhook YooKassa")
-async def yookassa_webhook(payload: WebhookPayload, session: AsyncSession = Depends(get_db)) -> None:
+@order_router.post("/webhook", status_code=204, summary="Webhook YooKassa")
+@limiter.limit("100/minute")
+async def yookassa_webhook(request: Request, payload: WebhookPayload, session: AsyncSession = Depends(get_db)) -> None:
     """
     Получить ответ от юkassa со статусом оплаты.
     """
@@ -69,7 +73,7 @@ async def get_orders(
 
 
 @order_router.get(
-    "/{order_id:int}",
+    "/{order_id}",
     response_model=OrderResponse,
     summary="Получить информацию о заказе",
 )
@@ -88,7 +92,7 @@ async def get_order_by_id(
 
 
 @order_router.patch(
-    "/status/{order_id:int}",
+    "/status/{order_id}",
     response_model=OrderResponse,
     summary="Обновить статус заказа",
 )
@@ -108,7 +112,7 @@ async def update_order_status(
 
 
 @order_router.patch(
-    "/{order_id:int}/cancel",
+    "/{order_id}/cancel",
     response_model=OrderResponse,
     summary="Отменить заказ",
 )

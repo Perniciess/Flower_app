@@ -58,7 +58,7 @@ class ProductImage(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True, index=True)
     product_id: Mapped[int] = mapped_column(
-        ForeignKey("product.id", ondelete="CASCADE")
+        ForeignKey("product.id", ondelete="CASCADE"), index=True
     )
     url: Mapped[str] = mapped_column(String(512))
     sort_order: Mapped[int] = mapped_column(index=True)

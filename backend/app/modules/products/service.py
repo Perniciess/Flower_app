@@ -191,7 +191,9 @@ async def delete_product_image(*, session: AsyncSession, image_id: int) -> bool:
     if url is None:
         raise ImageNotFoundError(image_id=image_id)
 
-    file_path = settings.ROOT_DIR / url.lstrip("/")
+    file_path = (settings.ROOT_DIR / url.lstrip("/")).resolve()
+    if not str(file_path).startswith(str(settings.UPLOAD_DIR.resolve())):
+        raise ValueError("Path traversal detected")
     if file_path.exists():
         file_path.unlink()
 

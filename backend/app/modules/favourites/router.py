@@ -13,7 +13,7 @@ from .schema import FavouriteResponse
 favourite_router = APIRouter(prefix="/favourite", tags=["favourite"])
 
 
-@favourite_router.post("/add", summary="Добавить товар в избранное")
+@favourite_router.post("/add/{product_id}", response_model=FavouriteResponse, summary="Добавить товар в избранное")
 async def add_to_favourite(
     product_id: int, session: AsyncSession = Depends(get_db), current_user: User = Depends(require_client)
 ) -> FavouriteResponse:
@@ -41,9 +41,7 @@ async def get_favourite_list(
     return favourites
 
 
-@favourite_router.delete(
-    "/delete/{product_id:int}", response_model=dict[str, str], summary="Удалить товар из избранных"
-)
+@favourite_router.delete("/delete/{product_id}", response_model=dict[str, str], summary="Удалить товар из избранных")
 async def delete_from_favourites(
     product_id: int, session: AsyncSession = Depends(get_db), current_user: User = Depends(require_client)
 ):

@@ -2,7 +2,8 @@ from fastapi import APIRouter, Depends
 from fastapi_pagination import Page
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.core.deps import get_db, require_admin
+from app.core.deps import require_admin
+from app.database.session import get_db
 from app.modules.users.model import User
 
 from . import service as discount_service
@@ -38,7 +39,7 @@ async def get_discounts(
     return await discount_service.get_discounts(session=session)
 
 
-@discount_router.get("/{discount_id:int}", response_model=DiscountResponse, summary="Получить акцию по ID")
+@discount_router.get("/{discount_id}", response_model=DiscountResponse, summary="Получить акцию по ID")
 async def get_discount(
     discount_id: int,
     session: AsyncSession = Depends(get_db),
@@ -52,7 +53,7 @@ async def get_discount(
     return await discount_service.get_discount(session=session, discount_id=discount_id)
 
 
-@discount_router.patch("/{discount_id:int}", response_model=DiscountResponse, summary="Обновить акцию")
+@discount_router.patch("/{discount_id}", response_model=DiscountResponse, summary="Обновить акцию")
 async def update_discount(
     discount_id: int,
     discount_data: DiscountUpdate,
@@ -67,7 +68,7 @@ async def update_discount(
     return await discount_service.update_discount(session=session, discount_id=discount_id, discount_data=discount_data)
 
 
-@discount_router.delete("/{discount_id:int}", status_code=204, summary="Удалить акцию")
+@discount_router.delete("/{discount_id}", status_code=204, summary="Удалить акцию")
 async def delete_discount(
     discount_id: int,
     session: AsyncSession = Depends(get_db),

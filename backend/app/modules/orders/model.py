@@ -49,7 +49,7 @@ class Order(Base):
     status: Mapped[Status] = mapped_column(Enum(Status), default=Status.PENDING)
     total_price: Mapped[Decimal] = mapped_column(DECIMAL(precision=10, scale=2))
     method_of_receipt: Mapped[MethodOfReceipt] = mapped_column(Enum(MethodOfReceipt))
-    payment_id: Mapped[str | None] = mapped_column()
+    payment_id: Mapped[str | None] = mapped_column(index=True, unique=True)
     idempotency_key: Mapped[uuid.UUID] = mapped_column(
         UUID(as_uuid=True),
         unique=True,
@@ -80,8 +80,8 @@ class OrderItem(Base):
     )
 
     id: Mapped[int] = mapped_column(primary_key=True, index=True)
-    order_id: Mapped[int] = mapped_column(ForeignKey("order.id", ondelete="CASCADE"))
-    product_id: Mapped[int] = mapped_column(ForeignKey("product.id", ondelete="CASCADE"))
+    order_id: Mapped[int] = mapped_column(ForeignKey("order.id", ondelete="CASCADE"), index=True)
+    product_id: Mapped[int] = mapped_column(ForeignKey("product.id", ondelete="CASCADE"), index=True)
     quantity: Mapped[int] = mapped_column()
     price: Mapped[Decimal] = mapped_column(DECIMAL(precision=10, scale=2))
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())

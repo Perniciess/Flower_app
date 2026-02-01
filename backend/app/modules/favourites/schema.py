@@ -9,6 +9,12 @@ class FavouriteBase(BaseModel):
     product_id: int = Field(..., description="ID товара")
 
 
+class FavouriteCreate(FavouriteBase):
+    """Схема для добавления в избранное."""
+
+    pass
+
+
 class FavouriteResponse(BaseModel):
     """Схема ответа с информацией об избранном товаре."""
 
