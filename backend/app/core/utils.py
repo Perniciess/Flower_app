@@ -3,6 +3,8 @@ from pathlib import Path
 from fastapi import UploadFile
 from pydantic_extra_types.phone_numbers import PhoneNumber
 
+MAX_IMAGE_SIZE = 5 * 1024 * 1024  # 5 MB
+
 ALLOWED_IMAGE_TYPES = {
     "image/jpeg",
     "image/png",
@@ -35,6 +37,10 @@ def validate_image(image: UploadFile) -> str:
 
     if image.content_type not in ALLOWED_IMAGE_TYPES:
         raise ValueError(f"Недопустимый тип файла: {image.content_type}")
+
+    size = image.size
+    if size is not None and size > MAX_IMAGE_SIZE:
+        raise ValueError(f"Размер файла {size} байт превышает лимит {MAX_IMAGE_SIZE} байт")
 
     return ext
 
