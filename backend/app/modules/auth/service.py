@@ -8,7 +8,6 @@ from app.core.config import settings
 from app.core.exceptions import (
     InvalidTokenError,
     PasswordsDoNotMatchError,
-    UserAlreadyExistsError,
     UserNotFoundError,
     UserNotUpdatedError,
 )
@@ -39,14 +38,7 @@ async def register(*, session: AsyncSession, redis: Redis, data: AuthRegister) -
 
     Returns:
         RegisterResponse данные для продолжения верификации
-
-    Raises:
-        UserAlreadyExistsError: если пользователь с таким phone_number уже существует
     """
-    user_exist = await user_repository.get_user_by_phone(session=session, phone_number=data.phone_number)
-    if user_exist:
-        raise UserAlreadyExistsError(data.phone_number)
-
     verification_token = generate_verification_token()
     data_user = {
         "phone_number": data.phone_number,
@@ -75,8 +67,11 @@ async def complete_register(*, session: AsyncSession, redis: Redis, verification
         InvalidTokenError: неправильный токен
     """
     data_user = await _get_redis_data(redis, f"v:{verification_token}")
-
-    await user_repository.create_user(session=session, data=data_user)
+    user_exist = await user_repository.get_user_by_phone(session=session, phone_number=data_user["phone_number"])
+    if not user_exist:
+        await user_repository.create_user(session=session, data=data_user)
+    else:
+        pass
     await redis.delete(f"v:{verification_token}")
 
 
@@ -96,11 +91,8 @@ async def login(*, session: AsyncSession, data: AuthLogin) -> Tokens:
         PasswordsDoNotMatchError: если пароли не совпадают
     """
     user = await user_repository.get_user_by_phone(session=session, phone_number=data.phone_number)
-    if user is None:
-        raise UserNotFoundError(phone_number=data.phone_number)
-
-    if not verify_password(data.password, user.password_hash):
-        raise PasswordsDoNotMatchError()
+    if user is None or not verify_password(data.password, user.password_hash):
+        raise PasswordsDoNotMatchError("Неверный номер телефона или пароль")
 
     access_token = create_access_token(user_id=user.id)
     refresh_token = await _save_refresh_token(session=session, user_id=user.id)
@@ -230,7 +222,8 @@ async def reset_password(*, session: AsyncSession, redis: Redis, phone_number: s
     """
     user_exist = await user_repository.get_user_by_phone(session=session, phone_number=phone_number)
     if not user_exist:
-        raise UserNotFoundError(phone_number=phone_number)
+        fake_token = generate_verification_token()
+        return VerificationDeepLink(token=fake_token, telegram_link=f"{settings.RESET}{fake_token}", expires_in=300)
 
     reset_token = generate_verification_token()
     user_data = {

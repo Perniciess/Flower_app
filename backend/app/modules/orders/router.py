@@ -1,12 +1,12 @@
 import uuid
 from datetime import UTC, datetime, timedelta
 
-from fastapi import APIRouter, Depends, Request
+from fastapi import APIRouter, Depends, Request, status
 from fastapi_pagination import Page
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import settings
-from app.core.deps import require_admin, require_client
+from app.core.deps import require_admin, require_client, verify_yookassa_request
 from app.core.limiter import limiter
 from app.database.session import get_db
 from app.modules.users.model import User
@@ -23,7 +23,9 @@ from .schema import (
 order_router = APIRouter(prefix="/orders", tags=["orders"])
 
 
-@order_router.post("/create", summary="Создание заказа", response_model=OrderResponseWithPayment)
+@order_router.post(
+    "/create", status_code=status.HTTP_200_OK, summary="Создание заказа", response_model=OrderResponseWithPayment
+)
 @limiter.limit("10/minute")
 async def create_order(
     request: Request,
@@ -45,9 +47,14 @@ async def create_order(
     )
 
 
-@order_router.post("/webhook", status_code=204, summary="Webhook YooKassa")
+@order_router.post("/webhook", status_code=status.HTTP_204_NO_CONTENT, summary="Webhook YooKassa")
 @limiter.limit("100/minute")
-async def yookassa_webhook(request: Request, payload: WebhookPayload, session: AsyncSession = Depends(get_db)) -> None:
+async def yookassa_webhook(
+    request: Request,
+    payload: WebhookPayload,
+    session: AsyncSession = Depends(get_db),
+    security: None = Depends(verify_yookassa_request),
+) -> None:
     """
     Получить ответ от юkassa со статусом оплаты.
     """
@@ -57,6 +64,7 @@ async def yookassa_webhook(request: Request, payload: WebhookPayload, session: A
 @order_router.get(
     "/history",
     response_model=Page[OrderResponse],
+    status_code=status.HTTP_200_OK,
     summary="История заказов пользователя",
 )
 async def get_orders(
@@ -75,6 +83,7 @@ async def get_orders(
 @order_router.get(
     "/{order_id}",
     response_model=OrderResponse,
+    status_code=status.HTTP_200_OK,
     summary="Получить информацию о заказе",
 )
 async def get_order_by_id(
@@ -94,6 +103,7 @@ async def get_order_by_id(
 @order_router.patch(
     "/status/{order_id}",
     response_model=OrderResponse,
+    status_code=status.HTTP_200_OK,
     summary="Обновить статус заказа",
 )
 async def update_order_status(
@@ -114,6 +124,7 @@ async def update_order_status(
 @order_router.patch(
     "/{order_id}/cancel",
     response_model=OrderResponse,
+    status_code=status.HTTP_200_OK,
     summary="Отменить заказ",
 )
 async def cancel_order(
@@ -133,6 +144,7 @@ async def cancel_order(
 @order_router.get(
     "/paid",
     response_model=Page[OrderResponse],
+    status_code=status.HTTP_200_OK,
     summary="Получить все оплаченные заказы",
 )
 async def get_all_paid_orders(session: AsyncSession = Depends(get_db), current_user: User = Depends(require_admin)):
@@ -145,7 +157,9 @@ async def get_all_paid_orders(session: AsyncSession = Depends(get_db), current_u
     return orders
 
 
-@order_router.get("/all", response_model=Page[OrderResponse], summary="Получить все заказы")
+@order_router.get(
+    "/all", response_model=Page[OrderResponse], status_code=status.HTTP_200_OK, summary="Получить все заказы"
+)
 async def get_all_orders(session: AsyncSession = Depends(get_db), current_user: User = Depends(require_admin)):
     """
     Получить список всех заказов.

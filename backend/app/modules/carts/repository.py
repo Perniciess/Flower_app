@@ -57,6 +57,12 @@ async def get_cart_item(*, session: AsyncSession, cart_id: int, product_id: int)
     return cart_item.scalar_one_or_none()
 
 
+async def get_cart_item_for_update(*, session: AsyncSession, cart_id: int, product_id: int) -> CartItem | None:
+    statement = select(CartItem).where(CartItem.cart_id == cart_id, CartItem.product_id == product_id).with_for_update()
+    result = await session.execute(statement)
+    return result.scalar_one_or_none()
+
+
 async def get_cart_item_by_id(*, session: AsyncSession, cart_item_id: int) -> CartItem | None:
     statement = select(CartItem).options(selectinload(CartItem.cart)).where(CartItem.id == cart_item_id)
     cart_item = await session.execute(statement)

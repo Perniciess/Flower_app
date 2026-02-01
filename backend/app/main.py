@@ -1,7 +1,7 @@
 import re
 from contextlib import asynccontextmanager
 
-from fastapi import APIRouter, Depends, FastAPI, Request
+from fastapi import APIRouter, Depends, FastAPI
 from fastapi.security import APIKeyHeader
 from fastapi_pagination import add_pagination
 from slowapi import _rate_limit_exceeded_handler
@@ -20,6 +20,7 @@ from app.modules.categories.router import category_router
 from app.modules.discounts.router import discount_router
 from app.modules.favourites.router import favourite_router
 from app.modules.orders.router import order_router
+from app.modules.pickup_points.router import pickup_point_router
 from app.modules.products.router import product_router
 from app.modules.users.router import user_router
 
@@ -55,14 +56,17 @@ app = FastAPI(
         {"name": "auth", "description": "Аутентификация и авторизация"},
         {"name": "products", "description": "Операции с товарами"},
         {"name": "carts", "description": "Корзина покупок"},
+        {"name": "pickup_points", "description": "Точки самовывоза"},
     ],
     lifespan=lifespan,
     swagger_ui_parameters={"defaultModelsExpandDepth": -1},
 )
 
-# Rate limiting configuration
 app.state.limiter = limiter
-app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+app.add_exception_handler(
+    RateLimitExceeded,
+    _rate_limit_exceeded_handler,  # type: ignore
+)
 
 csrf_header_scheme = APIKeyHeader(name=settings.CSRF_HEADER_NAME, auto_error=False)
 
@@ -103,6 +107,7 @@ api_router.include_router(order_router)
 api_router.include_router(category_router)
 api_router.include_router(favourite_router)
 api_router.include_router(discount_router)
+api_router.include_router(pickup_point_router)
 app.include_router(api_router, dependencies=[Depends(csrf_header_scheme)])
 
 

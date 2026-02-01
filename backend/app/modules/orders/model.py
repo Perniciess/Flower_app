@@ -21,6 +21,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.database.base import Base
 
 if TYPE_CHECKING:
+    from app.modules.pickup_points.model import PickupPoint
     from app.modules.products.model import Product
 
 
@@ -57,6 +58,9 @@ class Order(Base):
     )
     expires_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
     paid_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=True)
+    pickup_point_id: Mapped[int | None] = mapped_column(
+        ForeignKey("pickup_point.id", ondelete="SET NULL"), nullable=True
+    )
 
     order_item: Mapped[list[OrderItem]] = relationship(
         "OrderItem", back_populates="order", cascade="all, delete-orphan"
@@ -64,6 +68,7 @@ class Order(Base):
     delivery: Mapped[Delivery | None] = relationship(
         "Delivery", back_populates="order", uselist=False, cascade="all, delete-orphan"
     )
+    pickup_point: Mapped[PickupPoint | None] = relationship("PickupPoint")
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
     updated_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now(), onupdate=func.now()

@@ -1,6 +1,6 @@
 from collections.abc import Sequence
 
-from fastapi import APIRouter, Depends, UploadFile
+from fastapi import APIRouter, Depends, UploadFile, status
 from fastapi_pagination import Page
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -19,7 +19,7 @@ from .schema import (
 category_router = APIRouter(prefix="/category", tags=["category"])
 
 
-@category_router.post("/create", response_model=CategoryResponse, summary="Создание категории")
+@category_router.post("/create", response_model=CategoryResponse, status_code=status.HTTP_201_CREATED, summary="Создание категории")
 async def create_category(
     category_data: CategoryCreate,
     session: AsyncSession = Depends(get_db),
@@ -37,6 +37,7 @@ async def create_category(
 @category_router.get(
     "/all_active",
     response_model=Sequence[CategoryResponse],
+    status_code=status.HTTP_200_OK,
     summary="Получить список всех активных категорий",
 )
 async def get_all_active_categories(
@@ -52,6 +53,7 @@ async def get_all_active_categories(
 @category_router.get(
     "/all",
     response_model=Page[CategoryResponse],
+    status_code=status.HTTP_200_OK,
     summary="Список всех категорий",
 )
 async def get_all_categories_admin(
@@ -70,6 +72,7 @@ async def get_all_categories_admin(
 @category_router.get(
     "/tree",
     response_model=list[CategoryWithChildren],
+    status_code=status.HTTP_200_OK,
     summary="Получить дерево категорий",
 )
 async def get_category_tree(
@@ -85,6 +88,7 @@ async def get_category_tree(
 @category_router.get(
     "/{category_id}",
     response_model=CategoryResponse,
+    status_code=status.HTTP_200_OK,
     summary="Получить категорию по ID",
 )
 async def get_category_by_id(category_id: int, session: AsyncSession = Depends(get_db)) -> CategoryResponse:
@@ -97,6 +101,7 @@ async def get_category_by_id(category_id: int, session: AsyncSession = Depends(g
 @category_router.patch(
     "/{category_id}",
     response_model=CategoryResponse,
+    status_code=status.HTTP_200_OK,
     summary="Обновить категорию",
 )
 async def update_category(
@@ -113,7 +118,7 @@ async def update_category(
     return await category_service.update_category(session=session, category_id=category_id, category_data=category_data)
 
 
-@category_router.delete("/{category_id}", status_code=204, summary="Удалить категорию")
+@category_router.delete("/{category_id}", status_code=status.HTTP_204_NO_CONTENT, summary="Удалить категорию")
 async def delete_category_by_id(
     category_id: int,
     session: AsyncSession = Depends(get_db),
@@ -130,6 +135,7 @@ async def delete_category_by_id(
 @category_router.post(
     "/{category_id}/image",
     response_model=CategoryResponse,
+    status_code=status.HTTP_200_OK,
     summary="Загрузить изображение категории",
 )
 async def upload_category_image(
@@ -150,6 +156,7 @@ async def upload_category_image(
 @category_router.delete(
     "/{category_id}/image",
     response_model=CategoryResponse,
+    status_code=status.HTTP_200_OK,
     summary="Удалить изображение категории",
 )
 async def delete_category_image(
@@ -165,7 +172,7 @@ async def delete_category_image(
     return await category_service.delete_image(session=session, category_id=category_id)
 
 
-@category_router.get("/{slug}", response_model=CategoryResponse, summary="Получить категорию по slug")
+@category_router.get("/{slug}", response_model=CategoryResponse, status_code=status.HTTP_200_OK, summary="Получить категорию по slug")
 async def get_category_by_slug(slug: str, session: AsyncSession = Depends(get_db)) -> CategoryResponse:
     """
     Получить категорию по slug.

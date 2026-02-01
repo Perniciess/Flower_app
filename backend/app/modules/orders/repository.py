@@ -41,6 +41,7 @@ async def create_order(
         idempotency_key=idempotency_key,
         expires_at=expires_at,
         status=Status.PENDING,
+        pickup_point_id=data.pickup_point_id,
         order_item=[
             OrderItem(
                 product_id=item.product_id,
@@ -76,7 +77,9 @@ async def get_order_by_payment_id(*, session: AsyncSession, payment_id: str) -> 
 
 async def get_order_by_id(*, session: AsyncSession, order_id: int) -> Order | None:
     statement = (
-        select(Order).where(Order.id == order_id).options(selectinload(Order.order_item), selectinload(Order.delivery))
+        select(Order)
+        .where(Order.id == order_id)
+        .options(selectinload(Order.order_item), selectinload(Order.delivery), selectinload(Order.pickup_point))
     )
     result = await session.execute(statement)
     return result.scalar_one_or_none()
@@ -85,20 +88,24 @@ async def get_order_by_id(*, session: AsyncSession, order_id: int) -> Order | No
 def get_orders_query(user_id: int) -> Select[tuple[Order]]:
     return (
         select(Order)
-        .options(selectinload(Order.order_item), selectinload(Order.delivery))
+        .options(selectinload(Order.order_item), selectinload(Order.delivery), selectinload(Order.pickup_point))
         .where(Order.user_id == user_id)
         .order_by(Order.id)
     )
 
 
 def get_all_orders_query() -> Select[tuple[Order]]:
-    return select(Order).options(selectinload(Order.order_item), selectinload(Order.delivery)).order_by(Order.id)
+    return (
+        select(Order)
+        .options(selectinload(Order.order_item), selectinload(Order.delivery), selectinload(Order.pickup_point))
+        .order_by(Order.id)
+    )
 
 
 def get_all_paid_query() -> Select[tuple[Order]]:
     return (
         select(Order)
-        .options(selectinload(Order.order_item), selectinload(Order.delivery))
+        .options(selectinload(Order.order_item), selectinload(Order.delivery), selectinload(Order.pickup_point))
         .where(Order.status == Status.PAID)
         .order_by(Order.id)
     )

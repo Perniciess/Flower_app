@@ -22,5 +22,5 @@ class Favourite(Base):
     product_id: Mapped[int] = mapped_column(ForeignKey("product.id", ondelete="CASCADE"))
     user_id: Mapped[int] = mapped_column(ForeignKey("user.id", ondelete="CASCADE"), index=True)
 
-    product: Mapped[Product] = relationship("Product")
-    user: Mapped[User] = relationship("User", back_populates="favourites")
+    product: Mapped["Product"] = relationship("Product")
+    user: Mapped["User"] = relationship("User", back_populates="favourites")
