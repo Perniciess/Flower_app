@@ -22,6 +22,7 @@ dependencies = [
   "alembic>=1.18.3",
   "fastapi-filter[sqlalchemy]>=2.0.1",
   "slowapi>=0.1.9",
+  "python-magic>=0.4.27",
 ]
 
 

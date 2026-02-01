@@ -26,6 +26,11 @@ class UserNotUpdatedError(HTTPException):
         )
 
 
+class InvalidCredentialsError(HTTPException):
+    def __init__(self) -> None:
+        super().__init__(status_code=401, detail="Неверный номер телефона или пароль")
+
+
 class PasswordsDoNotMatchError(HTTPException):
     def __init__(self, message: str | None = None) -> None:
         super().__init__(status_code=400, detail=message or "Неправильный пароль")
@@ -144,3 +149,13 @@ class FavouriteItemAlreadyExistsError(HTTPException):
 class FavouriteItemNotFoundError(HTTPException):
     def __init__(self, product_id: int) -> None:
         super().__init__(status_code=404, detail=f"Товар с ID={product_id} не найден в понравившихся")
+
+
+class PickupPointNotFoundError(HTTPException):
+    def __init__(self, pickup_point_id: int) -> None:
+        super().__init__(status_code=404, detail=f"Точка самовывоза с ID={pickup_point_id} не найдена")
+
+
+class PickupPointNotActiveError(HTTPException):
+    def __init__(self, pickup_point_id: int) -> None:
+        super().__init__(status_code=400, detail=f"Точка самовывоза с ID={pickup_point_id} неактивна")

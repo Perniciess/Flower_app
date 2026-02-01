@@ -60,6 +60,7 @@ class OrderResponse(BaseModel):
     user_id: int = Field(..., description="Уникальный идентификатор пользователя")
     method_of_receipt: MethodOfReceipt = Field(..., description="Метод получения")
     delivery: DeliveryResponse | None = Field(None, description="Данные доставки")
+    pickup_point_id: int | None = Field(None, description="Идентификатор точки самовывоза")
     order_item: list[OrderItemResponse] = Field(default_factory=list, description="Товары в заказе")
 
 
@@ -89,9 +90,20 @@ class CreateOrderRequest(BaseModel):
 
     method_of_receipt: MethodOfReceipt = Field(..., description="Метод получения")
     delivery: DeliveryRequest | None = Field(default=None, description="Данные доставки")
+    pickup_point_id: int | None = Field(default=None, description="Идентификатор точки самовывоза")
 
     @model_validator(mode="after")
     def check_delivery(self):
-        if self.method_of_receipt == MethodOfReceipt.DELIVERY and not self.delivery:
-            raise ValueError("Для доставки необходимы данные доставки")
+        if self.method_of_receipt == MethodOfReceipt.DELIVERY:
+            if not self.delivery:
+                raise ValueError("Для доставки необходимы данные доставки")
+            if self.pickup_point_id is not None:
+                raise ValueError("Для доставки не требуется точка самовывоза")
+
+        if self.method_of_receipt == MethodOfReceipt.PICK_UP:
+            if self.delivery is not None:
+                raise ValueError("Для самовывоза не нужны данные доставки")
+            if not self.pickup_point_id:
+                raise ValueError("Для самовывоза необходимо выбрать точку самовывоза")
+
         return self

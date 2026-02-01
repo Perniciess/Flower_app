@@ -16,6 +16,7 @@ from app.core.exceptions import (
 from app.modules.carts import repository as cart_repository
 from app.modules.discounts import service as discount_service
 from app.modules.payments import service as payment_service
+from app.modules.pickup_points import service as pickup_point_service
 from app.modules.products import repository as product_repository
 from app.modules.users.model import Role, User
 
@@ -60,6 +61,10 @@ async def create_order(
 
     if not cart.cart_item:
         raise EmptyCartError(cart_id=cart.id)
+
+    # Валидация точки самовывоза, если указана
+    if data.pickup_point_id is not None:
+        await pickup_point_service.validate_pickup_point(session=session, pickup_point_id=data.pickup_point_id)
 
     product_ids = [item.product_id for item in cart.cart_item]
     products = await product_repository.get_products_by_ids(session=session, product_ids=product_ids)

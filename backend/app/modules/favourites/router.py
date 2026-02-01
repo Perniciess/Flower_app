@@ -1,6 +1,6 @@
 from collections.abc import Sequence
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.deps import require_client
@@ -13,7 +13,7 @@ from .schema import FavouriteResponse
 favourite_router = APIRouter(prefix="/favourite", tags=["favourite"])
 
 
-@favourite_router.post("/add/{product_id}", response_model=FavouriteResponse, summary="Добавить товар в избранное")
+@favourite_router.post("/add/{product_id}", response_model=FavouriteResponse, status_code=status.HTTP_201_CREATED, summary="Добавить товар в избранное")
 async def add_to_favourite(
     product_id: int, session: AsyncSession = Depends(get_db), current_user: User = Depends(require_client)
 ) -> FavouriteResponse:
@@ -28,7 +28,7 @@ async def add_to_favourite(
     return favourite
 
 
-@favourite_router.get("/list", response_model=Sequence[FavouriteResponse], summary="Получить список избранных товаров")
+@favourite_router.get("/list", response_model=Sequence[FavouriteResponse], status_code=status.HTTP_200_OK, summary="Получить список избранных товаров")
 async def get_favourite_list(
     session: AsyncSession = Depends(get_db), current_user: User = Depends(require_client)
 ) -> Sequence[FavouriteResponse]:
@@ -41,7 +41,7 @@ async def get_favourite_list(
     return favourites
 
 
-@favourite_router.delete("/delete/{product_id}", response_model=dict[str, str], summary="Удалить товар из избранных")
+@favourite_router.delete("/delete/{product_id}", response_model=dict[str, str], status_code=status.HTTP_200_OK, summary="Удалить товар из избранных")
 async def delete_from_favourites(
     product_id: int, session: AsyncSession = Depends(get_db), current_user: User = Depends(require_client)
 ):

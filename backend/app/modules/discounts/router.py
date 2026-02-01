@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, status
 from fastapi_pagination import Page
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -12,7 +12,7 @@ from .schema import DiscountCreate, DiscountResponse, DiscountUpdate
 discount_router = APIRouter(prefix="/discounts", tags=["discounts"])
 
 
-@discount_router.post("", response_model=DiscountResponse, summary="Создать акцию")
+@discount_router.post("", response_model=DiscountResponse, status_code=status.HTTP_201_CREATED, summary="Создать акцию")
 async def create_discount(
     discount_data: DiscountCreate,
     session: AsyncSession = Depends(get_db),
@@ -26,7 +26,7 @@ async def create_discount(
     return await discount_service.create_discount(session=session, discount_data=discount_data)
 
 
-@discount_router.get("", response_model=Page[DiscountResponse], summary="Список всех акций")
+@discount_router.get("", response_model=Page[DiscountResponse], status_code=status.HTTP_200_OK, summary="Список всех акций")
 async def get_discounts(
     session: AsyncSession = Depends(get_db),
     current_user: User = Depends(require_admin),
@@ -39,7 +39,7 @@ async def get_discounts(
     return await discount_service.get_discounts(session=session)
 
 
-@discount_router.get("/{discount_id}", response_model=DiscountResponse, summary="Получить акцию по ID")
+@discount_router.get("/{discount_id}", response_model=DiscountResponse, status_code=status.HTTP_200_OK, summary="Получить акцию по ID")
 async def get_discount(
     discount_id: int,
     session: AsyncSession = Depends(get_db),
@@ -53,7 +53,7 @@ async def get_discount(
     return await discount_service.get_discount(session=session, discount_id=discount_id)
 
 
-@discount_router.patch("/{discount_id}", response_model=DiscountResponse, summary="Обновить акцию")
+@discount_router.patch("/{discount_id}", response_model=DiscountResponse, status_code=status.HTTP_200_OK, summary="Обновить акцию")
 async def update_discount(
     discount_id: int,
     discount_data: DiscountUpdate,
@@ -68,7 +68,7 @@ async def update_discount(
     return await discount_service.update_discount(session=session, discount_id=discount_id, discount_data=discount_data)
 
 
-@discount_router.delete("/{discount_id}", status_code=204, summary="Удалить акцию")
+@discount_router.delete("/{discount_id}", status_code=status.HTTP_204_NO_CONTENT, summary="Удалить акцию")
 async def delete_discount(
     discount_id: int,
     session: AsyncSession = Depends(get_db),

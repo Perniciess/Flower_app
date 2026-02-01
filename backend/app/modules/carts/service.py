@@ -1,3 +1,4 @@
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.exceptions import (
@@ -101,20 +102,33 @@ async def create_cart_item(
     if not cart:
         cart = await cart_repository.create_cart(session=session, user_id=user_id)
 
-    cart_item_exists = await cart_repository.get_cart_item(session=session, cart_id=cart.id, product_id=product_id)
+    cart_item_exists = await cart_repository.get_cart_item_for_update(
+        session=session, cart_id=cart.id, product_id=product_id
+    )
     if cart_item_exists:
         cart_item_exists.quantity += quantity
         await session.flush()
         return CartItemResponse.model_validate(cart_item_exists)
 
-    cart_item = await cart_repository.create_cart_item(
-        session=session,
-        cart_id=cart.id,
-        product_id=product_id,
-        quantity=quantity,
-        price=price,
-    )
-    return CartItemResponse.model_validate(cart_item)
+    try:
+        cart_item = await cart_repository.create_cart_item(
+            session=session,
+            cart_id=cart.id,
+            product_id=product_id,
+            quantity=quantity,
+            price=price,
+        )
+        return CartItemResponse.model_validate(cart_item)
+    except IntegrityError:
+        await session.rollback()
+        cart_item_exists = await cart_repository.get_cart_item_for_update(
+            session=session, cart_id=cart.id, product_id=product_id
+        )
+        if cart_item_exists:
+            cart_item_exists.quantity += quantity
+            await session.flush()
+            return CartItemResponse.model_validate(cart_item_exists)
+        raise
 
 
 async def update_cart_item_quantity(

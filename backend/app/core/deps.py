@@ -2,6 +2,7 @@ import jwt
 from fastapi import Depends, HTTPException, Request, status
 from redis.asyncio import Redis
 from sqlalchemy.ext.asyncio import AsyncSession
+from yookassa.domain.common import SecurityHelper
 
 from app.database.session import get_db
 from app.modules.users import repository as user_repository
@@ -59,3 +60,25 @@ class RoleChecker:
 
 require_admin = RoleChecker([Role.ADMIN])
 require_client = RoleChecker([Role.CLIENT, Role.ADMIN])
+
+
+async def verify_yookassa_request(request: Request) -> None:
+    """
+    Зависимость для проверки, что запрос пришел именно от серверов ЮKassa.
+    """
+    x_forwarded_for = request.headers.get("X-Forwarded-For")
+
+    if x_forwarded_for:
+        client_ip = x_forwarded_for.split(",")[0].strip()
+    else:
+        if request.client is None:
+            raise HTTPException(status_code=400, detail="Could not determine client IP")
+        client_ip = request.client.host
+
+    try:
+        is_trusted = SecurityHelper().is_ip_trusted(client_ip)
+    except Exception:
+        is_trusted = False
+
+    if not is_trusted:
+        raise HTTPException(status_code=403, detail="Forbidden: Untrusted IP source")

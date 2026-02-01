@@ -1,6 +1,6 @@
 from collections.abc import Sequence
 
-from fastapi import APIRouter, Depends, Form, UploadFile
+from fastapi import APIRouter, Depends, Form, UploadFile, status
 from fastapi_filter import FilterDepends
 from fastapi_pagination import Page
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -16,7 +16,7 @@ from .schema import ProductCreate, ProductImageResponse, ProductResponse, Produc
 product_router = APIRouter(prefix="/products", tags=["products"])
 
 
-@product_router.post("/create", response_model=ProductResponse, summary="Создать товар")
+@product_router.post("/create", response_model=ProductResponse, status_code=status.HTTP_201_CREATED, summary="Создать товар")
 async def create_product(
     product_data: ProductCreate,
     session: AsyncSession = Depends(get_db),
@@ -31,7 +31,7 @@ async def create_product(
     return product
 
 
-@product_router.get("/", response_model=Page[ProductResponse], summary="Получить список товаров")
+@product_router.get("/", response_model=Page[ProductResponse], status_code=status.HTTP_200_OK, summary="Получить список товаров")
 async def get_products(
     session: AsyncSession = Depends(get_db),
     product_filter: ProductFilter = FilterDepends(ProductFilter),
@@ -41,14 +41,14 @@ async def get_products(
     return products
 
 
-@product_router.get("/{product_id}", response_model=ProductResponse, summary="Получить один товар")
+@product_router.get("/{product_id}", response_model=ProductResponse, status_code=status.HTTP_200_OK, summary="Получить один товар")
 async def get_product_by_id(product_id: int, session: AsyncSession = Depends(get_db)):
     """Получить товар по ID."""
     product = await product_service.get_product(session=session, product_id=product_id)
     return product
 
 
-@product_router.patch("/{product_id}", response_model=ProductResponse, summary="Получить товар по ID")
+@product_router.patch("/{product_id}", response_model=ProductResponse, status_code=status.HTTP_200_OK, summary="Получить товар по ID")
 async def update_product(
     product_id: int,
     product_data: ProductUpdate,
@@ -64,7 +64,7 @@ async def update_product(
     return product
 
 
-@product_router.delete("/{product_id}", status_code=204, summary="Удалить товар")
+@product_router.delete("/{product_id}", status_code=status.HTTP_204_NO_CONTENT, summary="Удалить товар")
 async def delete_product(
     product_id: int,
     session: AsyncSession = Depends(get_db),
@@ -81,6 +81,7 @@ async def delete_product(
 @product_router.post(
     "/images/{product_id}",
     response_model=ProductImageResponse,
+    status_code=status.HTTP_201_CREATED,
     summary="Загрузить изображение товара",
 )
 async def upload_image(
@@ -104,6 +105,7 @@ async def upload_image(
 @product_router.get(
     "/images",
     response_model=Sequence[ProductImageResponse],
+    status_code=status.HTTP_200_OK,
     summary="Получить изображения товара",
 )
 async def get_products_images(
@@ -114,7 +116,7 @@ async def get_products_images(
     return images
 
 
-@product_router.delete("/images/{image_id}", status_code=204, summary="Удалить изображение товара")
+@product_router.delete("/images/{image_id}", status_code=status.HTTP_204_NO_CONTENT, summary="Удалить изображение товара")
 async def delete_product_image(
     image_id: int,
     session: AsyncSession = Depends(get_db),

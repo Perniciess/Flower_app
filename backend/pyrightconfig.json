@@ -19,6 +19,7 @@
   "reportUnnecessaryTypeIgnoreComment": true,
   "reportPrivateUsage": true,
   "reportConstantRedefinition": true,
+  "reportUntypedFunctionDecorator": "none", // чтобы убрать ошибку rate limiter
 
   "reportUnknownMemberType": false,
   "reportUnknownArgumentType": false,
