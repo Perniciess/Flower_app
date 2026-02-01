@@ -8,16 +8,16 @@ from sqlalchemy.ext.asyncio import async_engine_from_config
 
 from alembic import context
 from app.core.config import settings
-from app.database.base import Base  # <-- твой declarative_base()
-from app.modules.users.model import User
-from app.modules.auth.model import RefreshToken
-from app.modules.products.model import Product, ProductImage
-from app.modules.carts.model import Cart, CartItem
-from app.modules.orders.model import Order, OrderItem, Delivery
-from app.modules.categories.model import Category
-from app.modules.favourites.model import Favourite
-from app.modules.pickup_points.model import PickupPoint
-from app.modules.discounts.model import Discount
+from app.db.base import Base  # <-- твой declarative_base()
+from app.models.users_model import User
+from app.models.auth_model import RefreshToken
+from app.models.products_model import Product, ProductImage
+from app.models.carts_model import Cart, CartItem
+from app.models.orders_model import Order, OrderItem, Delivery
+from app.models.categories_model import Category
+from app.models.favourites_model import Favourite
+from app.models.pickups_model import PickupPoint
+from app.models.discounts_model import Discount
 config = context.config
 
 if config.config_file_name is not None:

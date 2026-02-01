@@ -4,9 +4,9 @@ from redis.asyncio import Redis
 from sqlalchemy.ext.asyncio import AsyncSession
 from yookassa.domain.common import SecurityHelper
 
-from app.database.session import get_db
-from app.modules.users import repository as user_repository
-from app.modules.users.model import Role, User
+from app.db.session import get_db
+from app.models.users_model import Role, User
+from app.repository import users_repository
 
 from .config import settings
 from .exceptions import InsufficientPermissionError, InvalidTokenError
@@ -39,7 +39,7 @@ async def get_current_user(
     except (jwt.InvalidTokenError, TypeError, ValueError):
         raise HTTPException(status_code=401, detail="Could not validate credentials") from None
 
-    user = await user_repository.get_user_by_id(session=session, user_id=user_id)
+    user = await users_repository.get_user_by_id(session=session, user_id=user_id)
     if user is None:
         raise HTTPException(status_code=401, detail="Could not validate credentials")
     return user

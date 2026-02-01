@@ -9,10 +9,6 @@ from redis.asyncio import Redis
 
 from .config import settings
 
-REFRESH_TOKEN_BYTES = 64
-VERIFICATION_TOKEN_BYTES = 16
-
-
 password_hash = PasswordHash.recommended()
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login", auto_error=False)
 
@@ -51,7 +47,7 @@ def get_expires_at_refresh_token() -> datetime:
 
 def generate_verification_token() -> str:
     """Генерация токена верификации для Telegram."""
-    return secrets.token_urlsafe(VERIFICATION_TOKEN_BYTES)
+    return secrets.token_urlsafe(settings.VERIFICATION_TOKEN_BYTES)
 
 
 async def add_to_blacklist(redis: Redis, access_token: str) -> None:
