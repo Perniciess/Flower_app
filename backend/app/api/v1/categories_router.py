@@ -1,10 +1,11 @@
 from collections.abc import Sequence
 
-from fastapi import APIRouter, Depends, UploadFile, status
+from fastapi import APIRouter, Depends, Request, UploadFile, status
 from fastapi_pagination import Page
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.deps import require_admin
+from app.core.limiter import limiter
 from app.db.session import get_db
 from app.models.users_model import User
 from app.schemas.categories_schema import (
@@ -41,7 +42,9 @@ async def create_category(
     status_code=status.HTTP_200_OK,
     summary="Получить список всех активных категорий",
 )
+@limiter.limit("60/minute")
 async def get_all_active_categories(
+    request: Request,
     session: AsyncSession = Depends(get_db),
 ) -> Sequence[CategoryResponse]:
     """
@@ -76,7 +79,9 @@ async def get_all_categories_admin(
     status_code=status.HTTP_200_OK,
     summary="Получить дерево категорий",
 )
+@limiter.limit("60/minute")
 async def get_category_tree(
+    request: Request,
     session: AsyncSession = Depends(get_db),
     only_active: bool = True,
 ) -> list[CategoryWithChildren]:
@@ -92,7 +97,10 @@ async def get_category_tree(
     status_code=status.HTTP_200_OK,
     summary="Получить категорию по ID",
 )
-async def get_category_by_id(category_id: int, session: AsyncSession = Depends(get_db)) -> CategoryResponse:
+@limiter.limit("60/minute")
+async def get_category_by_id(
+    request: Request, category_id: int, session: AsyncSession = Depends(get_db)
+) -> CategoryResponse:
     """
     Получить категорию по ID.
     """
@@ -178,7 +186,8 @@ async def delete_category_image(
 @category_router.get(
     "/{slug}", response_model=CategoryResponse, status_code=status.HTTP_200_OK, summary="Получить категорию по slug"
 )
-async def get_category_by_slug(slug: str, session: AsyncSession = Depends(get_db)) -> CategoryResponse:
+@limiter.limit("60/minute")
+async def get_category_by_slug(request: Request, slug: str, session: AsyncSession = Depends(get_db)) -> CategoryResponse:
     """
     Получить категорию по slug.
     """

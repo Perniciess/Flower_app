@@ -1,11 +1,12 @@
 from collections.abc import Sequence
 
-from fastapi import APIRouter, Depends, Form, UploadFile, status
+from fastapi import APIRouter, Depends, Form, Request, UploadFile, status
 from fastapi_filter import FilterDepends
 from fastapi_pagination import Page
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.deps import require_admin
+from app.core.limiter import limiter
 from app.db.session import get_db
 from app.models.users_model import User
 from app.schemas.products_schema import ProductCreate, ProductImageResponse, ProductResponse, ProductUpdate
@@ -35,7 +36,9 @@ async def create_product(
 @product_router.get(
     "/", response_model=Page[ProductResponse], status_code=status.HTTP_200_OK, summary="Получить список товаров"
 )
+@limiter.limit("30/minute")
 async def get_products(
+    request: Request,
     session: AsyncSession = Depends(get_db),
     product_filter: ProductFilter = FilterDepends(ProductFilter),
 ) -> Page[ProductResponse]:
@@ -47,7 +50,8 @@ async def get_products(
 @product_router.get(
     "/{product_id}", response_model=ProductResponse, status_code=status.HTTP_200_OK, summary="Получить один товар"
 )
-async def get_product_by_id(product_id: int, session: AsyncSession = Depends(get_db)):
+@limiter.limit("60/minute")
+async def get_product_by_id(request: Request, product_id: int, session: AsyncSession = Depends(get_db)):
     """Получить товар по ID."""
     product = await products_service.get_product(session=session, product_id=product_id)
     return product
