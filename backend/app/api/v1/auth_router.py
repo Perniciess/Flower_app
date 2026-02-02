@@ -1,11 +1,20 @@
 import asyncio
 
-from fastapi import APIRouter, Cookie, Depends, Response, WebSocket, WebSocketDisconnect, status
-from fastapi_limiter.depends import RateLimiter
+from fastapi import (
+    APIRouter,
+    Cookie,
+    Depends,
+    Request,
+    Response,
+    WebSocket,
+    WebSocketDisconnect,
+    status,
+)
 from redis.asyncio import Redis
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.deps import get_current_user
+from app.core.limiter import limiter
 from app.core.redis import get_redis
 from app.db.session import get_db
 from app.models.users_model import User
@@ -24,7 +33,10 @@ auth_router = APIRouter(prefix="/auth", tags=["auth"])
 
 
 @auth_router.post(
-    "/register", response_model=VerificationDeepLink, status_code=status.HTTP_201_CREATED, summary="Зарегистрироваться"
+    "/register",
+    response_model=VerificationDeepLink,
+    status_code=status.HTTP_201_CREATED,
+    summary="Зарегистрироваться",
 )
 @limiter.limit("3/minute")
 async def register(
@@ -37,10 +49,18 @@ async def register(
     return await auth_service.register(session=session, redis=redis, data=data)
 
 
-@auth_router.post("/login", response_model=dict[str, str], status_code=status.HTTP_200_OK, summary="Авторизоваться")
+@auth_router.post(
+    "/login",
+    response_model=dict[str, str],
+    status_code=status.HTTP_200_OK,
+    summary="Авторизоваться",
+)
 @limiter.limit("5/minute")
 async def login(
-    request: Request, response: Response, data: AuthLogin, session: AsyncSession = Depends(get_db)
+    request: Request,
+    response: Response,
+    data: AuthLogin,
+    session: AsyncSession = Depends(get_db),
 ) -> dict[str, str]:
     """Авторизация пользователя."""
     tokens = await auth_service.login(session=session, data=data)
@@ -48,7 +68,12 @@ async def login(
     return {"message": "Успешная авторизация", "phone_number": data.phone_number}
 
 
-@auth_router.post("/logout", response_model=dict[str, str], status_code=status.HTTP_200_OK, summary="Выйти из системы")
+@auth_router.post(
+    "/logout",
+    response_model=dict[str, str],
+    status_code=status.HTTP_200_OK,
+    summary="Выйти из системы",
+)
 async def logout(
     response: Response,
     access_token: str = Cookie(),
@@ -72,7 +97,12 @@ async def logout(
     return {"message": "Выход из системы выполнен"}
 
 
-@auth_router.post("/refresh", response_model=dict[str, str], status_code=status.HTTP_200_OK, summary="Обновить токены")
+@auth_router.post(
+    "/refresh",
+    response_model=dict[str, str],
+    status_code=status.HTTP_200_OK,
+    summary="Обновить токены",
+)
 @limiter.limit("10/minute")
 async def refresh_token(
     request: Request,
@@ -85,7 +115,9 @@ async def refresh_token(
 
     Требует авторизации.
     """
-    tokens = await auth_service.refresh_tokens(session=session, refresh_token=refresh_token)
+    tokens = await auth_service.refresh_tokens(
+        session=session, refresh_token=refresh_token
+    )
     set_token(response=response, tokens=tokens)
     return {"message": "Успешная замена токенов"}
 
@@ -104,12 +136,17 @@ async def complete_register(
     session: AsyncSession = Depends(get_db),
 ) -> dict[str, str]:
     """Завершить регистрацию после подтверждения номера в телеграме."""
-    await auth_service.complete_register(session=session, redis=redis, verification_token=verification_token)
+    await auth_service.complete_register(
+        session=session, redis=redis, verification_token=verification_token
+    )
     return {"message": "Успешная регистрация"}
 
 
 @auth_router.post(
-    "/change-password", response_model=dict[str, str], status_code=status.HTTP_200_OK, summary="Смена пароля"
+    "/change-password",
+    response_model=dict[str, str],
+    status_code=status.HTTP_200_OK,
+    summary="Смена пароля",
 )
 async def change_password(
     response: Response,
@@ -136,7 +173,9 @@ async def change_password(
     return {"message": "Успешная смена пароля"}
 
 
-@auth_router.post("/reset_password", status_code=status.HTTP_200_OK, summary="Сброс пароля")
+@auth_router.post(
+    "/reset_password", status_code=status.HTTP_200_OK, summary="Сброс пароля"
+)
 @limiter.limit("3/hour")
 async def reset_password(
     request: Request,
@@ -147,13 +186,19 @@ async def reset_password(
     """
     Сбросить пароля пользователя с подтверждением в ТГ.
     """
-    return await auth_service.reset_password(session=session, redis=redis, phone_number=data.phone_number)
+    return await auth_service.reset_password(
+        session=session, redis=redis, phone_number=data.phone_number
+    )
 
 
 @auth_router.post(
-    "/complete-reset-verification/{reset_token}", response_model=dict[str, str], status_code=status.HTTP_200_OK
+    "/complete-reset-verification/{reset_token}",
+    response_model=dict[str, str],
+    status_code=status.HTTP_200_OK,
 )
-async def complete_reset(reset_token: str, redis: Redis = Depends(get_redis)) -> dict[str, str]:
+async def complete_reset(
+    reset_token: str, redis: Redis = Depends(get_redis)
+) -> dict[str, str]:
     """
     Завершить сброс пароля пользователя.
     """
@@ -162,7 +207,9 @@ async def complete_reset(reset_token: str, redis: Redis = Depends(get_redis)) ->
 
 
 @auth_router.websocket("/ws/reset/{reset_token}")
-async def reset_websocket(reset_token: str, websocket: WebSocket, redis: Redis = Depends(get_redis)):
+async def reset_websocket(
+    reset_token: str, websocket: WebSocket, redis: Redis = Depends(get_redis)
+):
     """
     Установить ws-соединение для уведомления фронтенда об сбросе пароля.
     """
@@ -180,7 +227,9 @@ async def reset_websocket(reset_token: str, websocket: WebSocket, redis: Redis =
     try:
         deadline = asyncio.get_running_loop().time() + ttl
         while asyncio.get_running_loop().time() < deadline:
-            message = await pubsub.get_message(ignore_subscribe_messages=True, timeout=1.0)
+            message = await pubsub.get_message(
+                ignore_subscribe_messages=True, timeout=1.0
+            )
             if message and message["type"] == "message":
                 await websocket.send_json({"verified": True})
                 await websocket.close()

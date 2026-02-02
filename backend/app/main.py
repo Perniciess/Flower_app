@@ -22,29 +22,42 @@ from app.api.v1.products_router import product_router
 from app.api.v1.users_router import user_router
 from app.core.config import settings
 from app.core.limiter import limiter
+from app.core.logger import get_logger, setup_logging
+from app.core.logging_middleware import LoggingMiddleware
 from app.core.redis import get_redis, redis_manager
 from app.db.session import engine
+
+setup_logging()
+logger = get_logger(__name__)
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    logger.info("application_startup", environment=settings.ENVIRONMENT)
+
+    logger.info("static_directories_created", upload_dir=str(settings.STATIC_FILES_DIR))
+
     try:
         async with engine.connect() as conn:
             await conn.execute(text("SELECT 1"))
-        print("DB connected")
+        logger.info("database_connected", db=settings.POSTGRES_DB)
     except Exception as exc:
-        print(f"DB connection failed: {exc}")
+        logger.exception("database_connection_failed", exc_info=exc)
         raise
+
     try:
         await redis_manager.init_pool()
         redis = get_redis()
         await redis.ping()  # type: ignore[misc]
         await redis.aclose()
-        print("Redis connected")
+        logger.info("redis_connected", url=settings.REDIS_URL.split("@")[-1])
     except Exception as exc:
-        print(f"Redis connection failed: {exc}")
+        logger.exception("redis_connection_failed", exc_info=exc)
         raise
+
     yield
+
+    logger.info("application_shutdown")
     await redis_manager.close_pool()
     await engine.dispose()
 
@@ -71,6 +84,8 @@ app.add_exception_handler(
 
 csrf_header_scheme = APIKeyHeader(name=settings.CSRF_HEADER_NAME, auto_error=False)
 
+app.add_middleware(LoggingMiddleware)
+
 if settings.all_cors_origins:
     app.add_middleware(
         CORSMiddleware,
@@ -94,7 +109,9 @@ app.add_middleware(
         re.compile(r"/openapi.json"),
         re.compile(re.escape(settings.API_V1_STR) + r"/auth/login"),
         re.compile(re.escape(settings.API_V1_STR) + r"/auth/complete-register/.*"),
-        re.compile(re.escape(settings.API_V1_STR) + r"/auth/complete-reset-verification/.*"),
+        re.compile(
+            re.escape(settings.API_V1_STR) + r"/auth/complete-reset-verification/.*"
+        ),
         re.compile(re.escape(settings.API_V1_STR) + r"/orders/webhook"),
     ],
 )
@@ -111,7 +128,12 @@ api_router.include_router(discount_router)
 api_router.include_router(pickup_point_router)
 app.include_router(api_router, dependencies=[Depends(csrf_header_scheme)])
 
-# Раздача статических файлов
-app.mount(f"/{settings.STATIC_FILES_DIR}", StaticFiles(directory=settings.ROOT_DIR), name="static")
+settings.ROOT_DIR.mkdir(parents=True, exist_ok=True)
+
+app.mount(
+    f"/{settings.STATIC_FILES_DIR}",
+    StaticFiles(directory=settings.ROOT_DIR),
+    name="static",
+)
 
 add_pagination(app)

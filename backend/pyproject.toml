@@ -24,6 +24,7 @@ dependencies = [
   "fastapi-limiter>=0.1.6",
   "python-magic>=0.4.27",
   "slowapi>=0.1.9",
+  "structlog>=25.5.0",
 ]
 
 
@@ -37,7 +38,7 @@ exclude = ["migrations", "*.html", "alembic"]
 select = ["E", "F", "I", "UP", "B", "PERF", "FIX002", "PLE", "PLW", "F822", "N", "S", "RUF", "ASYNC"]
 ignore = ["E501", "D104", "D100", "B008"]
 exclude = [".git", "__pycache__", "venv", ".venv"]
-allowed-confusables = ["а", "е", "о", "р", "с", "у", "х", "і", "г", "б"]
+allowed-confusables = ["а", "е", "о", "р", "с", "у", "х", "і", "г", "б", "Б", "В", "в"]
 
 [tool.ruff.lint.flake8-quotes]
 docstring-quotes = "double"
