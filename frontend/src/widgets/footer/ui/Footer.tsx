@@ -1,14 +1,13 @@
+import Image from "next/image";
 import Link from "next/link";
 
 export function Footer() {
     return (
         <footer className="mt-auto bg-[#326964] text-white">
-            <div className="border-b border-white/20 px-4 py-8 text-center">
-                <p className="text-lg">
-                    Бережная круглосуточная доставка
-                    {" "}
-                    <br />
-                    свежих цветов по Челябинску
+            <div className="flex flex-col items-center border-b border-white/20 px-4 py-8">
+                <Image src="/images/logo_white.png" alt="logo" width={90} height={70} className="mb-4" />
+                <p className="text-center text-lg">
+                    Бережная круглосуточная доставка свежих цветов по Челябинску
                 </p>
                 <Link href="" className="text-gray-200 underline">Наши адреса</Link>
             </div>
