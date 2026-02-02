@@ -1,25 +1,19 @@
+import Image from "next/image";
 import Link from "next/link";
-
-const navItems = [
-    { label: "Цветы", href: "/flowers" },
-    { label: "Розы", href: "/roses" },
-    { label: "Поводы", href: "/occasions" },
-    { label: "Подарки", href: "/gifts" },
-    { label: "Акции", href: "/sales" },
-    { label: "О компании", href: "/about" },
-];
+import { navItems } from "../config";
 
 export function Header() {
     return (
-        <header className="bg-transparent">
-            <div className="mx-auto flex max-w-6xl items-center justify-center px-4 py-6">
+        <header className="flex flex-col items-center border-b border-white bg-transparent pb-6 pt-6">
+            <Image src="/images/logo_white.png" alt="logo" width={84} height={65} className="mb-3" />
+            <div className="px-4">
                 <nav>
                     <ul className="flex gap-8">
                         {navItems.map(item => (
                             <li key={item.href}>
                                 <Link
                                     href={item.href}
-                                    className="text-lg text-gray-700"
+                                    className="text-[18px] font-medium leading-none text-white"
                                 >
                                     {item.label}
                                 </Link>
