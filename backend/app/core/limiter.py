@@ -1,14 +1,35 @@
+from typing import Any, cast
+
+from fastapi import Request
+from limits.storage import RedisStorage
 from slowapi import Limiter
-from slowapi.util import get_remote_address
 
-from .config import settings
+from app.core.config import settings
 
 
-def get_limiter() -> Limiter:
-    return Limiter(
-        key_func=get_remote_address,
-        storage_uri=settings.REDIS_URL,
+def real_ip(request: Request) -> str:
+    forwarded = request.headers.get("x-forwarded-for")
+    if forwarded:
+        return forwarded.split(",")[0].strip()
+
+    if request.client:
+        return request.client.host
+
+    return "unknown"
+
+
+_storage: RedisStorage | None = None
+
+limiter = Limiter(key_func=real_ip)
+
+
+def init_limiter() -> None:
+    global _storage
+
+    _storage = RedisStorage(
+        settings.REDIS_URL,
+        socket_timeout=2,
+        socket_connect_timeout=2,
     )
 
-
-limiter = get_limiter()
+    cast(Any, limiter).storage = _storage
