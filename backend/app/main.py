@@ -8,6 +8,7 @@ from fastapi_pagination import add_pagination
 from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 from sqlalchemy import text
+from sqlalchemy.exc import SQLAlchemyError
 from starlette.middleware.cors import CORSMiddleware
 from starlette_csrf.middleware import CSRFMiddleware
 
@@ -21,7 +22,8 @@ from app.api.v1.pickups_router import pickup_point_router
 from app.api.v1.products_router import product_router
 from app.api.v1.users_router import user_router
 from app.core.config import settings
-from app.core.limiter import limiter
+from app.core.handlers import sqlalchemy_exception_handler, unhandled_exception_handler
+from app.core.limiter import init_limiter, limiter
 from app.core.logger import get_logger, setup_logging
 from app.core.logging_middleware import LoggingMiddleware
 from app.core.redis import get_redis, redis_manager
@@ -54,7 +56,13 @@ async def lifespan(app: FastAPI):
     except Exception as exc:
         logger.exception("redis_connection_failed", exc_info=exc)
         raise
-
+    try:
+        init_limiter()
+        app.state.limiter = limiter
+        logger.info("limiter_started", url=settings.REDIS_URL.split("@")[-1])
+    except Exception as exc:
+        logger.exception("limiter_failed", exc_info=exc)
+        raise
     yield
 
     logger.info("application_shutdown")
@@ -76,11 +84,14 @@ app = FastAPI(
     swagger_ui_parameters={"defaultModelsExpandDepth": -1},
 )
 
-app.state.limiter = limiter
+
 app.add_exception_handler(
     RateLimitExceeded,
     _rate_limit_exceeded_handler,  # type: ignore
 )
+
+app.add_exception_handler(SQLAlchemyError, sqlalchemy_exception_handler)
+app.add_exception_handler(Exception, unhandled_exception_handler)
 
 csrf_header_scheme = APIKeyHeader(name=settings.CSRF_HEADER_NAME, auto_error=False)
 

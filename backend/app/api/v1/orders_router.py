@@ -23,7 +23,10 @@ order_router = APIRouter(prefix="/orders", tags=["orders"])
 
 
 @order_router.post(
-    "/create", status_code=status.HTTP_200_OK, summary="Создание заказа", response_model=OrderResponseWithPayment
+    "/create",
+    status_code=status.HTTP_201_CREATED,
+    summary="Создание заказа",
+    response_model=OrderResponseWithPayment,
 )
 @limiter.limit("10/minute")
 async def create_order(
@@ -42,11 +45,14 @@ async def create_order(
         user_id=user.id,
         data=data,
         idempotency_key=uuid.uuid4(),
-        expires_at=datetime.now(UTC) + timedelta(minutes=settings.ORDER_EXPIRATION_MINUTES),
+        expires_at=datetime.now(UTC)
+        + timedelta(minutes=settings.ORDER_EXPIRATION_MINUTES),
     )
 
 
-@order_router.post("/webhook", status_code=status.HTTP_204_NO_CONTENT, summary="Webhook YooKassa")
+@order_router.post(
+    "/webhook", status_code=status.HTTP_204_NO_CONTENT, summary="Webhook YooKassa"
+)
 @limiter.limit("100/minute")
 async def yookassa_webhook(
     request: Request,
@@ -95,7 +101,9 @@ async def get_order_by_id(
 
     Требует авторизации.
     """
-    order = await orders_service.get_order_by_id(session=session, order_id=order_id, current_user=current_user)
+    order = await orders_service.get_order_by_id(
+        session=session, order_id=order_id, current_user=current_user
+    )
     return order
 
 
@@ -116,7 +124,9 @@ async def update_order_status(
 
     Требует прав администратора.
     """
-    order = await orders_service.update_order_status(session=session, order_id=order_id, status=status)
+    order = await orders_service.update_order_status(
+        session=session, order_id=order_id, status=status
+    )
     return order
 
 
@@ -136,7 +146,9 @@ async def cancel_order(
 
     Требует авторизации.
     """
-    order = await orders_service.cancel_order(session=session, order_id=order_id, user_id=current_user.id)
+    order = await orders_service.cancel_order(
+        session=session, order_id=order_id, user_id=current_user.id
+    )
     return order
 
 
@@ -146,7 +158,9 @@ async def cancel_order(
     status_code=status.HTTP_200_OK,
     summary="Получить все оплаченные заказы",
 )
-async def get_all_paid_orders(session: AsyncSession = Depends(get_db), current_user: User = Depends(require_admin)):
+async def get_all_paid_orders(
+    session: AsyncSession = Depends(get_db), current_user: User = Depends(require_admin)
+):
     """
     Получить список оплаченных заказов.
 
@@ -157,9 +171,14 @@ async def get_all_paid_orders(session: AsyncSession = Depends(get_db), current_u
 
 
 @order_router.get(
-    "/all", response_model=Page[OrderResponse], status_code=status.HTTP_200_OK, summary="Получить все заказы"
+    "/all",
+    response_model=Page[OrderResponse],
+    status_code=status.HTTP_200_OK,
+    summary="Получить все заказы",
 )
-async def get_all_orders(session: AsyncSession = Depends(get_db), current_user: User = Depends(require_admin)):
+async def get_all_orders(
+    session: AsyncSession = Depends(get_db), current_user: User = Depends(require_admin)
+):
     """
     Получить список всех заказов.
 

@@ -46,7 +46,9 @@ class Order(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True, index=True)
 
-    user_id: Mapped[int] = mapped_column(ForeignKey("user.id", ondelete="CASCADE"))
+    user_id: Mapped[int] = mapped_column(
+        ForeignKey("user.id", ondelete="CASCADE"), index=True
+    )
     status: Mapped[Status] = mapped_column(Enum(Status), default=Status.PENDING)
     total_price: Mapped[Decimal] = mapped_column(DECIMAL(precision=10, scale=2))
     method_of_receipt: Mapped[MethodOfReceipt] = mapped_column(Enum(MethodOfReceipt))
@@ -69,7 +71,9 @@ class Order(Base):
         "Delivery", back_populates="order", uselist=False, cascade="all, delete-orphan"
     )
     pickup_point: Mapped[PickupPoint | None] = relationship("PickupPoint")
-    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now()
+    )
     updated_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now(), onupdate=func.now()
     )
@@ -85,11 +89,17 @@ class OrderItem(Base):
     )
 
     id: Mapped[int] = mapped_column(primary_key=True, index=True)
-    order_id: Mapped[int] = mapped_column(ForeignKey("order.id", ondelete="CASCADE"), index=True)
-    product_id: Mapped[int] = mapped_column(ForeignKey("product.id", ondelete="CASCADE"), index=True)
+    order_id: Mapped[int] = mapped_column(
+        ForeignKey("order.id", ondelete="CASCADE"), index=True
+    )
+    product_id: Mapped[int] = mapped_column(
+        ForeignKey("product.id", ondelete="CASCADE"), index=True
+    )
     quantity: Mapped[int] = mapped_column()
     price: Mapped[Decimal] = mapped_column(DECIMAL(precision=10, scale=2))
-    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now()
+    )
     updated_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now(), onupdate=func.now()
     )
@@ -102,7 +112,9 @@ class Delivery(Base):
     __tablename__ = "delivery"
 
     id: Mapped[int] = mapped_column(primary_key=True, index=True)
-    order_id: Mapped[int] = mapped_column(ForeignKey("order.id", ondelete="CASCADE"), unique=True)
+    order_id: Mapped[int] = mapped_column(
+        ForeignKey("order.id", ondelete="CASCADE"), unique=True, index=True
+    )
     address: Mapped[str] = mapped_column(String(512))
     recipient_name: Mapped[str | None] = mapped_column(String(128))
     recipient_phone: Mapped[str | None] = mapped_column(String(16))
