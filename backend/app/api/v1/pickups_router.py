@@ -1,10 +1,11 @@
 from collections.abc import Sequence
 
-from fastapi import APIRouter, Depends, status
+from fastapi import APIRouter, Depends, Request, status
 from fastapi_pagination import Page
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.deps import require_admin
+from app.core.limiter import limiter
 from app.db.session import get_db
 from app.models.users_model import User
 from app.schemas.pickups_schema import PickupPointCreate, PickupPointResponse, PickupPointUpdate
@@ -37,7 +38,9 @@ async def create_pickup_point(
     response_model=list[PickupPointResponse],
     status_code=status.HTTP_200_OK,
 )
+@limiter.limit("30/minute")
 async def get_active_pickup_points(
+    request: Request,
     session: AsyncSession = Depends(get_db),
 ) -> Sequence[PickupPointResponse]:
     """
@@ -68,7 +71,9 @@ async def get_all_pickup_points(
     status_code=status.HTTP_200_OK,
     summary="Получить точку самовывоза по ID",
 )
+@limiter.limit("60/minute")
 async def get_pickup_point(
+    request: Request,
     pickup_point_id: int,
     session: AsyncSession = Depends(get_db),
 ) -> PickupPointResponse:
