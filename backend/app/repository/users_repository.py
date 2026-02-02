@@ -1,6 +1,6 @@
 from collections.abc import Mapping
 
-from sqlalchemy import select, update
+from sqlalchemy import Select, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.users_model import User
@@ -36,5 +36,5 @@ async def update_user(*, session: AsyncSession, user_id: int, data: Mapping[str,
     return result.scalar_one_or_none()
 
 
-async def get_users():
+def get_users() -> Select[tuple[User]]:
     return select(User).order_by(User.id)

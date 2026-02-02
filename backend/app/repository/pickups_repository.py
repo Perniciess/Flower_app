@@ -35,12 +35,12 @@ async def update_pickup_point(session: AsyncSession, pickup_point: PickupPoint, 
     for field, value in data.model_dump(exclude_unset=True).items():
         setattr(pickup_point, field, value)
 
-    await session.commit()
+    await session.flush()
     await session.refresh(pickup_point)
     return pickup_point
 
 
 async def delete_pickup_point(session: AsyncSession, pickup_point_id: int) -> bool:
-    statement = delete(PickupPoint).where(PickupPoint.id == pickup_point_id)
+    statement = delete(PickupPoint).where(PickupPoint.id == pickup_point_id).returning(PickupPoint.id)
     result = await session.execute(statement)
     return result.scalar_one_or_none() is not None

@@ -78,7 +78,7 @@ async def update_cart_item_quantity(
     quantity: int = Body(..., ge=1, description="Новое количество товара"),
     current_user: User = Depends(require_client),
     session: AsyncSession = Depends(get_db),
-) -> CartItemUpdate:
+) -> CartItemResponse:
     """
     Изменить количество товара в корзине.
 
