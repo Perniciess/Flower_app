@@ -42,15 +42,6 @@ async def delete_discount(*, session: AsyncSession, discount_id: int) -> bool:
     return result.scalar_one_or_none() is not None
 
 
-async def get_active_for_product(*, session: AsyncSession, product_id: int) -> Discount | None:
-    statement = select(Discount).where(
-        Discount.product_id == product_id,
-        Discount.is_active.is_(True),
-    )
-    result = await session.execute(statement)
-    return result.scalar_one_or_none()
-
-
 async def get_active_for_category_ids(*, session: AsyncSession, category_ids: Sequence[int]) -> Sequence[Discount]:
     if not category_ids:
         return []

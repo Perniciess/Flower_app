@@ -10,7 +10,7 @@ from app.core.exceptions import (
 )
 from app.models.users_model import Role, User
 from app.repository import carts_repository, products_repository
-from app.schemas.carts_schema import CartItemResponse, CartItemUpdate, CartResponse
+from app.schemas.carts_schema import CartItemResponse, CartResponse
 from app.service import discounts_service
 
 
@@ -131,7 +131,7 @@ async def create_cart_item(
 
 async def update_cart_item_quantity(
     *, session: AsyncSession, cart_item_id: int, quantity: int, current_user: User
-) -> CartItemUpdate:
+) -> CartItemResponse:
     """
     Изменяет количество конкретного товара в корзине пользователя.
 
@@ -157,7 +157,7 @@ async def update_cart_item_quantity(
 
     cart_item.quantity = quantity
     await session.flush()
-    return CartItemUpdate.model_validate(cart_item)
+    return CartItemResponse.model_validate(cart_item)
 
 
 async def delete_cart_item(*, session: AsyncSession, cart_item_id: int, current_user: User) -> None:

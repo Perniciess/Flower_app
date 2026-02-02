@@ -68,8 +68,7 @@ async def complete_register(*, session: AsyncSession, redis: Redis, verification
     user_exist = await users_repository.get_user_by_phone(session=session, phone_number=data_user["phone_number"])
     if not user_exist:
         await users_repository.create_user(session=session, data=data_user)
-    else:
-        pass
+
     await redis.delete(f"v:{verification_token}")
 
 

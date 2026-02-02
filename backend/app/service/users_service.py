@@ -115,5 +115,5 @@ async def get_users(*, session: AsyncSession) -> Page[UserResponse]:
         Page[UserResponse] список пользователей
 
     """
-    users = await users_repository.get_users()
+    users = users_repository.get_users()
     return await paginate(session, users)
