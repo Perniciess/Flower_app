@@ -21,8 +21,9 @@ dependencies = [
   "fastapi-pagination>=0.15.8",
   "alembic>=1.18.3",
   "fastapi-filter[sqlalchemy]>=2.0.1",
-  "slowapi>=0.1.9",
+  "fastapi-limiter>=0.1.6",
   "python-magic>=0.4.27",
+  "slowapi>=0.1.9",
 ]
 
 
@@ -57,3 +58,4 @@ docstring-code-format = true
 
 [tool.ruff.lint.per-file-ignores]
 "__init__.py" = ["F401"]
+"app/core/config.py" = ["N802"]

@@ -3,6 +3,7 @@ from contextlib import asynccontextmanager
 
 from fastapi import APIRouter, Depends, FastAPI
 from fastapi.security import APIKeyHeader
+from fastapi.staticfiles import StaticFiles
 from fastapi_pagination import add_pagination
 from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
@@ -110,5 +111,7 @@ api_router.include_router(discount_router)
 api_router.include_router(pickup_point_router)
 app.include_router(api_router, dependencies=[Depends(csrf_header_scheme)])
 
+# Раздача статических файлов
+app.mount(f"/{settings.STATIC_FILES_DIR}", StaticFiles(directory=settings.ROOT_DIR), name="static")
 
 add_pagination(app)

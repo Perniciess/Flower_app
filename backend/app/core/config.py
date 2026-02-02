@@ -41,21 +41,46 @@ class Settings(BaseSettings):
     ENVIRONMENT: Literal["local", "staging", "production"] = "local"
     COOKIE_SECURE: bool = False
     COOKIE_SAMESITE: Literal["lax", "strict", "none"] = "strict"
-    BACKEND_CORS_ORIGINS: Annotated[list[AnyUrl] | str, BeforeValidator(parse_cors)] = []
+    BACKEND_CORS_ORIGINS: Annotated[
+        list[AnyUrl] | str, BeforeValidator(parse_cors)
+    ] = []
 
     # SECURITY.PY
     REFRESH_TOKEN_BYTES: int = 64
     VERIFICATION_TOKEN_BYTES: int = 16
 
     # IMAGE PATH
-    UPLOAD_DIR: Path = Path("app/static/uploads/products")
-    CATEGORY_UPLOAD_DIR: Path = Path("app/static/uploads/categories")
-    ROOT_DIR: Path = Path("app")
+    STATIC_FILES_DIR: str = "static/uploads"
+
+    @computed_field
+    @property
+    def PRODUCT_UPLOAD_DIR(self) -> Path:
+        return Path(self.STATIC_FILES_DIR) / "products"
+
+    @computed_field
+    @property
+    def CATEGORY_UPLOAD_DIR(self) -> Path:
+        return Path(self.STATIC_FILES_DIR) / "categories"
+
+    @computed_field
+    @property
+    def ROOT_DIR(self) -> Path:
+        return Path(self.STATIC_FILES_DIR)
+
+    def get_product_image_url(self, filename: str) -> str:
+        """Генерирует URL для изображения продукта."""
+        return f"/{self.STATIC_FILES_DIR}/products/{filename}"
+
+    def get_category_image_url(self, filename: str) -> str:
+        """Генерирует URL для изображения категории."""
+        return f"/{self.STATIC_FILES_DIR}/categories/{filename}"
 
     @computed_field
     @property
     def all_cors_origins(self) -> list[str]:
-        return [str(origin).rstrip("/") for origin in self.BACKEND_CORS_ORIGINS] + [self.FRONTEND_HOST]
+        return [str(origin).rstrip("/") for origin in self.BACKEND_CORS_ORIGINS] + [
+            self.FRONTEND_HOST
+        ]
 
     PROJECT_NAME: str
 
@@ -68,12 +93,13 @@ class Settings(BaseSettings):
 
     # REDIS DATABASE
     REDIS_URL: str
-
     # ЮKASSA
     YOOKASSA_SHOP_ID: str
     YOOKASSA_SECRET_KEY: str
     ORDER_EXPIRATION_MINUTES: int = 30
-    CAPTURE: bool = True  # True - автосписание, False - после подтверждения. Обговорить с Сашей
+    CAPTURE: bool = (
+        True  # True - автосписание, False - после подтверждения. Обговорить с Сашей
+    )
 
     # TG URL
     VERIFICATION: str = "https://t.me/kupibuket74_bot?start="

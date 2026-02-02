@@ -293,7 +293,7 @@ async def upload_image(*, session: AsyncSession, category_id: int, image: Upload
     async with await anyio.open_file(file_path, "wb") as f:
         await f.write(content)
 
-    url = f"/static/uploads/categories/{filename}"
+    url = settings.get_category_image_url(filename)
     category.image_url = url
     await session.flush()
 
