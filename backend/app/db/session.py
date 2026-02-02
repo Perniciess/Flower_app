@@ -6,7 +6,7 @@ from app.core.config import settings
 
 engine = create_async_engine(
     str(settings.SQLALCHEMY_DATABASE_URI),
-    echo=settings.ENVIRONMENT == "local",
+    echo=False,
     pool_size=20,
     max_overflow=10,
     pool_pre_ping=True,
