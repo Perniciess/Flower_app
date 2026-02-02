@@ -13,6 +13,7 @@ def set_token(response: Response, tokens: Tokens) -> None:
         secure=settings.COOKIE_SECURE,
         samesite=settings.COOKIE_SAMESITE,
         max_age=settings.ACCESS_TOKEN_EXPIRE_MINUTES * 60,
+        path="/api",
     )
 
     response.set_cookie(
@@ -22,6 +23,7 @@ def set_token(response: Response, tokens: Tokens) -> None:
         secure=settings.COOKIE_SECURE,
         samesite=settings.COOKIE_SAMESITE,
         max_age=settings.REFRESH_TOKEN_EXPIRE_DAYS * 24 * 60 * 60,
+        path="/api",
     )
 
 

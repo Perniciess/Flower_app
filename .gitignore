@@ -46,6 +46,7 @@ uv.lock.bak
 # Alembic
 alembic/**/*.pyc
 
+
 **/.env
-**/CLAUDE.md
+#**/CLAUDE.md
 **/.gitignore
