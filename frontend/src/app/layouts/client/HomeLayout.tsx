@@ -1,21 +1,14 @@
 import type { Metadata } from "next";
-import { Montserrat } from "next/font/google";
 import { Providers } from "@/app/providers";
+import { montserrat } from "@/shared/config/font";
 import "@/app/styles/globals.css";
-
-const montserrat = Montserrat({
-    weight: ["300", "400", "500", "600", "700"],
-    subsets: ["latin", "cyrillic"],
-    display: "swap",
-    fallback: ["Arial", "sans-serif"],
-});
 
 export const metadata: Metadata = {
     title: "KupiBuket74",
     description: "Магазин цветов",
 };
 
-export default function RootLayout({
+export function HomeLayout({
     children,
 }: Readonly<{
     children: React.ReactNode;

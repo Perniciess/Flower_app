@@ -1,0 +1,11643 @@
+/* Desktop */
+
+position: relative;
+width: 1440px;
+height: 6978px;
+
+background: #ffffff;
+
+/* Frame 60 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: center;
+padding: 0px;
+gap: 20px;
+
+position: absolute;
+width: 1320px;
+height: 350px;
+left: 60px;
+top: 787px;
+
+/* Frame 20 */
+
+width: 650px;
+height: 350px;
+
+background:
+    linear-gradient(
+        180deg,
+        rgba(0, 0, 0, 0.5) 0.29%,
+        rgba(0, 0, 0, 0) 51.92%,
+        rgba(0, 0, 0, 0.5) 100%
+    ),
+    url(.jpg);
+box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+border-radius: 16px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Rectangle 1 */
+
+position: absolute;
+width: 650px;
+height: 350px;
+left: 0px;
+top: 0px;
+
+background: rgba(217, 217, 217, 0.01);
+
+/* Название банера */
+
+position: absolute;
+width: 259px;
+height: 34px;
+left: 35px;
+top: 26px;
+
+/* Desktop/H3 */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 500;
+font-size: 28px;
+line-height: 34px;
+
+color: #ffffff;
+
+/* Описание, которое длится целых две строчки */
+
+position: absolute;
+width: 403px;
+height: 68px;
+left: 35px;
+top: 255px;
+
+/* Desktop/H3 */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 500;
+font-size: 28px;
+line-height: 34px;
+
+color: #ffffff;
+
+/* Frame 21 */
+
+width: 650px;
+height: 350px;
+
+background:
+    linear-gradient(
+        180deg,
+        rgba(0, 0, 0, 0.3) 0%,
+        rgba(0, 0, 0, 0) 48.56%,
+        rgba(0, 0, 0, 0.3) 100%
+    ),
+    url(.jpg);
+border-radius: 16px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* Rectangle 1 */
+
+position: absolute;
+width: 650px;
+height: 350px;
+left: 0px;
+top: 0px;
+
+background: rgba(217, 217, 217, 0.01);
+
+/* Название банера */
+
+position: absolute;
+width: 259px;
+height: 34px;
+left: 35px;
+top: 26px;
+
+/* Desktop/H3 */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 500;
+font-size: 28px;
+line-height: 34px;
+
+color: #ffffff;
+
+/* Описание, которое длится целых две строчки */
+
+position: absolute;
+width: 403px;
+height: 68px;
+left: 35px;
+top: 255px;
+
+/* Desktop/H3 */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 500;
+font-size: 28px;
+line-height: 34px;
+
+color: #ffffff;
+
+/* Frame 59 */
+
+position: absolute;
+width: 1440px;
+height: 437px;
+left: 0px;
+top: 2275px;
+
+/* Frame 33 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: center;
+padding: 0px;
+gap: 794px;
+
+position: absolute;
+width: 1320px;
+height: 39px;
+left: 60px;
+top: 23px;
+
+/* Frame 33 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 16px;
+
+margin: 0 auto;
+width: 64px;
+height: 24px;
+
+opacity: 0;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* bitcoin-icons:arrow-up-outline */
+
+width: 24px;
+height: 24px;
+
+transform: rotate(-90deg);
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Vector */
+
+position: absolute;
+left: 12.5%;
+right: 29.17%;
+top: 20.83%;
+bottom: 4.17%;
+
+border: 1px solid #ffffff;
+transform: rotate(-90deg);
+
+/* bitcoin-icons:arrow-up-outline */
+
+width: 24px;
+height: 24px;
+
+transform: rotate(90deg);
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* Vector */
+
+position: absolute;
+left: 12.5%;
+right: 29.17%;
+top: 20.83%;
+bottom: 4.17%;
+
+border: 1px solid #ffffff;
+transform: rotate(90deg);
+
+/* Цветы на любой случай */
+
+margin: 0 auto;
+width: 404px;
+height: 39px;
+
+/* Desktop/H2 */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 500;
+font-size: 32px;
+line-height: 39px;
+/* identical to box height */
+
+color: #000000;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* Frame 32 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 16px;
+
+margin: 0 auto;
+width: 64px;
+height: 24px;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+/* bitcoin-icons:arrow-up-outline */
+
+width: 24px;
+height: 24px;
+
+transform: rotate(-90deg);
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Vector */
+
+position: absolute;
+left: 12.5%;
+right: 29.17%;
+top: 20.83%;
+bottom: 4.17%;
+
+border: 1px solid #000000;
+transform: rotate(-90deg);
+
+/* bitcoin-icons:arrow-up-outline */
+
+width: 24px;
+height: 24px;
+
+transform: rotate(90deg);
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* Vector */
+
+position: absolute;
+left: 12.5%;
+right: 29.17%;
+top: 20.83%;
+bottom: 4.17%;
+
+border: 1px solid #000000;
+transform: rotate(90deg);
+
+/* Frame 31 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 20px;
+
+position: absolute;
+width: 1990px;
+height: 300px;
+left: 60px;
+top: 95px;
+
+/* Card */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+justify-content: flex-end;
+align-items: flex-start;
+padding: 15px 12px;
+gap: 10px;
+
+width: 315px;
+height: 300px;
+
+background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.2) 100%),
+    url(.jpg);
+border-radius: 16px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Frame 30 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 20px;
+
+width: 291px;
+height: 34px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* Label */
+
+width: 236px;
+height: 34px;
+
+/* Desktop/H3 */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 500;
+font-size: 28px;
+line-height: 34px;
+
+color: #ffffff;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Frame 27 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+justify-content: flex-end;
+align-items: flex-start;
+padding: 15px 12px;
+gap: 10px;
+
+width: 315px;
+height: 300px;
+
+background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.2) 100%),
+    url(.jpg);
+border-radius: 16px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* Frame 30 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 20px;
+
+width: 291px;
+height: 34px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* Label */
+
+width: 124px;
+height: 34px;
+
+/* Desktop/H3 */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 500;
+font-size: 28px;
+line-height: 34px;
+
+color: #ffffff;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Frame 28 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+justify-content: flex-end;
+align-items: flex-start;
+padding: 15px 12px;
+gap: 10px;
+
+width: 315px;
+height: 300px;
+
+background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.2) 100%),
+    url(.jpg);
+border-radius: 16px;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+/* Frame 30 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 20px;
+
+width: 291px;
+height: 34px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* Label */
+
+width: 77px;
+height: 34px;
+
+/* Desktop/H3 */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 500;
+font-size: 28px;
+line-height: 34px;
+
+color: #ffffff;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Frame 29 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+justify-content: flex-end;
+align-items: flex-start;
+padding: 15px 12px;
+gap: 10px;
+
+width: 315px;
+height: 300px;
+
+background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.2) 100%),
+    url(.jpg);
+border-radius: 16px;
+
+/* Inside auto layout */
+flex: none;
+order: 3;
+flex-grow: 0;
+
+/* Frame 30 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 20px;
+
+width: 291px;
+height: 34px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* Label */
+
+width: 108px;
+height: 34px;
+
+/* Desktop/H3 */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 500;
+font-size: 28px;
+line-height: 34px;
+
+color: #ffffff;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Frame 29 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+justify-content: flex-end;
+align-items: flex-start;
+padding: 15px 12px;
+gap: 10px;
+
+width: 315px;
+height: 300px;
+
+background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.2) 100%),
+    url(.jpg);
+border-radius: 16px;
+
+/* Inside auto layout */
+flex: none;
+order: 4;
+flex-grow: 0;
+
+/* Frame 30 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 20px;
+
+width: 291px;
+height: 34px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* Label */
+
+width: 174px;
+height: 34px;
+
+/* Desktop/H3 */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 500;
+font-size: 28px;
+line-height: 34px;
+
+color: #ffffff;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Frame 30 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+justify-content: flex-end;
+align-items: flex-start;
+padding: 15px 12px;
+gap: 10px;
+
+width: 315px;
+height: 300px;
+
+background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.2) 100%), url();
+border-radius: 16px;
+
+/* Inside auto layout */
+flex: none;
+order: 5;
+flex-grow: 0;
+
+/* Frame 30 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 20px;
+
+width: 291px;
+height: 34px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* Label */
+
+width: 166px;
+height: 34px;
+
+/* Desktop/H3 */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 500;
+font-size: 28px;
+line-height: 34px;
+
+color: #ffffff;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Frame 50 */
+
+position: absolute;
+width: 1430px;
+height: 978px;
+left: 5px;
+top: 1217px;
+
+/* Frame 45 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 0px;
+gap: 754px;
+
+position: absolute;
+width: 1320px;
+height: 39px;
+left: 55px;
+top: 0px;
+
+/* Новая коллекция букетов */
+
+width: 438px;
+height: 39px;
+
+/* Desktop/H2 */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 500;
+font-size: 32px;
+line-height: 39px;
+/* identical to box height */
+
+color: #000000;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Frame 46 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 0px 16px 16px;
+gap: 18px;
+
+position: absolute;
+width: 315px;
+height: 401px;
+left: 55px;
+top: 504px;
+
+background: #ffffff;
+/* Shadow/Black */
+box-shadow: 0px 0px 10.5px rgba(0, 0, 0, 0.07);
+border-radius: 8px;
+
+/* Frame 42 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 0px;
+gap: 10px;
+
+width: 283px;
+height: 319px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 35 */
+
+width: 315px;
+height: 238px;
+
+background: url(CHOP051_resized.jpg);
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Frame 41 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: center;
+padding: 0px;
+gap: 200px;
+
+position: absolute;
+width: 283px;
+height: 36px;
+left: 16px;
+top: 13px;
+
+/* Frame 96 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 12px;
+
+width: 60px;
+height: 28px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Label */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 4px 10px;
+gap: 10px;
+
+width: 60px;
+height: 28px;
+
+background: #fee2e2;
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Label */
+
+width: 40px;
+height: 20px;
+
+/* Desktop/Caption 1/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 20px;
+/* identical to box height */
+
+color: #b63345;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Like */
+
+width: 36px;
+height: 36px;
+
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* mdi:heart */
+
+position: absolute;
+width: 23.14px;
+left: calc(50% - 23.14px / 2 - 0px);
+top: 17.86%;
+bottom: 17.86%;
+
+border-radius: 4px;
+
+/* Vector */
+
+box-sizing: border-box;
+
+position: absolute;
+left: 8.33%;
+right: 8.33%;
+top: 12.5%;
+bottom: 11.04%;
+
+border: 1.5px solid #000000;
+
+/* Frame 38 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 7px;
+
+width: 283px;
+height: 71px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Крем */
+
+width: 283px;
+height: 24px;
+
+/* Desktop/H4/Medium */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 500;
+font-size: 20px;
+line-height: 24px;
+
+color: #000000;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* Букет выполнен в элегантном стиле в кремовых оттенках, исп... */
+
+width: 283px;
+height: 40px;
+
+/* Desktop/Caption 1/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 20px;
+
+color: #78787d;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 40 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: flex-end;
+padding: 0px;
+gap: 99px;
+
+width: 283px;
+height: 48px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 39 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+
+width: 73px;
+height: 48px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* 11 200₽ */
+
+width: 73px;
+height: 24px;
+
+/* Desktop/H4/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 20px;
+line-height: 24px;
+text-decoration-line: line-through;
+
+color: #78787d;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* 5600₽ */
+
+width: 73px;
+height: 24px;
+
+/* Desktop/H4/Medium */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 500;
+font-size: 20px;
+line-height: 24px;
+
+color: #000000;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 101 */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 10px;
+gap: 10px;
+
+width: 106px;
+height: 40px;
+
+background: #ffffff;
+border: 1px solid #326964;
+border-radius: 16px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* В корзину */
+
+width: 86px;
+height: 20px;
+
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 20px;
+/* identical to box height */
+
+color: #000000;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Frame 35 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 0px 16px 16px;
+gap: 18px;
+
+position: absolute;
+width: 315px;
+height: 401px;
+left: 390px;
+top: 72px;
+
+background: #ffffff;
+/* Shadow/Black */
+box-shadow: 0px 0px 10.5px rgba(0, 0, 0, 0.07);
+border-radius: 8px;
+
+/* Frame 42 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 0px;
+gap: 10px;
+
+width: 283px;
+height: 319px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 35 */
+
+width: 315px;
+height: 238px;
+
+background: url(CHOP051_resized.jpg);
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Frame 41 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: center;
+padding: 0px;
+gap: 200px;
+
+position: absolute;
+width: 283px;
+height: 36px;
+left: 16px;
+top: 13px;
+
+/* Frame 96 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 12px;
+
+width: 60px;
+height: 28px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Label */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 4px 10px;
+gap: 10px;
+
+width: 60px;
+height: 28px;
+
+background: #fee2e2;
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Label */
+
+width: 40px;
+height: 20px;
+
+/* Desktop/Caption 1/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 20px;
+/* identical to box height */
+
+color: #b63345;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Like */
+
+width: 36px;
+height: 36px;
+
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* mdi:heart */
+
+position: absolute;
+width: 23.14px;
+left: calc(50% - 23.14px / 2 + 0px);
+top: 17.86%;
+bottom: 17.86%;
+
+border-radius: 4px;
+
+/* Vector */
+
+box-sizing: border-box;
+
+position: absolute;
+left: 8.33%;
+right: 8.33%;
+top: 12.5%;
+bottom: 11.04%;
+
+border: 1.5px solid #000000;
+
+/* Frame 38 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 7px;
+
+width: 283px;
+height: 71px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Крем */
+
+width: 283px;
+height: 24px;
+
+/* Desktop/H4/Medium */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 500;
+font-size: 20px;
+line-height: 24px;
+
+color: #000000;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* Букет выполнен в элегантном стиле в кремовых оттенках, исп... */
+
+width: 283px;
+height: 40px;
+
+/* Desktop/Caption 1/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 20px;
+
+color: #78787d;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 40 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: flex-end;
+padding: 0px;
+gap: 99px;
+
+width: 283px;
+height: 48px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 39 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+
+width: 73px;
+height: 48px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* 11 200₽ */
+
+width: 73px;
+height: 24px;
+
+/* Desktop/H4/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 20px;
+line-height: 24px;
+text-decoration-line: line-through;
+
+color: #78787d;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* 5600₽ */
+
+width: 73px;
+height: 24px;
+
+/* Desktop/H4/Medium */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 500;
+font-size: 20px;
+line-height: 24px;
+
+color: #000000;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 101 */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 10px;
+gap: 10px;
+
+width: 106px;
+height: 40px;
+
+background: #ffffff;
+border: 1px solid #326964;
+border-radius: 16px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* В корзину */
+
+width: 86px;
+height: 20px;
+
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 20px;
+/* identical to box height */
+
+color: #000000;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Frame 50 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 0px 16px 16px;
+gap: 18px;
+
+position: absolute;
+width: 315px;
+height: 401px;
+left: 55px;
+top: 72px;
+
+background: #ffffff;
+/* Shadow/Black */
+box-shadow: 0px 0px 10.5px rgba(0, 0, 0, 0.07);
+border-radius: 8px;
+
+/* Frame 42 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 0px;
+gap: 10px;
+
+width: 283px;
+height: 319px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 35 */
+
+width: 315px;
+height: 238px;
+
+background: url(CHOP051_resized.jpg);
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Frame 41 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: center;
+padding: 0px;
+gap: 200px;
+
+position: absolute;
+width: 283px;
+height: 36px;
+left: 16px;
+top: 13px;
+
+/* Frame 96 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 12px;
+
+width: 60px;
+height: 28px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Label */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 4px 10px;
+gap: 10px;
+
+width: 60px;
+height: 28px;
+
+background: #fee2e2;
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Label */
+
+width: 40px;
+height: 20px;
+
+/* Desktop/Caption 1/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 20px;
+/* identical to box height */
+
+color: #b63345;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Like */
+
+width: 36px;
+height: 36px;
+
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* mdi:heart */
+
+position: absolute;
+width: 23.14px;
+left: calc(50% - 23.14px / 2 - 0px);
+top: 17.86%;
+bottom: 17.86%;
+
+border-radius: 4px;
+
+/* Vector */
+
+box-sizing: border-box;
+
+position: absolute;
+left: 8.33%;
+right: 8.33%;
+top: 12.5%;
+bottom: 11.04%;
+
+border: 1.5px solid #000000;
+
+/* Frame 38 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 7px;
+
+width: 283px;
+height: 71px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Крем */
+
+width: 283px;
+height: 24px;
+
+/* Desktop/H4/Medium */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 500;
+font-size: 20px;
+line-height: 24px;
+
+color: #000000;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* Букет выполнен в элегантном стиле в кремовых оттенках, исп... */
+
+width: 283px;
+height: 40px;
+
+/* Desktop/Caption 1/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 20px;
+
+color: #78787d;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 40 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: flex-end;
+padding: 0px;
+gap: 99px;
+
+width: 283px;
+height: 48px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 39 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+
+width: 73px;
+height: 48px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* 11 200₽ */
+
+width: 73px;
+height: 24px;
+
+/* Desktop/H4/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 20px;
+line-height: 24px;
+text-decoration-line: line-through;
+
+color: #78787d;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* 5600₽ */
+
+width: 73px;
+height: 24px;
+
+/* Desktop/H4/Medium */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 500;
+font-size: 20px;
+line-height: 24px;
+
+color: #000000;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 101 */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 10px;
+gap: 10px;
+
+width: 106px;
+height: 40px;
+
+background: #ffffff;
+border: 1px solid #326964;
+border-radius: 16px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* В корзину */
+
+width: 86px;
+height: 20px;
+
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 20px;
+/* identical to box height */
+
+color: #000000;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Frame 47 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 0px 16px 16px;
+gap: 18px;
+
+position: absolute;
+width: 315px;
+height: 401px;
+left: 390px;
+top: 504px;
+
+background: #ffffff;
+/* Shadow/Black */
+box-shadow: 0px 0px 10.5px rgba(0, 0, 0, 0.07);
+border-radius: 8px;
+
+/* Frame 42 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 0px;
+gap: 10px;
+
+width: 283px;
+height: 319px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 35 */
+
+width: 315px;
+height: 238px;
+
+background: url(CHOP051_resized.jpg);
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Frame 41 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: center;
+padding: 0px;
+gap: 200px;
+
+position: absolute;
+width: 283px;
+height: 36px;
+left: 16px;
+top: 13px;
+
+/* Frame 96 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 12px;
+
+width: 60px;
+height: 28px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Label */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 4px 10px;
+gap: 10px;
+
+width: 60px;
+height: 28px;
+
+background: #fee2e2;
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Label */
+
+width: 40px;
+height: 20px;
+
+/* Desktop/Caption 1/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 20px;
+/* identical to box height */
+
+color: #b63345;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Like */
+
+width: 36px;
+height: 36px;
+
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* mdi:heart */
+
+position: absolute;
+width: 23.14px;
+left: calc(50% - 23.14px / 2 + 0px);
+top: 17.86%;
+bottom: 17.86%;
+
+border-radius: 4px;
+
+/* Vector */
+
+box-sizing: border-box;
+
+position: absolute;
+left: 8.33%;
+right: 8.33%;
+top: 12.5%;
+bottom: 11.04%;
+
+border: 1.5px solid #000000;
+
+/* Frame 38 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 7px;
+
+width: 283px;
+height: 71px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Крем */
+
+width: 283px;
+height: 24px;
+
+/* Desktop/H4/Medium */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 500;
+font-size: 20px;
+line-height: 24px;
+
+color: #000000;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* Букет выполнен в элегантном стиле в кремовых оттенках, исп... */
+
+width: 283px;
+height: 40px;
+
+/* Desktop/Caption 1/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 20px;
+
+color: #78787d;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 40 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: flex-end;
+padding: 0px;
+gap: 99px;
+
+width: 283px;
+height: 48px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 39 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+
+width: 73px;
+height: 48px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* 11 200₽ */
+
+width: 73px;
+height: 24px;
+
+/* Desktop/H4/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 20px;
+line-height: 24px;
+text-decoration-line: line-through;
+
+color: #78787d;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* 5600₽ */
+
+width: 73px;
+height: 24px;
+
+/* Desktop/H4/Medium */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 500;
+font-size: 20px;
+line-height: 24px;
+
+color: #000000;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 101 */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 10px;
+gap: 10px;
+
+width: 106px;
+height: 40px;
+
+background: #ffffff;
+border: 1px solid #326964;
+border-radius: 16px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* В корзину */
+
+width: 86px;
+height: 20px;
+
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 20px;
+/* identical to box height */
+
+color: #000000;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Frame 36 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 0px 16px 16px;
+gap: 18px;
+
+position: absolute;
+width: 315px;
+height: 401px;
+left: 725px;
+top: 72px;
+
+background: #ffffff;
+/* Shadow/Black */
+box-shadow: 0px 0px 10.5px rgba(0, 0, 0, 0.07);
+border-radius: 8px;
+
+/* Frame 42 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 0px;
+gap: 10px;
+
+width: 283px;
+height: 319px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 35 */
+
+width: 315px;
+height: 238px;
+
+background: url(CHOP051_resized.jpg);
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Frame 41 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: center;
+padding: 0px;
+gap: 200px;
+
+position: absolute;
+width: 283px;
+height: 36px;
+left: 16px;
+top: 13px;
+
+/* Frame 96 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 12px;
+
+width: 60px;
+height: 28px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Label */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 4px 10px;
+gap: 10px;
+
+width: 60px;
+height: 28px;
+
+background: #fee2e2;
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Label */
+
+width: 40px;
+height: 20px;
+
+/* Desktop/Caption 1/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 20px;
+/* identical to box height */
+
+color: #b63345;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Like */
+
+width: 36px;
+height: 36px;
+
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* mdi:heart */
+
+position: absolute;
+width: 23.14px;
+left: calc(50% - 23.14px / 2 + 0px);
+top: 17.86%;
+bottom: 17.86%;
+
+border-radius: 4px;
+
+/* Vector */
+
+box-sizing: border-box;
+
+position: absolute;
+left: 8.33%;
+right: 8.33%;
+top: 12.5%;
+bottom: 11.04%;
+
+border: 1.5px solid #000000;
+
+/* Frame 38 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 7px;
+
+width: 283px;
+height: 71px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Крем */
+
+width: 283px;
+height: 24px;
+
+/* Desktop/H4/Medium */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 500;
+font-size: 20px;
+line-height: 24px;
+
+color: #000000;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* Букет выполнен в элегантном стиле в кремовых оттенках, исп... */
+
+width: 283px;
+height: 40px;
+
+/* Desktop/Caption 1/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 20px;
+
+color: #78787d;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 40 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: flex-end;
+padding: 0px;
+gap: 99px;
+
+width: 283px;
+height: 48px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 39 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+
+width: 73px;
+height: 48px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* 11 200₽ */
+
+width: 73px;
+height: 24px;
+
+/* Desktop/H4/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 20px;
+line-height: 24px;
+text-decoration-line: line-through;
+
+color: #78787d;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* 5600₽ */
+
+width: 73px;
+height: 24px;
+
+/* Desktop/H4/Medium */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 500;
+font-size: 20px;
+line-height: 24px;
+
+color: #000000;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 101 */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 10px;
+gap: 10px;
+
+width: 106px;
+height: 40px;
+
+background: #ffffff;
+border: 1px solid #326964;
+border-radius: 16px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* В корзину */
+
+width: 86px;
+height: 20px;
+
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 20px;
+/* identical to box height */
+
+color: #000000;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Frame 48 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 0px 16px 16px;
+gap: 18px;
+
+position: absolute;
+width: 315px;
+height: 401px;
+left: 725px;
+top: 504px;
+
+background: #ffffff;
+/* Shadow/Black */
+box-shadow: 0px 0px 10.5px rgba(0, 0, 0, 0.07);
+border-radius: 8px;
+
+/* Frame 42 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 0px;
+gap: 10px;
+
+width: 283px;
+height: 319px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 35 */
+
+width: 315px;
+height: 238px;
+
+background: url(CHOP051_resized.jpg);
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Frame 41 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: center;
+padding: 0px;
+gap: 200px;
+
+position: absolute;
+width: 283px;
+height: 36px;
+left: 16px;
+top: 13px;
+
+/* Frame 96 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 12px;
+
+width: 60px;
+height: 28px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Label */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 4px 10px;
+gap: 10px;
+
+width: 60px;
+height: 28px;
+
+background: #fee2e2;
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Label */
+
+width: 40px;
+height: 20px;
+
+/* Desktop/Caption 1/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 20px;
+/* identical to box height */
+
+color: #b63345;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Like */
+
+width: 36px;
+height: 36px;
+
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* mdi:heart */
+
+position: absolute;
+width: 23.14px;
+left: calc(50% - 23.14px / 2 + 0px);
+top: 17.86%;
+bottom: 17.86%;
+
+border-radius: 4px;
+
+/* Vector */
+
+box-sizing: border-box;
+
+position: absolute;
+left: 8.33%;
+right: 8.33%;
+top: 12.5%;
+bottom: 11.04%;
+
+border: 1.5px solid #000000;
+
+/* Frame 38 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 7px;
+
+width: 283px;
+height: 71px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Крем */
+
+width: 283px;
+height: 24px;
+
+/* Desktop/H4/Medium */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 500;
+font-size: 20px;
+line-height: 24px;
+
+color: #000000;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* Букет выполнен в элегантном стиле в кремовых оттенках, исп... */
+
+width: 283px;
+height: 40px;
+
+/* Desktop/Caption 1/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 20px;
+
+color: #78787d;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 40 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: flex-end;
+padding: 0px;
+gap: 99px;
+
+width: 283px;
+height: 48px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 39 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+
+width: 73px;
+height: 48px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* 11 200₽ */
+
+width: 73px;
+height: 24px;
+
+/* Desktop/H4/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 20px;
+line-height: 24px;
+text-decoration-line: line-through;
+
+color: #78787d;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* 5600₽ */
+
+width: 73px;
+height: 24px;
+
+/* Desktop/H4/Medium */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 500;
+font-size: 20px;
+line-height: 24px;
+
+color: #000000;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 101 */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 10px;
+gap: 10px;
+
+width: 106px;
+height: 40px;
+
+background: #ffffff;
+border: 1px solid #326964;
+border-radius: 16px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* В корзину */
+
+width: 86px;
+height: 20px;
+
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 20px;
+/* identical to box height */
+
+color: #000000;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Frame 37 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 0px 16px 16px;
+gap: 18px;
+
+position: absolute;
+width: 315px;
+height: 401px;
+left: 1060px;
+top: 72px;
+
+background: #ffffff;
+/* Shadow/Black */
+box-shadow: 0px 0px 10.5px rgba(0, 0, 0, 0.07);
+border-radius: 8px;
+
+/* Frame 42 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 0px;
+gap: 10px;
+
+width: 283px;
+height: 319px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 35 */
+
+width: 315px;
+height: 238px;
+
+background: url(CHOP051_resized.jpg);
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Frame 41 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: center;
+padding: 0px;
+gap: 200px;
+
+position: absolute;
+width: 283px;
+height: 36px;
+left: 16px;
+top: 13px;
+
+/* Frame 96 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 12px;
+
+width: 60px;
+height: 28px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Label */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 4px 10px;
+gap: 10px;
+
+width: 60px;
+height: 28px;
+
+background: #fee2e2;
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Label */
+
+width: 40px;
+height: 20px;
+
+/* Desktop/Caption 1/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 20px;
+/* identical to box height */
+
+color: #b63345;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Like */
+
+width: 36px;
+height: 36px;
+
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* mdi:heart */
+
+position: absolute;
+width: 23.14px;
+left: calc(50% - 23.14px / 2 + 0px);
+top: 17.86%;
+bottom: 17.86%;
+
+border-radius: 4px;
+
+/* Vector */
+
+box-sizing: border-box;
+
+position: absolute;
+left: 8.33%;
+right: 8.33%;
+top: 12.5%;
+bottom: 11.04%;
+
+border: 1.5px solid #000000;
+
+/* Frame 38 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 7px;
+
+width: 283px;
+height: 71px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Крем */
+
+width: 283px;
+height: 24px;
+
+/* Desktop/H4/Medium */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 500;
+font-size: 20px;
+line-height: 24px;
+
+color: #000000;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* Букет выполнен в элегантном стиле в кремовых оттенках, исп... */
+
+width: 283px;
+height: 40px;
+
+/* Desktop/Caption 1/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 20px;
+
+color: #78787d;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 40 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: flex-end;
+padding: 0px;
+gap: 99px;
+
+width: 283px;
+height: 48px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 39 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+
+width: 73px;
+height: 48px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* 11 200₽ */
+
+width: 73px;
+height: 24px;
+
+/* Desktop/H4/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 20px;
+line-height: 24px;
+text-decoration-line: line-through;
+
+color: #78787d;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* 5600₽ */
+
+width: 73px;
+height: 24px;
+
+/* Desktop/H4/Medium */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 500;
+font-size: 20px;
+line-height: 24px;
+
+color: #000000;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 101 */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 10px;
+gap: 10px;
+
+width: 106px;
+height: 40px;
+
+background: #ffffff;
+border: 1px solid #326964;
+border-radius: 16px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* В корзину */
+
+width: 86px;
+height: 20px;
+
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 20px;
+/* identical to box height */
+
+color: #000000;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Frame 49 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 0px 16px 16px;
+gap: 18px;
+
+position: absolute;
+width: 315px;
+height: 401px;
+left: 1060px;
+top: 504px;
+
+background: #ffffff;
+/* Shadow/Black */
+box-shadow: 0px 0px 10.5px rgba(0, 0, 0, 0.07);
+border-radius: 8px;
+
+/* Frame 42 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 0px;
+gap: 10px;
+
+width: 283px;
+height: 319px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 35 */
+
+width: 315px;
+height: 238px;
+
+background: url(CHOP051_resized.jpg);
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Frame 41 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: center;
+padding: 0px;
+gap: 200px;
+
+position: absolute;
+width: 283px;
+height: 36px;
+left: 16px;
+top: 13px;
+
+/* Frame 96 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 12px;
+
+width: 60px;
+height: 28px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Label */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 4px 10px;
+gap: 10px;
+
+width: 60px;
+height: 28px;
+
+background: #fee2e2;
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Label */
+
+width: 40px;
+height: 20px;
+
+/* Desktop/Caption 1/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 20px;
+/* identical to box height */
+
+color: #b63345;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Like */
+
+width: 36px;
+height: 36px;
+
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* mdi:heart */
+
+position: absolute;
+width: 23.14px;
+left: calc(50% - 23.14px / 2 + 0px);
+top: 17.86%;
+bottom: 17.86%;
+
+border-radius: 4px;
+
+/* Vector */
+
+box-sizing: border-box;
+
+position: absolute;
+left: 8.33%;
+right: 8.33%;
+top: 12.5%;
+bottom: 11.04%;
+
+border: 1.5px solid #000000;
+
+/* Frame 38 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 7px;
+
+width: 283px;
+height: 71px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Крем */
+
+width: 283px;
+height: 24px;
+
+/* Desktop/H4/Medium */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 500;
+font-size: 20px;
+line-height: 24px;
+
+color: #000000;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* Букет выполнен в элегантном стиле в кремовых оттенках, исп... */
+
+width: 283px;
+height: 40px;
+
+/* Desktop/Caption 1/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 20px;
+
+color: #78787d;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 40 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: flex-end;
+padding: 0px;
+gap: 99px;
+
+width: 283px;
+height: 48px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 39 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+
+width: 73px;
+height: 48px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* 11 200₽ */
+
+width: 73px;
+height: 24px;
+
+/* Desktop/H4/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 20px;
+line-height: 24px;
+text-decoration-line: line-through;
+
+color: #78787d;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* 5600₽ */
+
+width: 73px;
+height: 24px;
+
+/* Desktop/H4/Medium */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 500;
+font-size: 20px;
+line-height: 24px;
+
+color: #000000;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 101 */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 10px;
+gap: 10px;
+
+width: 106px;
+height: 40px;
+
+background: #ffffff;
+border: 1px solid #326964;
+border-radius: 16px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* В корзину */
+
+width: 86px;
+height: 20px;
+
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 20px;
+/* identical to box height */
+
+color: #000000;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Brand button */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 10px;
+gap: 10px;
+
+position: absolute;
+width: 171px;
+height: 42px;
+left: calc(50% - 171px / 2 + 0.5px);
+top: 935px;
+
+background: #326964;
+border-radius: 16px;
+
+/* Frame 43 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 7px;
+
+width: 151px;
+height: 22px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* Label */
+
+width: 128px;
+height: 22px;
+
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 500;
+font-size: 18px;
+line-height: 22px;
+/* identical to box height */
+
+color: #ffffff;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* bitcoin-icons:arrow-up-outline */
+
+width: 16px;
+height: 16px;
+
+transform: rotate(90deg);
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* Vector */
+
+position: absolute;
+left: 12.5%;
+right: 29.17%;
+top: 20.83%;
+bottom: 4.17%;
+
+border: 1px solid #ffffff;
+transform: rotate(90deg);
+
+/* Frame 51 */
+
+position: absolute;
+width: 1430px;
+height: 977px;
+left: 5px;
+top: 2792px;
+
+/* Frame 45 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 0px;
+gap: 754px;
+
+position: absolute;
+width: 1320px;
+height: 39px;
+left: 55px;
+top: 0px;
+
+/* Букеты роз */
+
+width: 190px;
+height: 39px;
+
+/* Desktop/H2 */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 500;
+font-size: 32px;
+line-height: 39px;
+/* identical to box height */
+text-align: center;
+
+color: #000000;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Product card */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 0px 16px 16px;
+gap: 18px;
+
+position: absolute;
+width: 315px;
+height: 401px;
+left: 55px;
+top: 72px;
+
+background: #ffffff;
+/* Shadow/Black */
+box-shadow: 0px 0px 10.5px rgba(0, 0, 0, 0.07);
+border-radius: 8px;
+
+/* Frame 42 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 0px;
+gap: 10px;
+
+width: 283px;
+height: 319px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 35 */
+
+width: 315px;
+height: 238px;
+
+background: url(CHOP051_resized.jpg);
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Frame 41 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: center;
+padding: 0px;
+gap: 200px;
+
+position: absolute;
+width: 283px;
+height: 36px;
+left: 16px;
+top: 13px;
+
+/* Frame 96 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 12px;
+
+width: 60px;
+height: 28px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Label */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 4px 10px;
+gap: 10px;
+
+width: 60px;
+height: 28px;
+
+background: #fee2e2;
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Label */
+
+width: 40px;
+height: 20px;
+
+/* Desktop/Caption 1/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 20px;
+/* identical to box height */
+
+color: #b63345;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Like */
+
+width: 36px;
+height: 36px;
+
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* mdi:heart */
+
+position: absolute;
+width: 23.14px;
+left: calc(50% - 23.14px / 2 - 0px);
+top: 17.86%;
+bottom: 17.86%;
+
+border-radius: 4px;
+
+/* Vector */
+
+box-sizing: border-box;
+
+position: absolute;
+left: 8.33%;
+right: 8.33%;
+top: 12.5%;
+bottom: 11.04%;
+
+border: 1.5px solid #000000;
+
+/* Frame 38 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 7px;
+
+width: 283px;
+height: 71px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Крем */
+
+width: 283px;
+height: 24px;
+
+/* Desktop/H4/Medium */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 500;
+font-size: 20px;
+line-height: 24px;
+
+color: #000000;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* Букет выполнен в элегантном стиле в кремовых оттенках, исп... */
+
+width: 283px;
+height: 40px;
+
+/* Desktop/Caption 1/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 20px;
+
+color: #78787d;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 40 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: flex-end;
+padding: 0px;
+gap: 99px;
+
+width: 283px;
+height: 48px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 39 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+
+width: 73px;
+height: 48px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* 11 200₽ */
+
+width: 73px;
+height: 24px;
+
+/* Desktop/H4/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 20px;
+line-height: 24px;
+text-decoration-line: line-through;
+
+color: #78787d;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* 5600₽ */
+
+width: 73px;
+height: 24px;
+
+/* Desktop/H4/Medium */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 500;
+font-size: 20px;
+line-height: 24px;
+
+color: #000000;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 101 */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 10px;
+gap: 10px;
+
+width: 106px;
+height: 40px;
+
+background: #ffffff;
+border: 1px solid #326964;
+border-radius: 16px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* В корзину */
+
+width: 86px;
+height: 20px;
+
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 20px;
+/* identical to box height */
+
+color: #000000;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Frame 46 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 0px 16px 16px;
+gap: 18px;
+
+position: absolute;
+width: 315px;
+height: 401px;
+left: 55px;
+top: 504px;
+
+background: #ffffff;
+/* Shadow/Black */
+box-shadow: 0px 0px 10.5px rgba(0, 0, 0, 0.07);
+border-radius: 8px;
+
+/* Frame 42 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 0px;
+gap: 10px;
+
+width: 283px;
+height: 319px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 35 */
+
+width: 315px;
+height: 238px;
+
+background: url(CHOP051_resized.jpg);
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Frame 41 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: center;
+padding: 0px;
+gap: 200px;
+
+position: absolute;
+width: 283px;
+height: 36px;
+left: 16px;
+top: 13px;
+
+/* Frame 96 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 12px;
+
+width: 60px;
+height: 28px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Label */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 4px 10px;
+gap: 10px;
+
+width: 60px;
+height: 28px;
+
+background: #fee2e2;
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Label */
+
+width: 40px;
+height: 20px;
+
+/* Desktop/Caption 1/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 20px;
+/* identical to box height */
+
+color: #b63345;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Like */
+
+width: 36px;
+height: 36px;
+
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* mdi:heart */
+
+position: absolute;
+width: 23.14px;
+left: calc(50% - 23.14px / 2 - 0px);
+top: 17.86%;
+bottom: 17.86%;
+
+border-radius: 4px;
+
+/* Vector */
+
+box-sizing: border-box;
+
+position: absolute;
+left: 8.33%;
+right: 8.33%;
+top: 12.5%;
+bottom: 11.04%;
+
+border: 1.5px solid #000000;
+
+/* Frame 38 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 7px;
+
+width: 283px;
+height: 71px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Крем */
+
+width: 283px;
+height: 24px;
+
+/* Desktop/H4/Medium */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 500;
+font-size: 20px;
+line-height: 24px;
+
+color: #000000;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* Букет выполнен в элегантном стиле в кремовых оттенках, исп... */
+
+width: 283px;
+height: 40px;
+
+/* Desktop/Caption 1/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 20px;
+
+color: #78787d;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 40 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: flex-end;
+padding: 0px;
+gap: 99px;
+
+width: 283px;
+height: 48px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 39 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+
+width: 73px;
+height: 48px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* 11 200₽ */
+
+width: 73px;
+height: 24px;
+
+/* Desktop/H4/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 20px;
+line-height: 24px;
+text-decoration-line: line-through;
+
+color: #78787d;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* 5600₽ */
+
+width: 73px;
+height: 24px;
+
+/* Desktop/H4/Medium */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 500;
+font-size: 20px;
+line-height: 24px;
+
+color: #000000;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 101 */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 10px;
+gap: 10px;
+
+width: 106px;
+height: 40px;
+
+background: #ffffff;
+border: 1px solid #326964;
+border-radius: 16px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* В корзину */
+
+width: 86px;
+height: 20px;
+
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 20px;
+/* identical to box height */
+
+color: #000000;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Frame 35 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 0px 16px 16px;
+gap: 18px;
+
+position: absolute;
+width: 315px;
+height: 401px;
+left: 390px;
+top: 72px;
+
+background: #ffffff;
+/* Shadow/Black */
+box-shadow: 0px 0px 10.5px rgba(0, 0, 0, 0.07);
+border-radius: 8px;
+
+/* Frame 42 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 0px;
+gap: 10px;
+
+width: 283px;
+height: 319px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 35 */
+
+width: 315px;
+height: 238px;
+
+background: url(CHOP051_resized.jpg);
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Frame 41 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: center;
+padding: 0px;
+gap: 200px;
+
+position: absolute;
+width: 283px;
+height: 36px;
+left: 16px;
+top: 13px;
+
+/* Frame 96 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 12px;
+
+width: 60px;
+height: 28px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Label */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 4px 10px;
+gap: 10px;
+
+width: 60px;
+height: 28px;
+
+background: #fee2e2;
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Label */
+
+width: 40px;
+height: 20px;
+
+/* Desktop/Caption 1/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 20px;
+/* identical to box height */
+
+color: #b63345;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Like */
+
+width: 36px;
+height: 36px;
+
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* mdi:heart */
+
+position: absolute;
+width: 23.14px;
+left: calc(50% - 23.14px / 2 + 0px);
+top: 17.86%;
+bottom: 17.86%;
+
+border-radius: 4px;
+
+/* Vector */
+
+box-sizing: border-box;
+
+position: absolute;
+left: 8.33%;
+right: 8.33%;
+top: 12.5%;
+bottom: 11.04%;
+
+border: 1.5px solid #000000;
+
+/* Frame 38 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 7px;
+
+width: 283px;
+height: 71px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Крем */
+
+width: 283px;
+height: 24px;
+
+/* Desktop/H4/Medium */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 500;
+font-size: 20px;
+line-height: 24px;
+
+color: #000000;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* Букет выполнен в элегантном стиле в кремовых оттенках, исп... */
+
+width: 283px;
+height: 40px;
+
+/* Desktop/Caption 1/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 20px;
+
+color: #78787d;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 40 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: flex-end;
+padding: 0px;
+gap: 99px;
+
+width: 283px;
+height: 48px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 39 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+
+width: 73px;
+height: 48px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* 11 200₽ */
+
+width: 73px;
+height: 24px;
+
+/* Desktop/H4/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 20px;
+line-height: 24px;
+text-decoration-line: line-through;
+
+color: #78787d;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* 5600₽ */
+
+width: 73px;
+height: 24px;
+
+/* Desktop/H4/Medium */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 500;
+font-size: 20px;
+line-height: 24px;
+
+color: #000000;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 101 */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 10px;
+gap: 10px;
+
+width: 106px;
+height: 40px;
+
+background: #ffffff;
+border: 1px solid #326964;
+border-radius: 16px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* В корзину */
+
+width: 86px;
+height: 20px;
+
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 20px;
+/* identical to box height */
+
+color: #000000;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Frame 47 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 0px 16px 16px;
+gap: 18px;
+
+position: absolute;
+width: 315px;
+height: 401px;
+left: 390px;
+top: 504px;
+
+background: #ffffff;
+/* Shadow/Black */
+box-shadow: 0px 0px 10.5px rgba(0, 0, 0, 0.07);
+border-radius: 8px;
+
+/* Frame 42 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 0px;
+gap: 10px;
+
+width: 283px;
+height: 319px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 35 */
+
+width: 315px;
+height: 238px;
+
+background: url(CHOP051_resized.jpg);
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Frame 41 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: center;
+padding: 0px;
+gap: 200px;
+
+position: absolute;
+width: 283px;
+height: 36px;
+left: 16px;
+top: 13px;
+
+/* Frame 96 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 12px;
+
+width: 60px;
+height: 28px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Label */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 4px 10px;
+gap: 10px;
+
+width: 60px;
+height: 28px;
+
+background: #fee2e2;
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Label */
+
+width: 40px;
+height: 20px;
+
+/* Desktop/Caption 1/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 20px;
+/* identical to box height */
+
+color: #b63345;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Like */
+
+width: 36px;
+height: 36px;
+
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* mdi:heart */
+
+position: absolute;
+width: 23.14px;
+left: calc(50% - 23.14px / 2 + 0px);
+top: 17.86%;
+bottom: 17.86%;
+
+border-radius: 4px;
+
+/* Vector */
+
+box-sizing: border-box;
+
+position: absolute;
+left: 8.33%;
+right: 8.33%;
+top: 12.5%;
+bottom: 11.04%;
+
+border: 1.5px solid #000000;
+
+/* Frame 38 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 7px;
+
+width: 283px;
+height: 71px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Крем */
+
+width: 283px;
+height: 24px;
+
+/* Desktop/H4/Medium */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 500;
+font-size: 20px;
+line-height: 24px;
+
+color: #000000;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* Букет выполнен в элегантном стиле в кремовых оттенках, исп... */
+
+width: 283px;
+height: 40px;
+
+/* Desktop/Caption 1/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 20px;
+
+color: #78787d;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 40 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: flex-end;
+padding: 0px;
+gap: 99px;
+
+width: 283px;
+height: 48px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 39 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+
+width: 73px;
+height: 48px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* 11 200₽ */
+
+width: 73px;
+height: 24px;
+
+/* Desktop/H4/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 20px;
+line-height: 24px;
+text-decoration-line: line-through;
+
+color: #78787d;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* 5600₽ */
+
+width: 73px;
+height: 24px;
+
+/* Desktop/H4/Medium */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 500;
+font-size: 20px;
+line-height: 24px;
+
+color: #000000;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 101 */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 10px;
+gap: 10px;
+
+width: 106px;
+height: 40px;
+
+background: #ffffff;
+border: 1px solid #326964;
+border-radius: 16px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* В корзину */
+
+width: 86px;
+height: 20px;
+
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 20px;
+/* identical to box height */
+
+color: #000000;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Frame 36 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 0px 16px 16px;
+gap: 18px;
+
+position: absolute;
+width: 315px;
+height: 401px;
+left: 725px;
+top: 72px;
+
+background: #ffffff;
+/* Shadow/Black */
+box-shadow: 0px 0px 10.5px rgba(0, 0, 0, 0.07);
+border-radius: 8px;
+
+/* Frame 42 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 0px;
+gap: 10px;
+
+width: 283px;
+height: 319px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 35 */
+
+width: 315px;
+height: 238px;
+
+background: url(CHOP051_resized.jpg);
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Frame 41 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: center;
+padding: 0px;
+gap: 200px;
+
+position: absolute;
+width: 283px;
+height: 36px;
+left: 16px;
+top: 13px;
+
+/* Frame 96 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 12px;
+
+width: 60px;
+height: 28px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Label */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 4px 10px;
+gap: 10px;
+
+width: 60px;
+height: 28px;
+
+background: #fee2e2;
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Label */
+
+width: 40px;
+height: 20px;
+
+/* Desktop/Caption 1/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 20px;
+/* identical to box height */
+
+color: #b63345;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Like */
+
+width: 36px;
+height: 36px;
+
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* mdi:heart */
+
+position: absolute;
+width: 23.14px;
+left: calc(50% - 23.14px / 2 + 0px);
+top: 17.86%;
+bottom: 17.86%;
+
+border-radius: 4px;
+
+/* Vector */
+
+box-sizing: border-box;
+
+position: absolute;
+left: 8.33%;
+right: 8.33%;
+top: 12.5%;
+bottom: 11.04%;
+
+border: 1.5px solid #000000;
+
+/* Frame 38 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 7px;
+
+width: 283px;
+height: 71px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Крем */
+
+width: 283px;
+height: 24px;
+
+/* Desktop/H4/Medium */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 500;
+font-size: 20px;
+line-height: 24px;
+
+color: #000000;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* Букет выполнен в элегантном стиле в кремовых оттенках, исп... */
+
+width: 283px;
+height: 40px;
+
+/* Desktop/Caption 1/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 20px;
+
+color: #78787d;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 40 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: flex-end;
+padding: 0px;
+gap: 99px;
+
+width: 283px;
+height: 48px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 39 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+
+width: 73px;
+height: 48px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* 11 200₽ */
+
+width: 73px;
+height: 24px;
+
+/* Desktop/H4/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 20px;
+line-height: 24px;
+text-decoration-line: line-through;
+
+color: #78787d;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* 5600₽ */
+
+width: 73px;
+height: 24px;
+
+/* Desktop/H4/Medium */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 500;
+font-size: 20px;
+line-height: 24px;
+
+color: #000000;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 101 */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 10px;
+gap: 10px;
+
+width: 106px;
+height: 40px;
+
+background: #ffffff;
+border: 1px solid #326964;
+border-radius: 16px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* В корзину */
+
+width: 86px;
+height: 20px;
+
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 20px;
+/* identical to box height */
+
+color: #000000;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Frame 48 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 0px 16px 16px;
+gap: 18px;
+
+position: absolute;
+width: 315px;
+height: 401px;
+left: 725px;
+top: 504px;
+
+background: #ffffff;
+/* Shadow/Black */
+box-shadow: 0px 0px 10.5px rgba(0, 0, 0, 0.07);
+border-radius: 8px;
+
+/* Frame 42 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 0px;
+gap: 10px;
+
+width: 283px;
+height: 319px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 35 */
+
+width: 315px;
+height: 238px;
+
+background: url(CHOP051_resized.jpg);
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Frame 41 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: center;
+padding: 0px;
+gap: 200px;
+
+position: absolute;
+width: 283px;
+height: 36px;
+left: 16px;
+top: 13px;
+
+/* Frame 96 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 12px;
+
+width: 60px;
+height: 28px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Label */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 4px 10px;
+gap: 10px;
+
+width: 60px;
+height: 28px;
+
+background: #fee2e2;
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Label */
+
+width: 40px;
+height: 20px;
+
+/* Desktop/Caption 1/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 20px;
+/* identical to box height */
+
+color: #b63345;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Like */
+
+width: 36px;
+height: 36px;
+
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* mdi:heart */
+
+position: absolute;
+width: 23.14px;
+left: calc(50% - 23.14px / 2 + 0px);
+top: 17.86%;
+bottom: 17.86%;
+
+border-radius: 4px;
+
+/* Vector */
+
+box-sizing: border-box;
+
+position: absolute;
+left: 8.33%;
+right: 8.33%;
+top: 12.5%;
+bottom: 11.04%;
+
+border: 1.5px solid #000000;
+
+/* Frame 38 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 7px;
+
+width: 283px;
+height: 71px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Крем */
+
+width: 283px;
+height: 24px;
+
+/* Desktop/H4/Medium */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 500;
+font-size: 20px;
+line-height: 24px;
+
+color: #000000;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* Букет выполнен в элегантном стиле в кремовых оттенках, исп... */
+
+width: 283px;
+height: 40px;
+
+/* Desktop/Caption 1/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 20px;
+
+color: #78787d;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 40 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: flex-end;
+padding: 0px;
+gap: 99px;
+
+width: 283px;
+height: 48px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 39 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+
+width: 73px;
+height: 48px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* 11 200₽ */
+
+width: 73px;
+height: 24px;
+
+/* Desktop/H4/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 20px;
+line-height: 24px;
+text-decoration-line: line-through;
+
+color: #78787d;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* 5600₽ */
+
+width: 73px;
+height: 24px;
+
+/* Desktop/H4/Medium */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 500;
+font-size: 20px;
+line-height: 24px;
+
+color: #000000;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 101 */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 10px;
+gap: 10px;
+
+width: 106px;
+height: 40px;
+
+background: #ffffff;
+border: 1px solid #326964;
+border-radius: 16px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* В корзину */
+
+width: 86px;
+height: 20px;
+
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 20px;
+/* identical to box height */
+
+color: #000000;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Frame 37 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 0px 16px 16px;
+gap: 18px;
+
+position: absolute;
+width: 315px;
+height: 401px;
+left: 1060px;
+top: 72px;
+
+background: #ffffff;
+/* Shadow/Black */
+box-shadow: 0px 0px 10.5px rgba(0, 0, 0, 0.07);
+border-radius: 8px;
+
+/* Frame 42 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 0px;
+gap: 10px;
+
+width: 283px;
+height: 319px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 35 */
+
+width: 315px;
+height: 238px;
+
+background: url(CHOP051_resized.jpg);
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Frame 41 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: center;
+padding: 0px;
+gap: 200px;
+
+position: absolute;
+width: 283px;
+height: 36px;
+left: 16px;
+top: 13px;
+
+/* Frame 96 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 12px;
+
+width: 60px;
+height: 28px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Label */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 4px 10px;
+gap: 10px;
+
+width: 60px;
+height: 28px;
+
+background: #fee2e2;
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Label */
+
+width: 40px;
+height: 20px;
+
+/* Desktop/Caption 1/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 20px;
+/* identical to box height */
+
+color: #b63345;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Like */
+
+width: 36px;
+height: 36px;
+
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* mdi:heart */
+
+position: absolute;
+width: 23.14px;
+left: calc(50% - 23.14px / 2 + 0px);
+top: 17.86%;
+bottom: 17.86%;
+
+border-radius: 4px;
+
+/* Vector */
+
+box-sizing: border-box;
+
+position: absolute;
+left: 8.33%;
+right: 8.33%;
+top: 12.5%;
+bottom: 11.04%;
+
+border: 1.5px solid #000000;
+
+/* Frame 38 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 7px;
+
+width: 283px;
+height: 71px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Крем */
+
+width: 283px;
+height: 24px;
+
+/* Desktop/H4/Medium */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 500;
+font-size: 20px;
+line-height: 24px;
+
+color: #000000;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* Букет выполнен в элегантном стиле в кремовых оттенках, исп... */
+
+width: 283px;
+height: 40px;
+
+/* Desktop/Caption 1/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 20px;
+
+color: #78787d;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 40 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: flex-end;
+padding: 0px;
+gap: 99px;
+
+width: 283px;
+height: 48px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 39 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+
+width: 73px;
+height: 48px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* 11 200₽ */
+
+width: 73px;
+height: 24px;
+
+/* Desktop/H4/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 20px;
+line-height: 24px;
+text-decoration-line: line-through;
+
+color: #78787d;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* 5600₽ */
+
+width: 73px;
+height: 24px;
+
+/* Desktop/H4/Medium */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 500;
+font-size: 20px;
+line-height: 24px;
+
+color: #000000;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 101 */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 10px;
+gap: 10px;
+
+width: 106px;
+height: 40px;
+
+background: #ffffff;
+border: 1px solid #326964;
+border-radius: 16px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* В корзину */
+
+width: 86px;
+height: 20px;
+
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 20px;
+/* identical to box height */
+
+color: #000000;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Frame 49 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 0px 16px 16px;
+gap: 18px;
+
+position: absolute;
+width: 315px;
+height: 401px;
+left: 1060px;
+top: 504px;
+
+background: #ffffff;
+/* Shadow/Black */
+box-shadow: 0px 0px 10.5px rgba(0, 0, 0, 0.07);
+border-radius: 8px;
+
+/* Frame 42 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 0px;
+gap: 10px;
+
+width: 283px;
+height: 319px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 35 */
+
+width: 315px;
+height: 238px;
+
+background: url(CHOP051_resized.jpg);
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Frame 41 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: center;
+padding: 0px;
+gap: 200px;
+
+position: absolute;
+width: 283px;
+height: 36px;
+left: 16px;
+top: 13px;
+
+/* Frame 96 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 12px;
+
+width: 60px;
+height: 28px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Label */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 4px 10px;
+gap: 10px;
+
+width: 60px;
+height: 28px;
+
+background: #fee2e2;
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Label */
+
+width: 40px;
+height: 20px;
+
+/* Desktop/Caption 1/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 20px;
+/* identical to box height */
+
+color: #b63345;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Like */
+
+width: 36px;
+height: 36px;
+
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* mdi:heart */
+
+position: absolute;
+width: 23.14px;
+left: calc(50% - 23.14px / 2 + 0px);
+top: 17.86%;
+bottom: 17.86%;
+
+border-radius: 4px;
+
+/* Vector */
+
+box-sizing: border-box;
+
+position: absolute;
+left: 8.33%;
+right: 8.33%;
+top: 12.5%;
+bottom: 11.04%;
+
+border: 1.5px solid #000000;
+
+/* Frame 38 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 7px;
+
+width: 283px;
+height: 71px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Крем */
+
+width: 283px;
+height: 24px;
+
+/* Desktop/H4/Medium */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 500;
+font-size: 20px;
+line-height: 24px;
+
+color: #000000;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* Букет выполнен в элегантном стиле в кремовых оттенках, исп... */
+
+width: 283px;
+height: 40px;
+
+/* Desktop/Caption 1/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 20px;
+
+color: #78787d;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 40 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: flex-end;
+padding: 0px;
+gap: 99px;
+
+width: 283px;
+height: 48px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 39 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+
+width: 73px;
+height: 48px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* 11 200₽ */
+
+width: 73px;
+height: 24px;
+
+/* Desktop/H4/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 20px;
+line-height: 24px;
+text-decoration-line: line-through;
+
+color: #78787d;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* 5600₽ */
+
+width: 73px;
+height: 24px;
+
+/* Desktop/H4/Medium */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 500;
+font-size: 20px;
+line-height: 24px;
+
+color: #000000;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 101 */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 10px;
+gap: 10px;
+
+width: 106px;
+height: 40px;
+
+background: #ffffff;
+border: 1px solid #326964;
+border-radius: 16px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* В корзину */
+
+width: 86px;
+height: 20px;
+
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 20px;
+/* identical to box height */
+
+color: #000000;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Brand button */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 10px;
+gap: 10px;
+
+position: absolute;
+width: 171px;
+height: 42px;
+left: calc(50% - 171px / 2 + 0.5px);
+top: 935px;
+
+background: #326964;
+border-radius: 16px;
+
+/* Frame 43 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 7px;
+
+width: 151px;
+height: 22px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* Label */
+
+width: 128px;
+height: 22px;
+
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 500;
+font-size: 18px;
+line-height: 22px;
+/* identical to box height */
+
+color: #ffffff;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* bitcoin-icons:arrow-up-outline */
+
+width: 16px;
+height: 16px;
+
+transform: rotate(90deg);
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* Vector */
+
+position: absolute;
+left: 12.5%;
+right: 29.17%;
+top: 20.83%;
+bottom: 4.17%;
+
+border: 1px solid #ffffff;
+transform: rotate(90deg);
+
+/* Frame 53 */
+
+position: absolute;
+width: 1430px;
+height: 978px;
+left: 5px;
+top: 4577px;
+
+/* Frame 45 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 0px;
+gap: 754px;
+
+position: absolute;
+width: 1320px;
+height: 39px;
+left: 55px;
+top: 0px;
+
+/* Популярные букеты с доставкой */
+
+width: 554px;
+height: 39px;
+
+/* Desktop/H2 */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 500;
+font-size: 32px;
+line-height: 39px;
+/* identical to box height */
+
+color: #000000;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Product card */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 0px 16px 16px;
+gap: 18px;
+
+position: absolute;
+width: 315px;
+height: 401px;
+left: 55px;
+top: 72px;
+
+background: #ffffff;
+/* Shadow/Black */
+box-shadow: 0px 0px 10.5px rgba(0, 0, 0, 0.07);
+border-radius: 8px;
+
+/* Frame 42 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 0px;
+gap: 10px;
+
+width: 283px;
+height: 319px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 35 */
+
+width: 315px;
+height: 238px;
+
+background: url(CHOP051_resized.jpg);
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Frame 41 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: center;
+padding: 0px;
+gap: 200px;
+
+position: absolute;
+width: 283px;
+height: 36px;
+left: 16px;
+top: 13px;
+
+/* Frame 96 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 12px;
+
+width: 60px;
+height: 28px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Label */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 4px 10px;
+gap: 10px;
+
+width: 60px;
+height: 28px;
+
+background: #fee2e2;
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Label */
+
+width: 40px;
+height: 20px;
+
+/* Desktop/Caption 1/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 20px;
+/* identical to box height */
+
+color: #b63345;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Like */
+
+width: 36px;
+height: 36px;
+
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* mdi:heart */
+
+position: absolute;
+width: 23.14px;
+left: calc(50% - 23.14px / 2 - 0px);
+top: 17.86%;
+bottom: 17.86%;
+
+border-radius: 4px;
+
+/* Vector */
+
+box-sizing: border-box;
+
+position: absolute;
+left: 8.33%;
+right: 8.33%;
+top: 12.5%;
+bottom: 11.04%;
+
+border: 1.5px solid #000000;
+
+/* Frame 38 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 7px;
+
+width: 283px;
+height: 71px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Крем */
+
+width: 283px;
+height: 24px;
+
+/* Desktop/H4/Medium */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 500;
+font-size: 20px;
+line-height: 24px;
+
+color: #000000;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* Букет выполнен в элегантном стиле в кремовых оттенках, исп... */
+
+width: 283px;
+height: 40px;
+
+/* Desktop/Caption 1/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 20px;
+
+color: #78787d;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 40 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: flex-end;
+padding: 0px;
+gap: 99px;
+
+width: 283px;
+height: 48px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 39 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+
+width: 73px;
+height: 48px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* 11 200₽ */
+
+width: 73px;
+height: 24px;
+
+/* Desktop/H4/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 20px;
+line-height: 24px;
+text-decoration-line: line-through;
+
+color: #78787d;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* 5600₽ */
+
+width: 73px;
+height: 24px;
+
+/* Desktop/H4/Medium */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 500;
+font-size: 20px;
+line-height: 24px;
+
+color: #000000;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 101 */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 10px;
+gap: 10px;
+
+width: 106px;
+height: 40px;
+
+background: #ffffff;
+border: 1px solid #326964;
+border-radius: 16px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* В корзину */
+
+width: 86px;
+height: 20px;
+
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 20px;
+/* identical to box height */
+
+color: #000000;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Frame 46 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 0px 16px 16px;
+gap: 18px;
+
+position: absolute;
+width: 315px;
+height: 401px;
+left: 55px;
+top: 504px;
+
+background: #ffffff;
+/* Shadow/Black */
+box-shadow: 0px 0px 10.5px rgba(0, 0, 0, 0.07);
+border-radius: 8px;
+
+/* Frame 42 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 0px;
+gap: 10px;
+
+width: 283px;
+height: 319px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 35 */
+
+width: 315px;
+height: 238px;
+
+background: url(CHOP051_resized.jpg);
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Frame 41 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: center;
+padding: 0px;
+gap: 200px;
+
+position: absolute;
+width: 283px;
+height: 36px;
+left: 16px;
+top: 13px;
+
+/* Frame 96 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 12px;
+
+width: 60px;
+height: 28px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Label */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 4px 10px;
+gap: 10px;
+
+width: 60px;
+height: 28px;
+
+background: #fee2e2;
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Label */
+
+width: 40px;
+height: 20px;
+
+/* Desktop/Caption 1/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 20px;
+/* identical to box height */
+
+color: #b63345;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Like */
+
+width: 36px;
+height: 36px;
+
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* mdi:heart */
+
+position: absolute;
+width: 23.14px;
+left: calc(50% - 23.14px / 2 - 0px);
+top: 17.86%;
+bottom: 17.86%;
+
+border-radius: 4px;
+
+/* Vector */
+
+box-sizing: border-box;
+
+position: absolute;
+left: 8.33%;
+right: 8.33%;
+top: 12.5%;
+bottom: 11.04%;
+
+border: 1.5px solid #000000;
+
+/* Frame 38 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 7px;
+
+width: 283px;
+height: 71px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Крем */
+
+width: 283px;
+height: 24px;
+
+/* Desktop/H4/Medium */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 500;
+font-size: 20px;
+line-height: 24px;
+
+color: #000000;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* Букет выполнен в элегантном стиле в кремовых оттенках, исп... */
+
+width: 283px;
+height: 40px;
+
+/* Desktop/Caption 1/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 20px;
+
+color: #78787d;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 40 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: flex-end;
+padding: 0px;
+gap: 99px;
+
+width: 283px;
+height: 48px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 39 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+
+width: 73px;
+height: 48px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* 11 200₽ */
+
+width: 73px;
+height: 24px;
+
+/* Desktop/H4/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 20px;
+line-height: 24px;
+text-decoration-line: line-through;
+
+color: #78787d;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* 5600₽ */
+
+width: 73px;
+height: 24px;
+
+/* Desktop/H4/Medium */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 500;
+font-size: 20px;
+line-height: 24px;
+
+color: #000000;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 101 */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 10px;
+gap: 10px;
+
+width: 106px;
+height: 40px;
+
+background: #ffffff;
+border: 1px solid #326964;
+border-radius: 16px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* В корзину */
+
+width: 86px;
+height: 20px;
+
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 20px;
+/* identical to box height */
+
+color: #000000;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Frame 35 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 0px 16px 16px;
+gap: 18px;
+
+position: absolute;
+width: 315px;
+height: 401px;
+left: 390px;
+top: 72px;
+
+background: #ffffff;
+/* Shadow/Black */
+box-shadow: 0px 0px 10.5px rgba(0, 0, 0, 0.07);
+border-radius: 8px;
+
+/* Frame 42 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 0px;
+gap: 10px;
+
+width: 283px;
+height: 319px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 35 */
+
+width: 315px;
+height: 238px;
+
+background: url(CHOP051_resized.jpg);
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Frame 41 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: center;
+padding: 0px;
+gap: 200px;
+
+position: absolute;
+width: 283px;
+height: 36px;
+left: 16px;
+top: 13px;
+
+/* Frame 96 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 12px;
+
+width: 60px;
+height: 28px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Label */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 4px 10px;
+gap: 10px;
+
+width: 60px;
+height: 28px;
+
+background: #fee2e2;
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Label */
+
+width: 40px;
+height: 20px;
+
+/* Desktop/Caption 1/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 20px;
+/* identical to box height */
+
+color: #b63345;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Like */
+
+width: 36px;
+height: 36px;
+
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* mdi:heart */
+
+position: absolute;
+width: 23.14px;
+left: calc(50% - 23.14px / 2 + 0px);
+top: 17.86%;
+bottom: 17.86%;
+
+border-radius: 4px;
+
+/* Vector */
+
+box-sizing: border-box;
+
+position: absolute;
+left: 8.33%;
+right: 8.33%;
+top: 12.5%;
+bottom: 11.04%;
+
+border: 1.5px solid #000000;
+
+/* Frame 38 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 7px;
+
+width: 283px;
+height: 71px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Крем */
+
+width: 283px;
+height: 24px;
+
+/* Desktop/H4/Medium */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 500;
+font-size: 20px;
+line-height: 24px;
+
+color: #000000;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* Букет выполнен в элегантном стиле в кремовых оттенках, исп... */
+
+width: 283px;
+height: 40px;
+
+/* Desktop/Caption 1/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 20px;
+
+color: #78787d;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 40 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: flex-end;
+padding: 0px;
+gap: 99px;
+
+width: 283px;
+height: 48px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 39 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+
+width: 73px;
+height: 48px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* 11 200₽ */
+
+width: 73px;
+height: 24px;
+
+/* Desktop/H4/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 20px;
+line-height: 24px;
+text-decoration-line: line-through;
+
+color: #78787d;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* 5600₽ */
+
+width: 73px;
+height: 24px;
+
+/* Desktop/H4/Medium */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 500;
+font-size: 20px;
+line-height: 24px;
+
+color: #000000;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 101 */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 10px;
+gap: 10px;
+
+width: 106px;
+height: 40px;
+
+background: #ffffff;
+border: 1px solid #326964;
+border-radius: 16px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* В корзину */
+
+width: 86px;
+height: 20px;
+
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 20px;
+/* identical to box height */
+
+color: #000000;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Frame 47 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 0px 16px 16px;
+gap: 18px;
+
+position: absolute;
+width: 315px;
+height: 401px;
+left: 390px;
+top: 504px;
+
+background: #ffffff;
+/* Shadow/Black */
+box-shadow: 0px 0px 10.5px rgba(0, 0, 0, 0.07);
+border-radius: 8px;
+
+/* Frame 42 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 0px;
+gap: 10px;
+
+width: 283px;
+height: 319px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 35 */
+
+width: 315px;
+height: 238px;
+
+background: url(CHOP051_resized.jpg);
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Frame 41 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: center;
+padding: 0px;
+gap: 200px;
+
+position: absolute;
+width: 283px;
+height: 36px;
+left: 16px;
+top: 13px;
+
+/* Frame 96 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 12px;
+
+width: 60px;
+height: 28px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Label */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 4px 10px;
+gap: 10px;
+
+width: 60px;
+height: 28px;
+
+background: #fee2e2;
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Label */
+
+width: 40px;
+height: 20px;
+
+/* Desktop/Caption 1/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 20px;
+/* identical to box height */
+
+color: #b63345;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Like */
+
+width: 36px;
+height: 36px;
+
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* mdi:heart */
+
+position: absolute;
+width: 23.14px;
+left: calc(50% - 23.14px / 2 + 0px);
+top: 17.86%;
+bottom: 17.86%;
+
+border-radius: 4px;
+
+/* Vector */
+
+box-sizing: border-box;
+
+position: absolute;
+left: 8.33%;
+right: 8.33%;
+top: 12.5%;
+bottom: 11.04%;
+
+border: 1.5px solid #000000;
+
+/* Frame 38 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 7px;
+
+width: 283px;
+height: 71px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Крем */
+
+width: 283px;
+height: 24px;
+
+/* Desktop/H4/Medium */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 500;
+font-size: 20px;
+line-height: 24px;
+
+color: #000000;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* Букет выполнен в элегантном стиле в кремовых оттенках, исп... */
+
+width: 283px;
+height: 40px;
+
+/* Desktop/Caption 1/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 20px;
+
+color: #78787d;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 40 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: flex-end;
+padding: 0px;
+gap: 99px;
+
+width: 283px;
+height: 48px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 39 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+
+width: 73px;
+height: 48px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* 11 200₽ */
+
+width: 73px;
+height: 24px;
+
+/* Desktop/H4/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 20px;
+line-height: 24px;
+text-decoration-line: line-through;
+
+color: #78787d;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* 5600₽ */
+
+width: 73px;
+height: 24px;
+
+/* Desktop/H4/Medium */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 500;
+font-size: 20px;
+line-height: 24px;
+
+color: #000000;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 101 */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 10px;
+gap: 10px;
+
+width: 106px;
+height: 40px;
+
+background: #ffffff;
+border: 1px solid #326964;
+border-radius: 16px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* В корзину */
+
+width: 86px;
+height: 20px;
+
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 20px;
+/* identical to box height */
+
+color: #000000;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Frame 36 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 0px 16px 16px;
+gap: 18px;
+
+position: absolute;
+width: 315px;
+height: 401px;
+left: 725px;
+top: 72px;
+
+background: #ffffff;
+/* Shadow/Black */
+box-shadow: 0px 0px 10.5px rgba(0, 0, 0, 0.07);
+border-radius: 8px;
+
+/* Frame 42 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 0px;
+gap: 10px;
+
+width: 283px;
+height: 319px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 35 */
+
+width: 315px;
+height: 238px;
+
+background: url(CHOP051_resized.jpg);
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Frame 41 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: center;
+padding: 0px;
+gap: 200px;
+
+position: absolute;
+width: 283px;
+height: 36px;
+left: 16px;
+top: 13px;
+
+/* Frame 96 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 12px;
+
+width: 60px;
+height: 28px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Label */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 4px 10px;
+gap: 10px;
+
+width: 60px;
+height: 28px;
+
+background: #fee2e2;
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Label */
+
+width: 40px;
+height: 20px;
+
+/* Desktop/Caption 1/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 20px;
+/* identical to box height */
+
+color: #b63345;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Like */
+
+width: 36px;
+height: 36px;
+
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* mdi:heart */
+
+position: absolute;
+width: 23.14px;
+left: calc(50% - 23.14px / 2 + 0px);
+top: 17.86%;
+bottom: 17.86%;
+
+border-radius: 4px;
+
+/* Vector */
+
+box-sizing: border-box;
+
+position: absolute;
+left: 8.33%;
+right: 8.33%;
+top: 12.5%;
+bottom: 11.04%;
+
+border: 1.5px solid #000000;
+
+/* Frame 38 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 7px;
+
+width: 283px;
+height: 71px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Крем */
+
+width: 283px;
+height: 24px;
+
+/* Desktop/H4/Medium */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 500;
+font-size: 20px;
+line-height: 24px;
+
+color: #000000;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* Букет выполнен в элегантном стиле в кремовых оттенках, исп... */
+
+width: 283px;
+height: 40px;
+
+/* Desktop/Caption 1/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 20px;
+
+color: #78787d;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 40 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: flex-end;
+padding: 0px;
+gap: 99px;
+
+width: 283px;
+height: 48px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 39 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+
+width: 73px;
+height: 48px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* 11 200₽ */
+
+width: 73px;
+height: 24px;
+
+/* Desktop/H4/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 20px;
+line-height: 24px;
+text-decoration-line: line-through;
+
+color: #78787d;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* 5600₽ */
+
+width: 73px;
+height: 24px;
+
+/* Desktop/H4/Medium */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 500;
+font-size: 20px;
+line-height: 24px;
+
+color: #000000;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 101 */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 10px;
+gap: 10px;
+
+width: 106px;
+height: 40px;
+
+background: #ffffff;
+border: 1px solid #326964;
+border-radius: 16px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* В корзину */
+
+width: 86px;
+height: 20px;
+
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 20px;
+/* identical to box height */
+
+color: #000000;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Frame 48 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 0px 16px 16px;
+gap: 18px;
+
+position: absolute;
+width: 315px;
+height: 401px;
+left: 725px;
+top: 504px;
+
+background: #ffffff;
+/* Shadow/Black */
+box-shadow: 0px 0px 10.5px rgba(0, 0, 0, 0.07);
+border-radius: 8px;
+
+/* Frame 42 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 0px;
+gap: 10px;
+
+width: 283px;
+height: 319px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 35 */
+
+width: 315px;
+height: 238px;
+
+background: url(CHOP051_resized.jpg);
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Frame 41 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: center;
+padding: 0px;
+gap: 200px;
+
+position: absolute;
+width: 283px;
+height: 36px;
+left: 16px;
+top: 13px;
+
+/* Frame 96 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 12px;
+
+width: 60px;
+height: 28px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Label */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 4px 10px;
+gap: 10px;
+
+width: 60px;
+height: 28px;
+
+background: #fee2e2;
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Label */
+
+width: 40px;
+height: 20px;
+
+/* Desktop/Caption 1/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 20px;
+/* identical to box height */
+
+color: #b63345;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Like */
+
+width: 36px;
+height: 36px;
+
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* mdi:heart */
+
+position: absolute;
+width: 23.14px;
+left: calc(50% - 23.14px / 2 + 0px);
+top: 17.86%;
+bottom: 17.86%;
+
+border-radius: 4px;
+
+/* Vector */
+
+box-sizing: border-box;
+
+position: absolute;
+left: 8.33%;
+right: 8.33%;
+top: 12.5%;
+bottom: 11.04%;
+
+border: 1.5px solid #000000;
+
+/* Frame 38 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 7px;
+
+width: 283px;
+height: 71px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Крем */
+
+width: 283px;
+height: 24px;
+
+/* Desktop/H4/Medium */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 500;
+font-size: 20px;
+line-height: 24px;
+
+color: #000000;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* Букет выполнен в элегантном стиле в кремовых оттенках, исп... */
+
+width: 283px;
+height: 40px;
+
+/* Desktop/Caption 1/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 20px;
+
+color: #78787d;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 40 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: flex-end;
+padding: 0px;
+gap: 99px;
+
+width: 283px;
+height: 48px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 39 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+
+width: 73px;
+height: 48px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* 11 200₽ */
+
+width: 73px;
+height: 24px;
+
+/* Desktop/H4/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 20px;
+line-height: 24px;
+text-decoration-line: line-through;
+
+color: #78787d;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* 5600₽ */
+
+width: 73px;
+height: 24px;
+
+/* Desktop/H4/Medium */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 500;
+font-size: 20px;
+line-height: 24px;
+
+color: #000000;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 101 */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 10px;
+gap: 10px;
+
+width: 106px;
+height: 40px;
+
+background: #ffffff;
+border: 1px solid #326964;
+border-radius: 16px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* В корзину */
+
+width: 86px;
+height: 20px;
+
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 20px;
+/* identical to box height */
+
+color: #000000;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Frame 37 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 0px 16px 16px;
+gap: 18px;
+
+position: absolute;
+width: 315px;
+height: 401px;
+left: 1060px;
+top: 72px;
+
+background: #ffffff;
+/* Shadow/Black */
+box-shadow: 0px 0px 10.5px rgba(0, 0, 0, 0.07);
+border-radius: 8px;
+
+/* Frame 42 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 0px;
+gap: 10px;
+
+width: 283px;
+height: 319px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 35 */
+
+width: 315px;
+height: 238px;
+
+background: url(CHOP051_resized.jpg);
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Frame 41 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: center;
+padding: 0px;
+gap: 200px;
+
+position: absolute;
+width: 283px;
+height: 36px;
+left: 16px;
+top: 13px;
+
+/* Frame 96 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 12px;
+
+width: 60px;
+height: 28px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Label */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 4px 10px;
+gap: 10px;
+
+width: 60px;
+height: 28px;
+
+background: #fee2e2;
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Label */
+
+width: 40px;
+height: 20px;
+
+/* Desktop/Caption 1/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 20px;
+/* identical to box height */
+
+color: #b63345;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Like */
+
+width: 36px;
+height: 36px;
+
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* mdi:heart */
+
+position: absolute;
+width: 23.14px;
+left: calc(50% - 23.14px / 2 + 0px);
+top: 17.86%;
+bottom: 17.86%;
+
+border-radius: 4px;
+
+/* Vector */
+
+box-sizing: border-box;
+
+position: absolute;
+left: 8.33%;
+right: 8.33%;
+top: 12.5%;
+bottom: 11.04%;
+
+border: 1.5px solid #000000;
+
+/* Frame 38 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 7px;
+
+width: 283px;
+height: 71px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Крем */
+
+width: 283px;
+height: 24px;
+
+/* Desktop/H4/Medium */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 500;
+font-size: 20px;
+line-height: 24px;
+
+color: #000000;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* Букет выполнен в элегантном стиле в кремовых оттенках, исп... */
+
+width: 283px;
+height: 40px;
+
+/* Desktop/Caption 1/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 20px;
+
+color: #78787d;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 40 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: flex-end;
+padding: 0px;
+gap: 99px;
+
+width: 283px;
+height: 48px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 39 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+
+width: 73px;
+height: 48px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* 11 200₽ */
+
+width: 73px;
+height: 24px;
+
+/* Desktop/H4/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 20px;
+line-height: 24px;
+text-decoration-line: line-through;
+
+color: #78787d;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* 5600₽ */
+
+width: 73px;
+height: 24px;
+
+/* Desktop/H4/Medium */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 500;
+font-size: 20px;
+line-height: 24px;
+
+color: #000000;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 101 */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 10px;
+gap: 10px;
+
+width: 106px;
+height: 40px;
+
+background: #ffffff;
+border: 1px solid #326964;
+border-radius: 16px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* В корзину */
+
+width: 86px;
+height: 20px;
+
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 20px;
+/* identical to box height */
+
+color: #000000;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Frame 49 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 0px 16px 16px;
+gap: 18px;
+
+position: absolute;
+width: 315px;
+height: 401px;
+left: 1060px;
+top: 504px;
+
+background: #ffffff;
+/* Shadow/Black */
+box-shadow: 0px 0px 10.5px rgba(0, 0, 0, 0.07);
+border-radius: 8px;
+
+/* Frame 42 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 0px;
+gap: 10px;
+
+width: 283px;
+height: 319px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 35 */
+
+width: 315px;
+height: 238px;
+
+background: url(CHOP051_resized.jpg);
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Frame 41 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: center;
+padding: 0px;
+gap: 200px;
+
+position: absolute;
+width: 283px;
+height: 36px;
+left: 16px;
+top: 13px;
+
+/* Frame 96 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 12px;
+
+width: 60px;
+height: 28px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Label */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 4px 10px;
+gap: 10px;
+
+width: 60px;
+height: 28px;
+
+background: #fee2e2;
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Label */
+
+width: 40px;
+height: 20px;
+
+/* Desktop/Caption 1/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 20px;
+/* identical to box height */
+
+color: #b63345;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Like */
+
+width: 36px;
+height: 36px;
+
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* mdi:heart */
+
+position: absolute;
+width: 23.14px;
+left: calc(50% - 23.14px / 2 + 0px);
+top: 17.86%;
+bottom: 17.86%;
+
+border-radius: 4px;
+
+/* Vector */
+
+box-sizing: border-box;
+
+position: absolute;
+left: 8.33%;
+right: 8.33%;
+top: 12.5%;
+bottom: 11.04%;
+
+border: 1.5px solid #000000;
+
+/* Frame 38 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 7px;
+
+width: 283px;
+height: 71px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Крем */
+
+width: 283px;
+height: 24px;
+
+/* Desktop/H4/Medium */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 500;
+font-size: 20px;
+line-height: 24px;
+
+color: #000000;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* Букет выполнен в элегантном стиле в кремовых оттенках, исп... */
+
+width: 283px;
+height: 40px;
+
+/* Desktop/Caption 1/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 20px;
+
+color: #78787d;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 40 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: flex-end;
+padding: 0px;
+gap: 99px;
+
+width: 283px;
+height: 48px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 39 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+
+width: 73px;
+height: 48px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* 11 200₽ */
+
+width: 73px;
+height: 24px;
+
+/* Desktop/H4/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 20px;
+line-height: 24px;
+text-decoration-line: line-through;
+
+color: #78787d;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* 5600₽ */
+
+width: 73px;
+height: 24px;
+
+/* Desktop/H4/Medium */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 500;
+font-size: 20px;
+line-height: 24px;
+
+color: #000000;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 101 */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 10px;
+gap: 10px;
+
+width: 106px;
+height: 40px;
+
+background: #ffffff;
+border: 1px solid #326964;
+border-radius: 16px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* В корзину */
+
+width: 86px;
+height: 20px;
+
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 20px;
+/* identical to box height */
+
+color: #000000;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Brand button */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 10px;
+gap: 10px;
+
+position: absolute;
+width: 171px;
+height: 42px;
+left: calc(50% - 171px / 2 + 0.5px);
+top: 935px;
+
+background: #326964;
+border-radius: 16px;
+
+/* Frame 43 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 7px;
+
+width: 151px;
+height: 22px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* Label */
+
+width: 128px;
+height: 22px;
+
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 500;
+font-size: 18px;
+line-height: 22px;
+/* identical to box height */
+
+color: #ffffff;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* bitcoin-icons:arrow-up-outline */
+
+width: 16px;
+height: 16px;
+
+transform: rotate(90deg);
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* Vector */
+
+position: absolute;
+left: 12.5%;
+right: 29.17%;
+top: 20.83%;
+bottom: 4.17%;
+
+border: 1px solid #ffffff;
+transform: rotate(90deg);
+
+/* Frame 52 */
+
+position: absolute;
+width: 1320px;
+height: 586px;
+left: 60px;
+top: 5635px;
+
+background:
+    linear-gradient(0deg, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(.jpg);
+border-radius: 16px;
+
+/* Frame 57 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 48px;
+
+position: absolute;
+width: 1066px;
+height: 462px;
+left: 61px;
+top: calc(50% - 462px / 2 - 0.5px);
+
+/* Почему в Челябинске покупают букеты в ЦВЕТОПТОРГ? */
+
+width: 591px;
+height: 78px;
+
+/* Desktop/H2 */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 500;
+font-size: 32px;
+line-height: 39px;
+
+color: #ffffff;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Frame 54 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 20px;
+gap: 10px;
+
+width: 1066px;
+height: 232px;
+
+background: rgba(217, 217, 217, 0.08);
+border-radius: 16px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Компания «ЦВЕТОПТОРГ» была основана в 2003 году. В настоящее время наша сеть насчитывает 20 магазинов в г. Челябинске, в которых опытные мастера-флористы каждый день с любовью составляют для вас цветочные композиции  и авторские букеты. Вы хотите порадовать своего родного или близкого человека, а может коллегу по работе? Неповторимая композиция никогда не будет банальным подарком  и непременно вызовет тёплые чувства у одариваемого человека. */
+
+width: 1026px;
+height: 192px;
+
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 20px;
+line-height: 24px;
+
+color: #ffffff;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Frame 100 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: flex-start;
+padding: 0px;
+gap: 20px;
+
+width: 521px;
+height: 56px;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+/* Primary */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 16px 20px;
+gap: 10px;
+
+width: 234px;
+height: 56px;
+
+background: #ffffff;
+border: 1px solid #ffffff;
+border-radius: 16px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Посмотреть каталог */
+
+width: 194px;
+height: 24px;
+
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 20px;
+line-height: 24px;
+
+color: #000000;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Primary */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 16px 20px;
+gap: 10px;
+
+width: 267px;
+height: 56px;
+
+border: 1px solid #ffffff;
+border-radius: 16px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* Посмотреть каталог */
+
+width: 227px;
+height: 24px;
+
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 20px;
+line-height: 24px;
+
+color: #ffffff;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Frame 93 */
+
+position: absolute;
+width: 1318px;
+height: 647px;
+left: 62px;
+top: 3850px;
+
+background: #fee2e2;
+border-radius: 16px;
+
+/* Chrysanthemum ◦ line drawing */
+
+position: absolute;
+width: 507px;
+height: 509px;
+left: 1090px;
+top: -15px;
+
+background: url(Chrysanthemum.png);
+
+/* Frame 92 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 20px;
+
+position: absolute;
+width: 1237px;
+height: 328px;
+left: calc(50% - 1237px / 2);
+top: 206px;
+
+/* Frame 90 */
+
+width: 399px;
+height: 328px;
+
+background: #ffffff;
+box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.07);
+border-radius: 16px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Title */
+
+position: absolute;
+width: 153px;
+height: 24px;
+left: 23px;
+top: 173px;
+
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 500;
+font-size: 20px;
+line-height: 24px;
+
+color: #000000;
+
+/* Frame 90 */
+
+position: absolute;
+width: 399px;
+height: 163px;
+left: 0px;
+top: 0px;
+
+background: url(.jpg);
+border-radius: 16px 16px 0px 0px;
+
+/* Description */
+
+position: absolute;
+width: 335px;
+height: 60px;
+left: 23px;
+top: 203px;
+
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 20px;
+
+color: #595959;
+
+/* Frame 92 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 9px;
+
+position: absolute;
+width: 103px;
+height: 22px;
+left: 23px;
+top: 288px;
+
+/* Button */
+
+width: 78px;
+height: 22px;
+
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 500;
+font-size: 18px;
+line-height: 22px;
+/* identical to box height */
+
+color: #326964;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* bitcoin-icons:arrow-up-outline */
+
+width: 16px;
+height: 16px;
+
+transform: rotate(90deg);
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* Vector */
+
+position: absolute;
+left: 12.5%;
+right: 29.17%;
+top: 20.83%;
+bottom: 4.17%;
+
+border: 1px solid #326964;
+transform: rotate(90deg);
+
+/* Frame 91 */
+
+width: 399px;
+height: 328px;
+
+background: #ffffff;
+box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.07);
+border-radius: 16px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* Title */
+
+position: absolute;
+width: 153px;
+height: 24px;
+left: 23px;
+top: 173px;
+
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 500;
+font-size: 20px;
+line-height: 24px;
+
+color: #000000;
+
+/* Frame 90 */
+
+position: absolute;
+width: 399px;
+height: 163px;
+left: 0px;
+top: 0px;
+
+background: url(.jpg);
+border-radius: 16px 16px 0px 0px;
+
+/* Description */
+
+position: absolute;
+width: 335px;
+height: 60px;
+left: 23px;
+top: 203px;
+
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 20px;
+
+color: #595959;
+
+/* Frame 92 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 9px;
+
+position: absolute;
+width: 103px;
+height: 22px;
+left: 23px;
+top: 288px;
+
+/* Button */
+
+width: 78px;
+height: 22px;
+
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 500;
+font-size: 18px;
+line-height: 22px;
+/* identical to box height */
+
+color: #326964;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* bitcoin-icons:arrow-up-outline */
+
+width: 16px;
+height: 16px;
+
+transform: rotate(90deg);
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* Vector */
+
+position: absolute;
+left: 12.5%;
+right: 29.17%;
+top: 20.83%;
+bottom: 4.17%;
+
+border: 1px solid #326964;
+transform: rotate(90deg);
+
+/* Frame 92 */
+
+width: 399px;
+height: 328px;
+
+background: #ffffff;
+box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.07);
+border-radius: 16px;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+/* Title */
+
+position: absolute;
+width: 153px;
+height: 24px;
+left: 23px;
+top: 173px;
+
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 500;
+font-size: 20px;
+line-height: 24px;
+
+color: #000000;
+
+/* Frame 90 */
+
+position: absolute;
+width: 399px;
+height: 163px;
+left: 0px;
+top: 0px;
+
+background: url(.jpg);
+border-radius: 16px 16px 0px 0px;
+
+/* Description */
+
+position: absolute;
+width: 335px;
+height: 60px;
+left: 23px;
+top: 203px;
+
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 20px;
+
+color: #595959;
+
+/* Frame 92 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 9px;
+
+position: absolute;
+width: 103px;
+height: 22px;
+left: 23px;
+top: 288px;
+
+/* Button */
+
+width: 78px;
+height: 22px;
+
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 500;
+font-size: 18px;
+line-height: 22px;
+/* identical to box height */
+
+color: #326964;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* bitcoin-icons:arrow-up-outline */
+
+width: 16px;
+height: 16px;
+
+transform: rotate(90deg);
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* Vector */
+
+position: absolute;
+left: 12.5%;
+right: 29.17%;
+top: 20.83%;
+bottom: 4.17%;
+
+border: 1px solid #326964;
+transform: rotate(90deg);
+
+/* Frame 94 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 8px;
+
+position: absolute;
+width: 592px;
+height: 134px;
+left: calc(50% - 592px / 2);
+top: 30px;
+
+/* Полезные советы  от наших флористов */
+
+width: 592px;
+height: 78px;
+
+/* Desktop/H2 */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 500;
+font-size: 32px;
+line-height: 39px;
+text-align: center;
+
+color: #000000;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* Рассказываем, как выбрать букет, продлить свежесть цветов, правильно ухаживать за ними и многое другое. */
+
+width: 592px;
+height: 48px;
+
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 20px;
+line-height: 24px;
+text-align: center;
+
+color: #565656;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Brand button */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 10px;
+gap: 10px;
+
+position: absolute;
+width: 243px;
+height: 42px;
+left: calc(50% - 243px / 2 + 0.5px);
+top: 576px;
+
+background: #326964;
+border-radius: 16px;
+
+/* Frame 43 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 7px;
+
+width: 223px;
+height: 22px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* Label */
+
+width: 200px;
+height: 22px;
+
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 500;
+font-size: 18px;
+line-height: 22px;
+/* identical to box height */
+
+color: #ffffff;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* bitcoin-icons:arrow-up-outline */
+
+width: 16px;
+height: 16px;
+
+transform: rotate(90deg);
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* Vector */
+
+position: absolute;
+left: 12.5%;
+right: 29.17%;
+top: 20.83%;
+bottom: 4.17%;
+
+border: 1px solid #ffffff;
+transform: rotate(90deg);
+
+/* Footer */
+
+position: absolute;
+width: 1440px;
+height: 640px;
+left: 0px;
+bottom: 0px;
+
+background: #326964;
+
+/* Line 1 */
+
+position: absolute;
+width: 1440px;
+height: 0px;
+left: 0px;
+top: 572px;
+
+border: 1px solid #3c7c76;
+
+/* Line 2 */
+
+position: absolute;
+width: 1440px;
+height: 0px;
+left: 0px;
+top: 211px;
+
+border: 1px solid #3c7c76;
+
+/* Frame 75 */
+
+position: absolute;
+width: 344px;
+height: 122px;
+left: calc(50% - 344px / 2 + 1px);
+top: 29px;
+
+/* ЦОТ_лого_круглый (белый) 1 */
+
+position: absolute;
+width: 90px;
+height: 70px;
+left: 118px;
+top: 0px;
+
+background: url(ЦОТ_лого_круглый (белый));
+
+/* Бережная круглосуточная доставка свежих цветов по Челябинску */
+
+position: absolute;
+width: 344px;
+height: 44px;
+left: 0px;
+top: 78px;
+
+/* Desktop/Body 1/Medium */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 500;
+font-size: 18px;
+line-height: 22px;
+text-align: center;
+
+color: #ffffff;
+
+/* Frame 74 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: flex-end;
+padding: 0px;
+gap: 8px;
+
+position: absolute;
+width: 126px;
+height: 22px;
+left: 658px;
+top: 159px;
+
+/* Наши адреса */
+
+width: 126px;
+height: 22px;
+
+/* Desktop/Body 1/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 18px;
+line-height: 22px;
+/* identical to box height */
+
+color: #d1d1d6;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Frame 62 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 22px;
+
+position: absolute;
+width: 197px;
+height: 164px;
+left: 91px;
+top: 261px;
+
+/* Цветы */
+
+width: 197px;
+height: 24px;
+
+/* Desktop/H4/Medium */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 500;
+font-size: 20px;
+line-height: 24px;
+
+color: #ffffff;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 61 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 10px;
+
+width: 197px;
+height: 118px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Каталог цветов */
+
+width: 197px;
+height: 22px;
+
+/* Desktop/Body 1/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 18px;
+line-height: 22px;
+/* identical to box height */
+
+color: #d1d1d6;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* Конструктор букетов */
+
+width: 197px;
+height: 22px;
+
+/* Desktop/Body 1/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 18px;
+line-height: 22px;
+/* identical to box height */
+
+color: #d1d1d6;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Розы */
+
+width: 197px;
+height: 22px;
+
+/* Desktop/Body 1/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 18px;
+line-height: 22px;
+/* identical to box height */
+
+color: #d1d1d6;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+align-self: stretch;
+flex-grow: 0;
+
+/* Советы */
+
+width: 197px;
+height: 22px;
+
+/* Desktop/Body 1/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 18px;
+line-height: 22px;
+/* identical to box height */
+
+color: #d1d1d6;
+
+/* Inside auto layout */
+flex: none;
+order: 3;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 63 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 22px;
+
+position: absolute;
+width: 161px;
+height: 250px;
+left: 367px;
+top: 261px;
+
+/* Поводы */
+
+width: 161px;
+height: 24px;
+
+/* Desktop/H4/Medium */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 500;
+font-size: 20px;
+line-height: 24px;
+
+color: #ffffff;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 61 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 10px;
+
+width: 161px;
+height: 204px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* День Рождения и Юбилей */
+
+width: 161px;
+height: 44px;
+
+/* Desktop/Body 1/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 18px;
+line-height: 22px;
+
+color: #d1d1d6;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Свадьба */
+
+width: 79px;
+height: 22px;
+
+/* Desktop/Body 1/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 18px;
+line-height: 22px;
+/* identical to box height */
+
+color: #d1d1d6;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* Извенения */
+
+width: 106px;
+height: 22px;
+
+/* Desktop/Body 1/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 18px;
+line-height: 22px;
+/* identical to box height */
+
+color: #d1d1d6;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+/* Выписка */
+
+width: 84px;
+height: 22px;
+
+/* Desktop/Body 1/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 18px;
+line-height: 22px;
+/* identical to box height */
+
+color: #d1d1d6;
+
+/* Inside auto layout */
+flex: none;
+order: 3;
+flex-grow: 0;
+
+/* Люблю */
+
+width: 69px;
+height: 22px;
+
+/* Desktop/Body 1/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 18px;
+line-height: 22px;
+/* identical to box height */
+
+color: #d1d1d6;
+
+/* Inside auto layout */
+flex: none;
+order: 4;
+flex-grow: 0;
+
+/* Зима */
+
+width: 49px;
+height: 22px;
+
+/* Desktop/Body 1/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 18px;
+line-height: 22px;
+/* identical to box height */
+
+color: #d1d1d6;
+
+/* Inside auto layout */
+flex: none;
+order: 5;
+flex-grow: 0;
+
+/* Frame 65 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 22px;
+
+position: absolute;
+width: 134px;
+height: 218px;
+left: 607px;
+top: 261px;
+
+/* Подарки */
+
+width: 134px;
+height: 24px;
+
+/* Desktop/H4/Medium */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 500;
+font-size: 20px;
+line-height: 24px;
+
+color: #ffffff;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 61 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 10px;
+
+width: 134px;
+height: 172px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Подарочные сертификаты */
+
+width: 151px;
+height: 44px;
+
+/* Desktop/Body 1/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 18px;
+line-height: 22px;
+
+color: #d1d1d6;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Игрушки */
+
+width: 134px;
+height: 22px;
+
+/* Desktop/Body 1/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 18px;
+line-height: 22px;
+/* identical to box height */
+
+color: #d1d1d6;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Шары */
+
+width: 236px;
+height: 22px;
+
+/* Desktop/Body 1/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 18px;
+line-height: 22px;
+/* identical to box height */
+
+color: #d1d1d6;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+/* Конфеты */
+
+width: 134px;
+height: 22px;
+
+/* Desktop/Body 1/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 18px;
+line-height: 22px;
+/* identical to box height */
+
+color: #d1d1d6;
+
+/* Inside auto layout */
+flex: none;
+order: 3;
+align-self: stretch;
+flex-grow: 0;
+
+/* Декор */
+
+width: 134px;
+height: 22px;
+
+/* Desktop/Body 1/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 18px;
+line-height: 22px;
+/* identical to box height */
+
+color: #d1d1d6;
+
+/* Inside auto layout */
+flex: none;
+order: 4;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 64 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 22px;
+
+position: absolute;
+width: 236px;
+height: 250px;
+left: 820px;
+top: 261px;
+
+/* О компании */
+
+width: 236px;
+height: 24px;
+
+/* Desktop/H4/Medium */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 500;
+font-size: 20px;
+line-height: 24px;
+
+color: #ffffff;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 61 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 10px;
+
+width: 236px;
+height: 204px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* Контакты */
+
+width: 236px;
+height: 22px;
+
+/* Desktop/Body 1/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 18px;
+line-height: 22px;
+/* identical to box height */
+
+color: #d1d1d6;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Бонусная программа */
+
+width: 236px;
+height: 22px;
+
+/* Desktop/Body 1/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 18px;
+line-height: 22px;
+/* identical to box height */
+
+color: #d1d1d6;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Вакансии */
+
+width: 236px;
+height: 22px;
+
+/* Desktop/Body 1/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 18px;
+line-height: 22px;
+/* identical to box height */
+
+color: #d1d1d6;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+/* Доставка и оплата */
+
+width: 236px;
+height: 22px;
+
+/* Desktop/Body 1/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 18px;
+line-height: 22px;
+/* identical to box height */
+
+color: #d1d1d6;
+
+/* Inside auto layout */
+flex: none;
+order: 3;
+align-self: stretch;
+flex-grow: 0;
+
+/* Условия возврата */
+
+width: 236px;
+height: 22px;
+
+/* Desktop/Body 1/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 18px;
+line-height: 22px;
+/* identical to box height */
+
+color: #d1d1d6;
+
+/* Inside auto layout */
+flex: none;
+order: 4;
+align-self: stretch;
+flex-grow: 0;
+
+/* Публичный договор-оферта */
+
+width: 160px;
+height: 44px;
+
+/* Desktop/Body 1/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 18px;
+line-height: 22px;
+
+color: #d1d1d6;
+
+/* Inside auto layout */
+flex: none;
+order: 5;
+flex-grow: 0;
+
+/* Frame 86 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-end;
+padding: 0px;
+gap: 20px;
+
+position: absolute;
+width: 246px;
+height: 218px;
+left: 1135px;
+top: 261px;
+
+/* Связаться с нами */
+
+width: 246px;
+height: 24px;
+
+/* Desktop/H4/Medium */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 500;
+font-size: 20px;
+line-height: 24px;
+
+color: #ffffff;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 85 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 20px;
+
+width: 246px;
+height: 174px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 70 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 2px;
+
+width: 246px;
+height: 58px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* 8 900 090 90 10 */
+
+width: 246px;
+height: 34px;
+
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 600;
+font-size: 28px;
+line-height: 34px;
+
+color: #ffffff;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* Звонок бесплатный */
+
+width: 246px;
+height: 22px;
+
+/* Desktop/Body 1/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 18px;
+line-height: 22px;
+/* identical to box height */
+
+color: #d1d1d6;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 78 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 6px;
+
+width: 246px;
+height: 24px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* sale@kupibuket74.ru */
+
+width: 216px;
+height: 24px;
+
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 500;
+font-size: 20px;
+line-height: 24px;
+
+color: #ffffff;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Frame 84 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 12px;
+
+width: 116px;
+height: 52px;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+/* ic:VK */
+
+width: 52px;
+height: 52px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Vector */
+
+position: absolute;
+left: 8.33%;
+right: 8.33%;
+top: 8.33%;
+bottom: 8.33%;
+
+background: #ffffff;
+
+/* ic:telegram */
+
+width: 52px;
+height: 52px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* Vector */
+
+position: absolute;
+height: 47.67px;
+left: 4.17%;
+right: 4.17%;
+top: calc(50% - 47.67px / 2 - 0px);
+
+background: #ffffff;
+
+/* Frame 82 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 0px;
+gap: 10px;
+
+position: absolute;
+width: 1121px;
+height: 20px;
+left: calc(50% - 1121px / 2 + 0.5px);
+top: 596px;
+
+/* © 2026 ЦВЕТОПТОРГ */
+
+width: 175px;
+height: 20px;
+
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 20px;
+/* identical to box height */
+
+color: #d1d1d6;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Ellipse 4 */
+
+width: 6px;
+height: 6px;
+
+background: #d1d1d6;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* ИП Соколова Т.С. */
+
+width: 142px;
+height: 20px;
+
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 20px;
+/* identical to box height */
+
+color: #d1d1d6;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+/* Ellipse 1 */
+
+width: 6px;
+height: 6px;
+
+background: #d1d1d6;
+
+/* Inside auto layout */
+flex: none;
+order: 3;
+flex-grow: 0;
+
+/* Публичный договор-оферта */
+
+width: 238px;
+height: 20px;
+
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 20px;
+/* identical to box height */
+
+color: #d1d1d6;
+
+/* Inside auto layout */
+flex: none;
+order: 4;
+flex-grow: 0;
+
+/* Ellipse 2 */
+
+width: 6px;
+height: 6px;
+
+background: #d1d1d6;
+
+/* Inside auto layout */
+flex: none;
+order: 5;
+flex-grow: 0;
+
+/* Политика конфидециальности */
+
+width: 259px;
+height: 20px;
+
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 20px;
+/* identical to box height */
+
+color: #d1d1d6;
+
+/* Inside auto layout */
+flex: none;
+order: 6;
+flex-grow: 0;
+
+/* Ellipse 3 */
+
+width: 6px;
+height: 6px;
+
+background: #d1d1d6;
+
+/* Inside auto layout */
+flex: none;
+order: 7;
+flex-grow: 0;
+
+/* Условия использования */
+
+width: 203px;
+height: 20px;
+
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 20px;
+/* identical to box height */
+
+color: #d1d1d6;
+
+/* Inside auto layout */
+flex: none;
+order: 8;
+flex-grow: 0;
+
+/* Frame 14 */
+
+position: absolute;
+width: 1440px;
+height: 707px;
+left: calc(50% - 1440px / 2);
+top: 0px;
+
+background:
+    linear-gradient(0deg, rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)),
+    url(egor-myznik-1sAGLbhwaEE-unsplash.jpg);
+border-radius: 0px 0px 16px 16px;
+
+/* Rectangle 2 */
+
+position: absolute;
+width: 1440px;
+height: 707px;
+left: 0px;
+top: 0px;
+
+/* Frame 25 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 23px;
+
+position: absolute;
+width: 1038px;
+height: 55px;
+left: calc(50% - 1038px / 2);
+top: 620px;
+
+/* Frame 22 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 16px;
+
+width: 339px;
+height: 55px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* famicons:bulb-outline */
+
+width: 55px;
+height: 55px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Vector */
+
+position: absolute;
+left: 21.87%;
+right: 21.88%;
+top: 6.25%;
+bottom: 6.25%;
+
+border: 1px solid #ffffff;
+
+/* Vector */
+
+position: absolute;
+left: 42.58%;
+right: 42.58%;
+top: 46.88%;
+bottom: 50%;
+
+border: 1px solid #ffffff;
+
+/* Собираем букет после вашего заказа */
+
+width: 268px;
+height: 48px;
+
+/* Desktop/H4/Medium */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 500;
+font-size: 20px;
+line-height: 24px;
+
+color: #ffffff;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* Frame 23 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 16px;
+
+width: 339px;
+height: 55px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* famicons:bulb-outline */
+
+width: 55px;
+height: 55px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Vector */
+
+position: absolute;
+left: 21.87%;
+right: 21.88%;
+top: 6.25%;
+bottom: 6.25%;
+
+border: 1px solid #ffffff;
+
+/* Vector */
+
+position: absolute;
+left: 42.58%;
+right: 42.58%;
+top: 46.88%;
+bottom: 50%;
+
+border: 1px solid #ffffff;
+
+/* Доставка за 60 минут, при необходимости */
+
+width: 268px;
+height: 48px;
+
+/* Desktop/H4/Medium */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 500;
+font-size: 20px;
+line-height: 24px;
+
+color: #ffffff;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* Frame 24 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 16px;
+
+width: 314px;
+height: 55px;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+/* famicons:bulb-outline */
+
+width: 55px;
+height: 55px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Vector */
+
+position: absolute;
+left: 21.87%;
+right: 21.88%;
+top: 6.25%;
+bottom: 6.25%;
+
+border: 1px solid #ffffff;
+
+/* Vector */
+
+position: absolute;
+left: 42.58%;
+right: 42.58%;
+top: 46.88%;
+bottom: 50%;
+
+border: 1px solid #ffffff;
+
+/* Вы сами проектируете свой букет по вкусу */
+
+width: 243px;
+height: 48px;
+
+/* Desktop/H4/Medium */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 500;
+font-size: 20px;
+line-height: 24px;
+
+color: #ffffff;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* Frame 83 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 0px;
+gap: 19px;
+
+position: absolute;
+width: 515px;
+height: 284px;
+left: calc(50% - 515px / 2 + 0.5px);
+top: calc(50% - 284px / 2 + 0.5px);
+
+/* Цветы, которые дарят эмоции */
+
+width: 515px;
+height: 118px;
+
+/* Desktop/H1 */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 500;
+font-size: 48px;
+line-height: 59px;
+text-align: center;
+
+color: #ffffff;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* Мы создаём букеты, которые радуют, удивляют и запоминаются. Свежие цветы, стильная упаковка и быстрая доставка по Челябинску. */
+
+width: 493px;
+height: 72px;
+
+/* Desktop/H4/Regular */
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 20px;
+line-height: 24px;
+text-align: center;
+
+color: #ffffff;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* Primary */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 16px 20px;
+gap: 10px;
+
+width: 249px;
+height: 56px;
+
+background: #ffffff;
+border: 1px solid #ffffff;
+border-radius: 16px;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+/* Посмотреть каталог */
+
+width: 209px;
+height: 24px;
+
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 400;
+font-size: 20px;
+line-height: 24px;
+
+color: #000000;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Header */
+
+box-sizing: border-box;
+
+position: absolute;
+width: 1440px;
+height: 137px;
+left: calc(50% - 1440px / 2);
+top: 0px;
+
+border-bottom: 1px solid #ffffff;
+
+/* Frame 13 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 20px;
+
+position: absolute;
+width: 204px;
+height: 36px;
+left: 1177px;
+top: 34px;
+
+/* iconamoon:search-thin */
+
+width: 36px;
+height: 36px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Vector */
+
+position: absolute;
+left: 12.5%;
+right: 12.5%;
+top: 12.5%;
+bottom: 12.5%;
+
+border: 1.5px solid #ffffff;
+
+/* mdi-light:heart */
+
+width: 36px;
+height: 36px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* Vector */
+
+position: absolute;
+left: 12.5%;
+right: 8.33%;
+top: 16.67%;
+bottom: 12.83%;
+
+background: #ffffff;
+
+/* ion:bag-outline */
+
+width: 36px;
+height: 36px;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+/* Vector */
+
+position: absolute;
+left: 12.5%;
+right: 12.5%;
+top: 9.38%;
+bottom: 9.38%;
+
+border: 1.5px solid #ffffff;
+
+/* iconoir:profile-circle */
+
+width: 36px;
+height: 36px;
+
+/* Inside auto layout */
+flex: none;
+order: 3;
+flex-grow: 0;
+
+/* Group */
+
+position: absolute;
+left: 8.33%;
+right: 8.33%;
+top: 8.33%;
+bottom: 8.33%;
+
+/* Vector */
+
+position: absolute;
+left: 8.33%;
+right: 8.33%;
+top: 8.33%;
+bottom: 8.33%;
+
+border: 1.5px solid #ffffff;
+
+/* Vector */
+
+position: absolute;
+left: 17.8%;
+right: 17.79%;
+top: 25%;
+bottom: 23.56%;
+
+border: 1px solid #ffffff;
+
+/* ЦОТ_лого_круглый (белый) 1 */
+
+position: absolute;
+width: 84px;
+height: 65px;
+left: calc(50% - 84px / 2);
+top: 17px;
+
+background: url(ЦОТ_лого_круглый (белый));
+
+/* Frame 12 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 30px;
+
+position: absolute;
+width: 720px;
+height: 42px;
+left: calc(50% - 720px / 2);
+top: 89px;
+
+/* Frame 5 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 10px;
+gap: 10px;
+
+width: 81px;
+height: 42px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Label */
+
+width: 61px;
+height: 22px;
+
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 500;
+font-size: 18px;
+line-height: 22px;
+/* identical to box height */
+
+color: #ffffff;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Frame 6 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 10px;
+gap: 10px;
+
+width: 69px;
+height: 42px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* Label */
+
+width: 49px;
+height: 22px;
+
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 500;
+font-size: 18px;
+line-height: 22px;
+/* identical to box height */
+
+color: #ffffff;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Frame 7 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 10px;
+gap: 10px;
+
+width: 96px;
+height: 42px;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+/* Label */
+
+width: 76px;
+height: 22px;
+
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 500;
+font-size: 18px;
+line-height: 22px;
+/* identical to box height */
+
+color: #ffffff;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Frame 8 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 10px;
+gap: 10px;
+
+width: 105px;
+height: 42px;
+
+/* Inside auto layout */
+flex: none;
+order: 3;
+flex-grow: 0;
+
+/* Label */
+
+width: 85px;
+height: 22px;
+
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 500;
+font-size: 18px;
+line-height: 22px;
+/* identical to box height */
+
+color: #ffffff;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Frame 11 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 10px;
+gap: 10px;
+
+width: 82px;
+height: 42px;
+
+/* Inside auto layout */
+flex: none;
+order: 4;
+flex-grow: 0;
+
+/* Label */
+
+width: 62px;
+height: 22px;
+
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 500;
+font-size: 18px;
+line-height: 22px;
+/* identical to box height */
+
+color: #ffffff;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Frame 10 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 10px;
+gap: 10px;
+
+width: 137px;
+height: 42px;
+
+/* Inside auto layout */
+flex: none;
+order: 5;
+flex-grow: 0;
+
+/* Label */
+
+width: 117px;
+height: 22px;
+
+font-family: "Montserrat";
+font-style: normal;
+font-weight: 500;
+font-size: 18px;
+line-height: 22px;
+/* identical to box height */
+
+color: #ffffff;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* mdi-light:heart */
+
+position: absolute;
+width: 36px;
+height: 36px;
+left: 1326px;
+top: 53px;
