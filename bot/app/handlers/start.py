@@ -13,11 +13,6 @@ from .reset_password import FLOW as RESET_FLOW
 router = Router()
 
 
-@router.message(CommandStart())
-async def command_start_without_token(message: Message) -> None:
-    await message.answer(f"Для регистрации перейдите на сайт: {settings.WEBSITE_URL}")
-
-
 @router.message(CommandStart(deep_link=True))
 async def command_start_handler(message: Message, command: CommandObject, state: FSMContext) -> None:
     if message.from_user is None:
@@ -40,3 +35,8 @@ async def command_start_handler(message: Message, command: CommandObject, state:
     await state.update_data(data={flow.state_key: token})
     await state.set_state(flow.target_state)
     await message.answer(flow.prompt_message, reply_markup=kb_phone)
+
+
+@router.message(CommandStart())
+async def command_start_without_token(message: Message) -> None:
+    await message.answer(f"Для регистрации перейдите на сайт: {settings.WEBSITE_URL}")

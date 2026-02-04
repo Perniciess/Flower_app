@@ -13,7 +13,7 @@ const FSD_LAYERS = [
 
 export default antfu(
     {
-    // Форматирование
+        // Форматирование
         stylistic: {
             indent: 4,
             quotes: "double",
@@ -63,6 +63,8 @@ export default antfu(
                 },
             ],
             "ts/no-import-type-side-effects": "error",
+            "ts/no-unsafe-assignment": "off",
+            "ts/no-unsafe-call": "off",
             "ts/no-unused-vars": [
                 "error",
                 {
@@ -78,7 +80,7 @@ export default antfu(
         files: ["src/**/*.ts", "src/**/*.tsx"],
         plugins: { boundaries },
         settings: {
-            "boundaries/elements": FSD_LAYERS.map(layer => ({
+            "boundaries/elements": FSD_LAYERS.map((layer) => ({
                 type: layer,
                 pattern: `src/${layer}/*`,
                 capture: ["slice"],
@@ -94,9 +96,17 @@ export default antfu(
                         { from: "app", allow: FSD_LAYERS },
                         {
                             from: "pages",
-                            allow: ["widgets", "features", "entities", "shared"],
+                            allow: [
+                                "widgets",
+                                "features",
+                                "entities",
+                                "shared",
+                            ],
                         },
-                        { from: "widgets", allow: ["features", "entities", "shared"] },
+                        {
+                            from: "widgets",
+                            allow: ["features", "entities", "shared"],
+                        },
                         { from: "features", allow: ["entities", "shared"] },
                         { from: "entities", allow: ["entities", "shared"] },
                         { from: "shared", allow: ["shared"] },

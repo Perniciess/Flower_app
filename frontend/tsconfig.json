@@ -7,7 +7,7 @@
         "module": "esnext",
         "moduleResolution": "bundler",
         "paths": {
-            "@/*": ["./src/*"]
+            "@/*": ["./src/*"],
         },
         "resolveJsonModule": true,
         "allowJs": true,
@@ -16,11 +16,19 @@
         "esModuleInterop": true,
         "isolatedModules": true,
         "skipLibCheck": true,
+        "noUnusedLocals": false,
+        "noUnusedParameters": false,
+        "noPropertyAccessFromIndexSignature": false,
+        "noFallthroughCasesInSwitch": true,
+        "noUncheckedIndexedAccess": true,
+        "noImplicitOverride": true,
+        "allowImportingTsExtensions": true,
+        "verbatimModuleSyntax": true,
         "plugins": [
             {
-                "name": "next"
-            }
-        ]
+                "name": "next",
+            },
+        ],
     },
     "include": [
         "next-env.d.ts",
@@ -28,7 +36,7 @@
         "**/*.tsx",
         ".next/types/**/*.ts",
         ".next/dev/types/**/*.ts",
-        "**/*.mts"
+        "**/*.mts",
     ],
-    "exclude": ["node_modules"]
+    "exclude": ["node_modules"],
 }

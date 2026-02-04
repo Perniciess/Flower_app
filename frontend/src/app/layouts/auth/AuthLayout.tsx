@@ -1,4 +1,4 @@
-export function HomeLayout({
+export function AuthLayout({
     children,
 }: Readonly<{
     children: React.ReactNode;

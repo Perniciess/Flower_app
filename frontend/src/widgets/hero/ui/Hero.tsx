@@ -28,7 +28,7 @@ export function Hero() {
                         <br />
                         упаковка и быстрая доставка по Челябинску.
                     </p>
-                    <Button variant="primary" className="mt-[5px] w-[249px]">Посмотреть каталог</Button>
+                    <Button variant="white_primary" className="mt-[5px] w-[249px]">Посмотреть каталог</Button>
                 </div>
                 <div className="absolute left-1/2 top-[87.7%] z-10 flex w-[1038px] -translate-x-1/2 items-center justify-center gap-[23px]">
                     <div className="flex items-center gap-4">

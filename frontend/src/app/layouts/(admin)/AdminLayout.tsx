@@ -1,4 +1,4 @@
-export function HomeLayout({
+export function AdminLayout({
     children,
 }: Readonly<{
     children: React.ReactNode;

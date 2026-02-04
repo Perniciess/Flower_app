@@ -97,15 +97,6 @@ csrf_header_scheme = APIKeyHeader(name=settings.CSRF_HEADER_NAME, auto_error=Fal
 
 app.add_middleware(LoggingMiddleware)
 
-if settings.all_cors_origins:
-    app.add_middleware(
-        CORSMiddleware,
-        allow_origins=settings.all_cors_origins,
-        allow_credentials=True,
-        allow_methods=["*"],
-        allow_headers=["*"],
-    )
-
 app.add_middleware(
     CSRFMiddleware,
     cookie_httponly=True,
@@ -113,7 +104,7 @@ app.add_middleware(
     cookie_name=settings.CSRF_COOKIE_NAME,
     header_name=settings.CSRF_HEADER_NAME,
     cookie_secure=settings.COOKIE_SECURE,
-    cookie_samesite="strict",
+    cookie_samesite=settings.COOKIE_SAMESITE,
     sensitive_cookies={"access_token"},
     exempt_urls=[
         re.compile(r"/docs"),
@@ -125,6 +116,14 @@ app.add_middleware(
         ),
         re.compile(re.escape(settings.API_V1_STR) + r"/orders/webhook"),
     ],
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=settings.all_cors_origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 api_router = APIRouter(prefix=settings.API_V1_STR)
