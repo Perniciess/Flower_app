@@ -13,7 +13,8 @@ export function useRegisterForm() {
 
     const loginMutation = useMutation({
         mutationKey: ["register"],
-        mutationFn: async (data: IRegisterForm) => apiAuth.post("/auth/register", data),
+        mutationFn: async (data: IRegisterForm) =>
+            apiAuth.post("/auth/register", data),
         onSuccess() {
             reset();
             void router.push(ROUTES.HOME);

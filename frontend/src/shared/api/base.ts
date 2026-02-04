@@ -1,16 +1,7 @@
-import type { ApiRequestInit } from "./types";
+import type { ApiRequestInit } from "@/shared/types/apiTypes";
 import { API_URL } from "@/shared/config/env";
-import { ApiError } from "./types";
-
-let accessToken: string | null = null;
-
-export function setAccessToken(token: string | null) {
-    accessToken = token;
-}
-
-export function getAccessToken() {
-    return accessToken;
-}
+import { ApiError } from "@/shared/types/apiTypes";
+import { useAuthStore } from "../stores/auth.store";
 
 function buildBody(body: unknown): BodyInit | undefined {
     if (body === undefined || body === null)
@@ -20,20 +11,29 @@ function buildBody(body: unknown): BodyInit | undefined {
     return JSON.stringify(body);
 }
 
-function buildHeaders(body: unknown, extra?: HeadersInit): Record<string, string> {
+function buildHeaders(
+    body: unknown,
+    extra?: HeadersInit,
+): Record<string, string> {
     const headers: Record<string, string> = {
         ...(extra as Record<string, string>),
     };
+
+    const accessToken = useAuthStore.getState().accessToken;
+
     if (!(body instanceof FormData)) {
         headers["Content-Type"] = "application/json";
     }
-    if (accessToken) {
-        headers["Authorization"] = `Bearer ${accessToken}`;
+    if (accessToken !== null) {
+        headers.Authorization = `Bearer ${accessToken}`;
     }
     return headers;
 }
 
-export async function request<T>(endpoint: string, options: ApiRequestInit = {}): Promise<T> {
+export async function request<T>(
+    endpoint: string,
+    options: ApiRequestInit = {},
+): Promise<T> {
     const { headers: optHeaders, ...rest } = options;
 
     const response = await fetch(`${API_URL}${endpoint}`, {
@@ -43,7 +43,7 @@ export async function request<T>(endpoint: string, options: ApiRequestInit = {})
     });
 
     if (!response.ok) {
-        const data = await response.json().catch(() => null);
+        const data: unknown = await response.json().catch(() => null);
         throw new ApiError(response.status, response.statusText, data);
     }
 

@@ -2,37 +2,28 @@ import antfu from "@antfu/eslint-config";
 import nextPlugin from "@next/eslint-plugin-next";
 import boundaries from "eslint-plugin-boundaries";
 
-const FSD_LAYERS = [
-    "app",
-    "pages",
-    "widgets",
-    "features",
-    "entities",
-    "shared",
-];
+const FSD_LAYERS = ["app", "pages", "widgets", "features", "entities", "shared"];
 
 export default antfu(
     {
-        // Форматирование
+        // Formatting
         stylistic: {
             indent: 4,
             quotes: "double",
             semi: true,
         },
 
-        // TypeScript
+        // TypeScript (strict)
         typescript: {
             tsconfigPath: "./tsconfig.json",
         },
 
-        // React
         react: true,
 
-        // Next.js — игнорируем сгенерированное
         ignores: [".next/**", "out/**", "build/**", "next-env.d.ts"],
     },
 
-    // Next.js правила (@next/next/*)
+    // Next.js rules
     {
         plugins: {
             "@next/next": nextPlugin,
@@ -43,15 +34,14 @@ export default antfu(
         },
     },
 
-    // Общие переопределения
+    // Project overrides
     {
         rules: {
-            // Next.js использует default export для страниц/layout
             "import/no-default-export": "off",
         },
     },
 
-    // TypeScript-специфичные правила (только для .ts/.tsx)
+    // TS-only stricter rules
     {
         files: ["**/*.ts", "**/*.tsx"],
         rules: {
@@ -63,8 +53,10 @@ export default antfu(
                 },
             ],
             "ts/no-import-type-side-effects": "error",
-            "ts/no-unsafe-assignment": "off",
-            "ts/no-unsafe-call": "off",
+            "ts/no-unsafe-assignment": "error",
+            "ts/no-unsafe-call": "error",
+            "ts/no-unsafe-member-access": "error",
+            "ts/no-unsafe-return": "error",
             "ts/no-unused-vars": [
                 "error",
                 {
@@ -80,9 +72,10 @@ export default antfu(
         files: ["src/**/*.ts", "src/**/*.tsx"],
         plugins: { boundaries },
         settings: {
-            "boundaries/elements": FSD_LAYERS.map((layer) => ({
+            "boundaries/elements": FSD_LAYERS.map(layer => ({
                 type: layer,
-                pattern: `src/${layer}/*`,
+                pattern: `src/${layer}`,
+                mode: "folder",
                 capture: ["slice"],
             })),
             "boundaries/ignore": ["src/**/*.test.*", "src/**/*.spec.*"],
@@ -92,24 +85,25 @@ export default antfu(
                 "error",
                 {
                     default: "disallow",
+                    // eslint-disable-next-line no-template-curly-in-string -- boundaries plugin placeholder syntax
+                    message: "${from.type} is not allowed to import ${to.type}",
                     rules: [
                         { from: "app", allow: FSD_LAYERS },
-                        {
-                            from: "pages",
-                            allow: [
-                                "widgets",
-                                "features",
-                                "entities",
-                                "shared",
-                            ],
-                        },
-                        {
-                            from: "widgets",
-                            allow: ["features", "entities", "shared"],
-                        },
+                        { from: "pages", allow: ["widgets", "features", "entities", "shared"] },
+                        { from: "widgets", allow: ["features", "entities", "shared"] },
                         { from: "features", allow: ["entities", "shared"] },
                         { from: "entities", allow: ["entities", "shared"] },
                         { from: "shared", allow: ["shared"] },
+                    ],
+                },
+            ],
+            "boundaries/entry-point": [
+                "error",
+                {
+                    default: "disallow",
+                    rules: [
+                        { target: ["shared"], allow: "**" },
+                        { target: ["app", "pages", "widgets", "features", "entities"], allow: "index.ts" },
                     ],
                 },
             ],

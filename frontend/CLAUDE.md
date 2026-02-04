@@ -1,47 +1,78 @@
 # CLAUDE.md
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
-ОТветы на русском
+
+## Project Overview
+
+Next.js 16 frontend for a flower shop ("KupiBuket74"), written in TypeScript with React 19. Uses Bun as the runtime/package manager. The UI is in Russian.
+
 ## Commands
 
 ```bash
-bun dev          # Development server
-bun run build    # Production build
-bun start        # Production server
-bun run lint     # Lint
-bun run lint:fix # Lint with auto-fix
+bun install              # Install dependencies
+bun run dev              # Dev server (localhost:3000)
+bun run build            # Production build
+bun run start            # Production server
+bun run lint             # ESLint check
+bun run lint:fix         # ESLint autofix
 ```
 
-## Architecture
+## Architecture: Feature Sliced Design (FSD)
 
-Next.js 16 app with React 19, TypeScript, and Tailwind CSS v4. Uses **Feature-Sliced Design (FSD)** architecture enforced by `eslint-plugin-boundaries`.
-
-### FSD Layer Hierarchy (imports only allowed downward)
+The `src/` directory follows FSD with strict layer boundaries enforced by `eslint-plugin-boundaries`. Layers are imported top-down only — a lower layer cannot import from a higher one.
 
 ```
-app → pages → widgets → features → entities → shared
+src/
+├── app/         → Providers (React Query), layouts, global styles
+├── pages/       → Page-level containers, re-exported via app/ route files
+├── widgets/     → Large standalone UI blocks (Header, Footer, Hero)
+├── features/    → User-facing functionality slices (auth forms, hooks)
+├── entities/    → Business domain entities (session/user queries)
+└── shared/      → API client, stores, types, config, UI primitives
 ```
 
-- `src/app/` — providers, global styles, theme configuration
-- `src/pages/` — page-level components composed from widgets
-- `src/widgets/` — self-contained UI sections (header, footer, hero)
-- `src/features/` — user interactions and business features
-- `src/entities/` — domain models and their UI representations
-- `src/shared/` — utilities (`cn` via clsx + tailwind-merge), reusable UI components (shadcn/ui pattern with CVA)
+**Import rules:** `app > pages > widgets > features > entities > shared`. Each layer's segments must be imported through `index.ts` barrel exports, except `shared/` which allows deep imports.
 
-Next.js app router lives in `/app/` (root), FSD layers live in `/src/`.
+### How Next.js App Router connects to FSD
 
-### Component Conventions
+Route files in `/app` are thin re-exports that point to `src/pages/` components. Route groups `(client)`, `(admin)`, `auth` map to corresponding layout components in `src/app/layouts/`. Layouts in `src/app/layouts/` wrap children without adding extra UI (passthrough pattern) except for the root layout which applies font, metadata, and Providers.
 
-- Each FSD slice uses barrel exports (`index.ts`)
-- Widget structure: `src/widgets/{name}/ui/{Name}.tsx` + `src/widgets/{name}/config/index.ts`
-- shadcn/ui components go to `src/shared/ui/components/`
-- Path alias: `@/*` → `./src/*`
+### Path Aliases
+
+`@/app/*`, `@/pages/*`, `@/widgets/*`, `@/features/*`, `@/entities/*`, `@/shared/*` — all resolve to `src/<layer>/*`.
+
+## API Layer (`src/shared/api/`)
+
+- **`base.ts`** — Fetch wrapper: auto-JSON, FormData support, injects `Authorization: Bearer` from Zustand store, credentials included
+- **`client.ts`** — Two instances: `api` (basic) and `apiAuth` (auto-retries on 401 via `/auth/refresh`, logs out on refresh failure)
+- **`interceptors.ts`** — CSRF token injection from cookies for non-GET requests
+- **`query-client.ts`** — React Query client (5min staleTime, 1 retry)
+
+Custom `ApiError` class carries `status`, `statusText`, and `data`.
+
+## State Management
+
+- **Zustand** (`src/shared/stores/auth.store.ts`) — Holds `accessToken` only. Used by the API layer for auth headers.
+- **React Query** — Server state. Session user fetched via `useSessionQuery()` in `src/entities/session/`.
+
+## Styling
+
+- Tailwind CSS v4 with OKLCH custom properties in `globals.css`
+- Brand color: `#326964` (teal)
+- Component variants via `class-variance-authority` (CVA)
+- `cn()` utility (`clsx` + `tailwind-merge`) in `shared/lib/utils.ts`
+- Font: Montserrat (Google Fonts), weights 300–700, Latin + Cyrillic
+- Shared UI components based on Radix UI primitives (Button, Input, Label, Field, Separator)
 
 ## Code Style
 
-- 4-space indent, double quotes, semicolons (antfu ESLint config)
-- Type imports use `import { type Foo }` (inline style)
-- Unused variables prefixed with `_`
-- Montserrat font with cyrillic subset
-- Russian is allowed in content strings
+- ESLint flat config based on `@antfu/eslint-config`: 4-space indent, double quotes, semicolons required
+- `import type` enforced for type-only imports (`verbatimModuleSyntax` in tsconfig)
+- Strict TypeScript: `noUncheckedIndexedAccess`, `noImplicitOverride`, `isolatedModules`
+- Husky for pre-commit hooks
+
+## Environment
+
+Required `.env` variable: `NEXT_PUBLIC_API_URL` (e.g., `http://127.0.0.1:8000/api/v1`)
+
+Backend API runs on port 8000. See root `CLAUDE.md` for backend/bot setup and the full auth flow (registration → Telegram bot phone verification → JWT tokens).

@@ -1,4 +1,4 @@
-import type { ApiRequestInit } from "./types";
+import type { ApiRequestInit } from "@/shared/types/apiTypes";
 
 function getCsrfToken(): string | undefined {
     if (typeof document === "undefined")

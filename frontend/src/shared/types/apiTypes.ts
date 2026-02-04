@@ -3,7 +3,11 @@ export interface ApiRequestInit extends RequestInit {
 }
 
 export class ApiError extends Error {
-    constructor(public status: number, public statusText: string, public data: unknown) {
+    constructor(
+        public status: number,
+        public statusText: string,
+        public data: unknown,
+    ) {
         super(`${status} ${statusText}`);
     }
 }

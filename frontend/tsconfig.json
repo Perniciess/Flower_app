@@ -3,32 +3,53 @@
         "incremental": true,
         "target": "ES2017",
         "jsx": "react-jsx",
-        "lib": ["dom", "dom.iterable", "esnext"],
+        "lib": [
+            "dom",
+            "dom.iterable",
+            "esnext"
+        ],
         "module": "esnext",
         "moduleResolution": "bundler",
         "paths": {
-            "@/*": ["./src/*"],
+            "@/app/*": [
+                "./src/app/*"
+            ],
+            "@/pages/*": [
+                "./src/pages/*"
+            ],
+            "@/widgets/*": [
+                "./src/widgets/*"
+            ],
+            "@/features/*": [
+                "./src/features/*"
+            ],
+            "@/entities/*": [
+                "./src/entities/*"
+            ],
+            "@/shared/*": [
+                "./src/shared/*"
+            ]
         },
         "resolveJsonModule": true,
+        "allowImportingTsExtensions": true,
         "allowJs": true,
         "strict": true,
+        "noFallthroughCasesInSwitch": true,
+        "noImplicitOverride": true,
+        "noPropertyAccessFromIndexSignature": false,
+        "noUncheckedIndexedAccess": true,
+        "noUnusedLocals": false,
+        "noUnusedParameters": false,
         "noEmit": true,
         "esModuleInterop": true,
         "isolatedModules": true,
-        "skipLibCheck": true,
-        "noUnusedLocals": false,
-        "noUnusedParameters": false,
-        "noPropertyAccessFromIndexSignature": false,
-        "noFallthroughCasesInSwitch": true,
-        "noUncheckedIndexedAccess": true,
-        "noImplicitOverride": true,
-        "allowImportingTsExtensions": true,
         "verbatimModuleSyntax": true,
+        "skipLibCheck": true,
         "plugins": [
             {
-                "name": "next",
-            },
-        ],
+                "name": "next"
+            }
+        ]
     },
     "include": [
         "next-env.d.ts",
@@ -36,7 +57,9 @@
         "**/*.tsx",
         ".next/types/**/*.ts",
         ".next/dev/types/**/*.ts",
-        "**/*.mts",
+        "**/*.mts"
     ],
-    "exclude": ["node_modules"],
+    "exclude": [
+        "node_modules"
+    ]
 }

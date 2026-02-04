@@ -8,9 +8,17 @@ import { useRegisterForm } from "../api/use-register-form";
 export function RegisterForm() {
     const { handleSubmit, register, isPending, errorMessage } = useRegisterForm();
     return (
-        <form className="flex flex-col gap-8 text-center" onSubmit={e => void handleSubmit(e)}>
+        <form
+            className="flex flex-col gap-8 text-center"
+            onSubmit={e => void handleSubmit(e)}
+        >
             <Field>
-                <FieldLabel htmlFor="phone_number" className="text-[18px] justify-center">Номер телефона</FieldLabel>
+                <FieldLabel
+                    htmlFor="phone_number"
+                    className="text-[18px] justify-center"
+                >
+                    Номер телефона
+                </FieldLabel>
                 <Input
                     id="phone_number"
                     type="tel"
@@ -29,7 +37,9 @@ export function RegisterForm() {
                 />
             </Field>
             <Field>
-                <FieldLabel htmlFor="name" className="text-[18px] justify-center">Имя пользователя</FieldLabel>
+                <FieldLabel htmlFor="name" className="text-[18px] justify-center">
+                    Имя пользователя
+                </FieldLabel>
                 <Input
                     id="name"
                     type="text"
@@ -40,7 +50,9 @@ export function RegisterForm() {
                 />
             </Field>
             <Field>
-                <FieldLabel htmlFor="password" className="text-[18px] justify-center">Пароль</FieldLabel>
+                <FieldLabel htmlFor="password" className="text-[18px] justify-center">
+                    Пароль
+                </FieldLabel>
                 <Input
                     id="password"
                     type="password"

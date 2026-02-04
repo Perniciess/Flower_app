@@ -8,9 +8,17 @@ import { useLoginForm } from "../api/use-login-form";
 export function LoginForm() {
     const { handleSubmit, register, isPending, errorMessage } = useLoginForm();
     return (
-        <form className="flex flex-col gap-8 text-center" onSubmit={e => void handleSubmit(e)}>
+        <form
+            className="flex flex-col gap-8 text-center"
+            onSubmit={e => void handleSubmit(e)}
+        >
             <Field>
-                <FieldLabel htmlFor="phone_number" className="text-[18px] justify-center">Номер телефона</FieldLabel>
+                <FieldLabel
+                    htmlFor="phone_number"
+                    className="text-[18px] justify-center"
+                >
+                    Номер телефона
+                </FieldLabel>
                 <Input
                     id="phone_number"
                     type="tel"
@@ -29,7 +37,9 @@ export function LoginForm() {
                 />
             </Field>
             <Field>
-                <FieldLabel htmlFor="password" className="text-[18px] justify-center">Пароль</FieldLabel>
+                <FieldLabel htmlFor="password" className="text-[18px] justify-center">
+                    Пароль
+                </FieldLabel>
                 <Input
                     id="password"
                     type="password"

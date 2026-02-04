@@ -1,8 +1,8 @@
-import { Footer } from "@/widgets/footer/ui/Footer";
-import { Header } from "@/widgets/header/ui/Header";
+import { Footer } from "@/widgets/footer";
+import { Header } from "@/widgets/header";
 import { Hero } from "@/widgets/hero";
 
-export function Home() {
+export function HomePage() {
     return (
         <div className="relative flex flex-col">
             <Header />
