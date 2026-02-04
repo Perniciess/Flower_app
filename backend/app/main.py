@@ -105,11 +105,12 @@ app.add_middleware(
     header_name=settings.CSRF_HEADER_NAME,
     cookie_secure=settings.COOKIE_SECURE,
     cookie_samesite=settings.COOKIE_SAMESITE,
-    sensitive_cookies={"access_token"},
+    sensitive_cookies={"__Host-rt", "rt"},
     exempt_urls=[
         re.compile(r"/docs"),
         re.compile(r"/openapi.json"),
         re.compile(re.escape(settings.API_V1_STR) + r"/auth/login"),
+        re.compile(re.escape(settings.API_V1_STR) + r"/auth/refresh"),
         re.compile(re.escape(settings.API_V1_STR) + r"/auth/complete-register/.*"),
         re.compile(
             re.escape(settings.API_V1_STR) + r"/auth/complete-reset-verification/.*"

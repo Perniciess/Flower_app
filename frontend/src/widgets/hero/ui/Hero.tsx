@@ -13,7 +13,7 @@ export function Hero() {
             />
             <div className="absolute inset-0 z-[5] bg-black/55" />
             <div className="relative z-10 flex h-full flex-col">
-                <div className="absolute inset-0 z-10 -mt-[5px] flex flex-col items-center justify-center gap-[14px]">
+                <div className="absolute inset-0 z-10 -mt-[1px] flex flex-col items-center justify-center gap-[14px]">
                     <h1 className="text-center text-[48px] font-medium leading-[125%] text-white">
                         Цветы, которые
                         {" "}

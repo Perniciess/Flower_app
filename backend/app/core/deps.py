@@ -15,13 +15,12 @@ from .security import is_blacklisted, oauth2_scheme
 
 
 async def get_current_user(
-    request: Request,
     session: AsyncSession = Depends(get_db),
     redis: Redis = Depends(get_redis),
     header_token: str | None = Depends(oauth2_scheme),
 ):
     """Получение активного пользователя из токена."""
-    token = header_token or request.cookies.get("access_token")
+    token = header_token
 
     if not token:
         raise HTTPException(
@@ -33,11 +32,15 @@ async def get_current_user(
     if await is_blacklisted(redis, token):
         raise InvalidTokenError()
     try:
-        payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
+        payload = jwt.decode(
+            token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM]
+        )
         sub = payload.get("sub")
         user_id = int(sub)
     except (jwt.InvalidTokenError, TypeError, ValueError):
-        raise HTTPException(status_code=401, detail="Could not validate credentials") from None
+        raise HTTPException(
+            status_code=401, detail="Could not validate credentials"
+        ) from None
 
     user = await users_repository.get_user_by_id(session=session, user_id=user_id)
     if user is None:

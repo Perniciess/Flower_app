@@ -3,6 +3,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { apiAuth } from "@/shared/api";
+import { setAccessToken } from "@/shared/api/base";
 import { ROUTES } from "@/shared/config/routes";
 
 export function useLoginForm() {
@@ -13,8 +14,10 @@ export function useLoginForm() {
 
     const loginMutation = useMutation({
         mutationKey: ["login"],
-        mutationFn: async (data: ILoginForm) => apiAuth.post("/auth/login", data),
-        onSuccess() {
+        mutationFn: async (data: ILoginForm) =>
+            apiAuth.post<{ access_token: string }>("/auth/login", data),
+        onSuccess(data) {
+            setAccessToken(data.access_token);
             reset();
             void router.push(ROUTES.HOME);
         },

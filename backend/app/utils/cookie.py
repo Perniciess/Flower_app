@@ -1,41 +1,59 @@
+from typing import Literal, TypedDict
+
 from fastapi import Response
 
 from app.core.config import settings
 from app.schemas.auth_schema import Tokens
 
 
+class CookieSettings(TypedDict):
+    key: str
+    secure: bool
+    samesite: Literal["lax", "strict", "none"]
+
+
+def get_refresh_cookie_settings() -> CookieSettings:
+    """
+    Возвращает имя ключа и настройки безопасности
+    в зависимости от того, используем ли мы HTTPS.
+    """
+    if settings.COOKIE_SECURE:
+        return {
+            "key": "__Host-rt",
+            "secure": True,
+            "samesite": "lax",
+        }
+    else:
+        return {
+            "key": "rt",
+            "secure": False,
+            "samesite": "lax",
+        }
+
+
 def set_token(response: Response, tokens: Tokens) -> None:
-    """Устанавливаем access и refresh токены из cookie."""
-    response.set_cookie(
-        key="access_token",
-        value=f"{tokens.access_token}",
-        httponly=True,
-        secure=settings.COOKIE_SECURE,
-        samesite=settings.COOKIE_SAMESITE,
-        max_age=settings.ACCESS_TOKEN_EXPIRE_MINUTES * 60,
-        path="/api",
-    )
+    """Устанавливаем refresh токен в cookie."""
+    cookie_params = get_refresh_cookie_settings()
 
     response.set_cookie(
-        key="refresh_token",
+        key=cookie_params["key"],
         value=tokens.refresh_token,
         httponly=True,
-        secure=settings.COOKIE_SECURE,
-        samesite=settings.COOKIE_SAMESITE,
+        secure=cookie_params["secure"],
+        samesite=cookie_params["samesite"],
         max_age=settings.REFRESH_TOKEN_EXPIRE_DAYS * 24 * 60 * 60,
-        path="/api",
+        path="/",
     )
 
 
 def remove_token(response: Response) -> None:
-    """Удаляем access и refresh токены из cookie."""
+    """Удаляем refresh токен из cookie."""
+    cookie_params = get_refresh_cookie_settings()
+
     response.delete_cookie(
-        key="access_token",
-        secure=settings.COOKIE_SECURE,
-        samesite=settings.COOKIE_SAMESITE,
-    )
-    response.delete_cookie(
-        key="refresh_token",
-        secure=settings.COOKIE_SECURE,
-        samesite=settings.COOKIE_SAMESITE,
+        key=cookie_params["key"],
+        httponly=True,
+        secure=cookie_params["secure"],
+        samesite=cookie_params["samesite"],
+        path="/",
     )

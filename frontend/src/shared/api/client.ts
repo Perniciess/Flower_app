@@ -1,5 +1,5 @@
 import type { ApiRequestInit } from "./types";
-import { buildBody, request } from "./base";
+import { buildBody, request, setAccessToken } from "./base";
 import { withCsrf } from "./interceptors";
 import { ApiError } from "./types";
 
@@ -26,10 +26,12 @@ async function authRequest<T>(endpoint: string, options: ApiRequestInit = {}): P
     catch (error) {
         if (error instanceof ApiError && error.status === 401 && !opts._retry) {
             try {
-                await api.post("/auth/refresh");
+                const data = await api.post<{ access_token: string }>("/auth/refresh");
+                setAccessToken(data.access_token);
                 return await request<T>(endpoint, { ...opts, _retry: true });
             }
             catch {
+                setAccessToken(null);
                 if (typeof window !== "undefined") {
                     window.location.href = "/login";
                 }

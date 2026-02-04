@@ -2,7 +2,6 @@ import asyncio
 
 from fastapi import (
     APIRouter,
-    Cookie,
     Depends,
     Request,
     Response,
@@ -16,9 +15,11 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.deps import get_current_user
 from app.core.limiter import limiter
 from app.core.redis import get_redis
+from app.core.security import oauth2_scheme
 from app.db.session import get_db
 from app.models.users_model import User
 from app.schemas.auth_schema import (
+    AccessToken,
     AuthChangePassword,
     AuthLogin,
     AuthPhone,
@@ -27,7 +28,7 @@ from app.schemas.auth_schema import (
     VerificationDeepLink,
 )
 from app.service import auth_service
-from app.utils.cookie import remove_token, set_token
+from app.utils.cookie import get_refresh_cookie_settings, remove_token, set_token
 
 auth_router = APIRouter(prefix="/auth", tags=["auth"])
 
@@ -51,7 +52,7 @@ async def register(
 
 @auth_router.post(
     "/login",
-    response_model=dict[str, str],
+    response_model=AccessToken,
     status_code=status.HTTP_200_OK,
     summary="Авторизоваться",
 )
@@ -61,11 +62,11 @@ async def login(
     response: Response,
     data: AuthLogin,
     session: AsyncSession = Depends(get_db),
-) -> dict[str, str]:
+) -> AccessToken:
     """Авторизация пользователя."""
     tokens = await auth_service.login(session=session, data=data)
     set_token(response=response, tokens=tokens)
-    return {"message": "Успешная авторизация", "phone_number": data.phone_number}
+    return AccessToken(access_token=tokens.access_token)
 
 
 @auth_router.post(
@@ -75,22 +76,23 @@ async def login(
     summary="Выйти из системы",
 )
 async def logout(
+    request: Request,
     response: Response,
-    access_token: str = Cookie(),
-    refresh_token: str = Cookie(),
     redis: Redis = Depends(get_redis),
     session: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_user),
+    header_token: str | None = Depends(oauth2_scheme),
 ) -> dict[str, str]:
     """
     Выйти из системы.
 
     Требует авторизации.
     """
+    refresh_token = request.cookies.get(get_refresh_cookie_settings()["key"], "")
     await auth_service.logout(
         session=session,
         redis=redis,
-        access_token=access_token,
+        access_token=header_token or "",
         refresh_token=refresh_token,
     )
     remove_token(response)
@@ -99,7 +101,7 @@ async def logout(
 
 @auth_router.post(
     "/refresh",
-    response_model=dict[str, str],
+    response_model=AccessToken,
     status_code=status.HTTP_200_OK,
     summary="Обновить токены",
 )
@@ -107,19 +109,19 @@ async def logout(
 async def refresh_token(
     request: Request,
     response: Response,
-    refresh_token: str = Cookie(),
     session: AsyncSession = Depends(get_db),
-) -> dict[str, str]:
+) -> AccessToken:
     """
     Обновить токены.
 
     Требует авторизации.
     """
+    rt = request.cookies.get(get_refresh_cookie_settings()["key"], "")
     tokens = await auth_service.refresh_tokens(
-        session=session, refresh_token=refresh_token
+        session=session, refresh_token=rt
     )
     set_token(response=response, tokens=tokens)
-    return {"message": "Успешная замена токенов"}
+    return AccessToken(access_token=tokens.access_token)
 
 
 @auth_router.post(
@@ -144,7 +146,7 @@ async def complete_register(
 
 @auth_router.post(
     "/change-password",
-    response_model=dict[str, str],
+    response_model=AccessToken,
     status_code=status.HTTP_200_OK,
     summary="Смена пароля",
 )
@@ -152,10 +154,10 @@ async def change_password(
     response: Response,
     data: AuthChangePassword,
     redis: Redis = Depends(get_redis),
-    access_token: str = Cookie(),
     current_user: User = Depends(get_current_user),
     session: AsyncSession = Depends(get_db),
-) -> dict[str, str]:
+    header_token: str | None = Depends(oauth2_scheme),
+) -> AccessToken:
     """
     Изменить пароль пользователя.
 
@@ -165,12 +167,12 @@ async def change_password(
     tokens = await auth_service.change_password(
         session=session,
         redis=redis,
-        access_token=access_token,
+        access_token=header_token or "",
         user_id=current_user.id,
         data=data,
     )
     set_token(response=response, tokens=tokens)
-    return {"message": "Успешная смена пароля"}
+    return AccessToken(access_token=tokens.access_token)
 
 
 @auth_router.post(
@@ -244,7 +246,7 @@ async def reset_websocket(
 
 @auth_router.post(
     "/set-new-password",
-    response_model=dict[str, str],
+    response_model=AccessToken,
     status_code=status.HTTP_200_OK,
     summary="Установка нового пароля",
 )
@@ -253,7 +255,7 @@ async def set_new_password(
     response: Response,
     redis: Redis = Depends(get_redis),
     session: AsyncSession = Depends(get_db),
-) -> dict[str, str]:
+) -> AccessToken:
     """
     Установить новый пароль после уведомления на фронтенд и получения с него пароля.
     """
@@ -264,4 +266,4 @@ async def set_new_password(
         new_password=data.new_password,
     )
     set_token(response=response, tokens=tokens)
-    return {"message": "Успешный сброс пароля!"}
+    return AccessToken(access_token=tokens.access_token)

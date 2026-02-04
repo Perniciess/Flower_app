@@ -2,6 +2,16 @@ import type { ApiRequestInit } from "./types";
 import { API_URL } from "@/shared/config/env";
 import { ApiError } from "./types";
 
+let accessToken: string | null = null;
+
+export function setAccessToken(token: string | null) {
+    accessToken = token;
+}
+
+export function getAccessToken() {
+    return accessToken;
+}
+
 function buildBody(body: unknown): BodyInit | undefined {
     if (body === undefined || body === null)
         return undefined;
@@ -16,6 +26,9 @@ function buildHeaders(body: unknown, extra?: HeadersInit): Record<string, string
     };
     if (!(body instanceof FormData)) {
         headers["Content-Type"] = "application/json";
+    }
+    if (accessToken) {
+        headers["Authorization"] = `Bearer ${accessToken}`;
     }
     return headers;
 }
