@@ -13,10 +13,12 @@ from starlette.middleware.cors import CORSMiddleware
 from starlette_csrf.middleware import CSRFMiddleware
 
 from app.api.v1.auth_router import auth_router
+from app.api.v1.banners_router import banner_router
 from app.api.v1.carts_router import cart_router
 from app.api.v1.categories_router import category_router
 from app.api.v1.discounts_router import discount_router
 from app.api.v1.favourites_router import favourite_router
+from app.api.v1.flowers_router import flower_router
 from app.api.v1.orders_router import order_router
 from app.api.v1.pickups_router import pickup_point_router
 from app.api.v1.products_router import product_router
@@ -137,6 +139,8 @@ api_router.include_router(category_router)
 api_router.include_router(favourite_router)
 api_router.include_router(discount_router)
 api_router.include_router(pickup_point_router)
+api_router.include_router(flower_router)
+api_router.include_router(banner_router)
 app.include_router(api_router, dependencies=[Depends(csrf_header_scheme)])
 
 settings.ROOT_DIR.mkdir(parents=True, exist_ok=True)

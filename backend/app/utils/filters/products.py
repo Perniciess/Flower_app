@@ -11,6 +11,8 @@ class ProductFilter(Filter):
     color__in: list[str] | None = None
     price__gte: Decimal | None = None
     price__lte: Decimal | None = None
+    is_active: bool | None = None
+    in_stock: bool | None = None
     search: str | None = None
     order_by: list[str] | None = Field(default=["id"])
 

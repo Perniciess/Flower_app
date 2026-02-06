@@ -117,9 +117,7 @@ async def refresh_token(
     Требует авторизации.
     """
     rt = request.cookies.get(get_refresh_cookie_settings()["key"], "")
-    tokens = await auth_service.refresh_tokens(
-        session=session, refresh_token=rt
-    )
+    tokens = await auth_service.refresh_tokens(session=session, refresh_token=rt)
     set_token(response=response, tokens=tokens)
     return AccessToken(access_token=tokens.access_token)
 

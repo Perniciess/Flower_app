@@ -9,8 +9,9 @@ from app.core.deps import require_admin
 from app.core.limiter import limiter
 from app.db.session import get_db
 from app.models.users_model import User
+from app.schemas.flowers_schema import SetCompositionRequest
 from app.schemas.products_schema import ProductCreate, ProductImageResponse, ProductResponse, ProductUpdate
-from app.service import products_service
+from app.service import flowers_service, products_service
 from app.utils.filters.products import ProductFilter
 
 product_router = APIRouter(prefix="/products", tags=["products"])
@@ -135,9 +136,34 @@ async def delete_product_image(
     session: AsyncSession = Depends(get_db),
     current_user: User = Depends(require_admin),
 ):
-    """
-    Удалить изображение товара.
-
-    Требует прав администратора.
-    """
     await products_service.delete_product_image(session=session, image_id=image_id)
+
+
+@product_router.put(
+    "/{product_id}/composition", status_code=status.HTTP_204_NO_CONTENT, summary="Установить состав букета"
+)
+async def set_product_composition(
+    product_id: int,
+    request: SetCompositionRequest,
+    session: AsyncSession = Depends(get_db),
+    current_user: User = Depends(require_admin),
+) -> None:
+    await flowers_service.set_product_composition(session=session, product_id=product_id, items=request.items)
+
+
+@product_router.post("/bulk/close", status_code=status.HTTP_200_OK, summary="Закрыть все товары к заказу")
+async def close_all_products(
+    session: AsyncSession = Depends(get_db),
+    current_user: User = Depends(require_admin),
+) -> dict[str, int]:
+    count = await products_service.set_all_products_in_stock(session=session, in_stock=False)
+    return {"updated": count}
+
+
+@product_router.post("/bulk/open", status_code=status.HTTP_200_OK, summary="Открыть все товары к заказу")
+async def open_all_products(
+    session: AsyncSession = Depends(get_db),
+    current_user: User = Depends(require_admin),
+) -> dict[str, int]:
+    count = await products_service.set_all_products_in_stock(session=session, in_stock=True)
+    return {"updated": count}

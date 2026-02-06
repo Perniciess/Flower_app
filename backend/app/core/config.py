@@ -37,13 +37,11 @@ class Settings(BaseSettings):
 
     ALGORITHM: str = "HS256"
 
-    FRONTEND_HOST: str = "http://localhost:5173"
+    FRONTEND_HOST: str = "http://localhost:3000"
     ENVIRONMENT: Literal["local", "staging", "production"] = "local"
     COOKIE_SECURE: bool = False
     COOKIE_SAMESITE: Literal["lax", "strict", "none"] = "strict"
-    BACKEND_CORS_ORIGINS: Annotated[
-        list[AnyUrl] | str, BeforeValidator(parse_cors)
-    ] = []
+    BACKEND_CORS_ORIGINS: Annotated[list[AnyUrl] | str, BeforeValidator(parse_cors)] = []
 
     # SECURITY.PY
     REFRESH_TOKEN_BYTES: int = 64
@@ -64,6 +62,11 @@ class Settings(BaseSettings):
 
     @computed_field
     @property
+    def BANNER_UPLOAD_DIR(self) -> Path:
+        return Path(self.STATIC_FILES_DIR) / "banners"
+
+    @computed_field
+    @property
     def ROOT_DIR(self) -> Path:
         return Path(self.STATIC_FILES_DIR)
 
@@ -72,15 +75,15 @@ class Settings(BaseSettings):
         return f"/{self.STATIC_FILES_DIR}/products/{filename}"
 
     def get_category_image_url(self, filename: str) -> str:
-        """Генерирует URL для изображения категории."""
         return f"/{self.STATIC_FILES_DIR}/categories/{filename}"
+
+    def get_banner_image_url(self, filename: str) -> str:
+        return f"/{self.STATIC_FILES_DIR}/banners/{filename}"
 
     @computed_field
     @property
     def all_cors_origins(self) -> list[str]:
-        return [str(origin).rstrip("/") for origin in self.BACKEND_CORS_ORIGINS] + [
-            self.FRONTEND_HOST
-        ]
+        return [str(origin).rstrip("/") for origin in self.BACKEND_CORS_ORIGINS] + [self.FRONTEND_HOST]
 
     PROJECT_NAME: str
 
@@ -97,9 +100,7 @@ class Settings(BaseSettings):
     YOOKASSA_SHOP_ID: str
     YOOKASSA_SECRET_KEY: str
     ORDER_EXPIRATION_MINUTES: int = 30
-    CAPTURE: bool = (
-        True  # True - автосписание, False - после подтверждения. Обговорить с Сашей
-    )
+    CAPTURE: bool = True  # True - автосписание, False - после подтверждения. Обговорить с Сашей
 
     # TG URL
     VERIFICATION: str = "https://t.me/kupibuket74_bot?start="
