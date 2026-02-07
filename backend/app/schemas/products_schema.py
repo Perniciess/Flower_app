@@ -22,10 +22,10 @@ class FlowerInComposition(BaseModel):
 
 
 class ProductBase(BaseModel):
-    name: str = Field(..., description="Название товара")
-    price: Decimal = Field(..., description="Стоимость товара")
-    description: str = Field(..., description="Описание")
-    color: str = Field(..., description="Цвет")
+    name: str = Field(..., max_length=255, description="Название товара")
+    price: Decimal = Field(..., gt=0, description="Стоимость товара")
+    description: str = Field(..., max_length=2000, description="Описание")
+    color: str = Field(..., max_length=64, description="Цвет")
     is_active: bool = Field(default=True, description="Активен ли товар")
     in_stock: bool = Field(default=True, description="В наличии")
 
@@ -37,10 +37,10 @@ class ProductCreate(ProductBase):
 
 
 class ProductUpdate(BaseModel):
-    name: str | None = Field(default=None, description="Название товара")
-    price: Decimal | None = Field(default=None, description="Стоимость товара")
-    description: str | None = Field(default=None, description="Описание")
-    color: str | None = Field(default=None, description="Цвет")
+    name: str | None = Field(default=None, max_length=255, description="Название товара")
+    price: Decimal | None = Field(default=None, gt=0, description="Стоимость товара")
+    description: str | None = Field(default=None, max_length=2000, description="Описание")
+    color: str | None = Field(default=None, max_length=64, description="Цвет")
     is_active: bool | None = Field(default=None, description="Активен ли товар")
     in_stock: bool | None = Field(default=None, description="В наличии")
 

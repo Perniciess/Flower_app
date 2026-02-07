@@ -4,13 +4,13 @@ from pydantic import BaseModel, ConfigDict, Field
 
 
 class FlowerCreate(BaseModel):
-    name: str = Field(..., description="Название цветка")
-    price: Decimal = Field(..., ge=0, description="Цена за штуку")
+    name: str = Field(..., max_length=255, description="Название цветка")
+    price: Decimal = Field(..., gt=0, description="Цена за штуку")
 
 
 class FlowerUpdate(BaseModel):
-    name: str | None = Field(default=None, description="Название цветка")
-    price: Decimal | None = Field(default=None, ge=0, description="Цена за штуку")
+    name: str | None = Field(default=None, max_length=255, description="Название цветка")
+    price: Decimal | None = Field(default=None, gt=0, description="Цена за штуку")
 
 
 class FlowerResponse(BaseModel):
