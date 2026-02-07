@@ -69,6 +69,7 @@ async def login(
     return AccessToken(access_token=tokens.access_token)
 
 
+@limiter.limit("10/minute")
 @auth_router.post(
     "/logout",
     response_model=dict[str, str],
@@ -136,12 +137,11 @@ async def complete_register(
     session: AsyncSession = Depends(get_db),
 ) -> dict[str, str]:
     """Завершить регистрацию после подтверждения номера в телеграме."""
-    await auth_service.complete_register(
-        session=session, redis=redis, verification_token=verification_token
-    )
+    await auth_service.complete_register(session=session, redis=redis, verification_token=verification_token)
     return {"message": "Успешная регистрация"}
 
 
+@limiter.limit("5/minute")
 @auth_router.post(
     "/change-password",
     response_model=AccessToken,
@@ -149,6 +149,7 @@ async def complete_register(
     summary="Смена пароля",
 )
 async def change_password(
+    request: Request,
     response: Response,
     data: AuthChangePassword,
     redis: Redis = Depends(get_redis),
@@ -173,9 +174,7 @@ async def change_password(
     return AccessToken(access_token=tokens.access_token)
 
 
-@auth_router.post(
-    "/reset_password", status_code=status.HTTP_200_OK, summary="Сброс пароля"
-)
+@auth_router.post("/reset_password", status_code=status.HTTP_200_OK, summary="Сброс пароля")
 @limiter.limit("3/hour")
 async def reset_password(
     request: Request,
@@ -186,9 +185,7 @@ async def reset_password(
     """
     Сбросить пароля пользователя с подтверждением в ТГ.
     """
-    return await auth_service.reset_password(
-        session=session, redis=redis, phone_number=data.phone_number
-    )
+    return await auth_service.reset_password(session=session, redis=redis, phone_number=data.phone_number)
 
 
 @auth_router.post(
@@ -196,9 +193,7 @@ async def reset_password(
     response_model=dict[str, str],
     status_code=status.HTTP_200_OK,
 )
-async def complete_reset(
-    reset_token: str, redis: Redis = Depends(get_redis)
-) -> dict[str, str]:
+async def complete_reset(reset_token: str, redis: Redis = Depends(get_redis)) -> dict[str, str]:
     """
     Завершить сброс пароля пользователя.
     """
@@ -207,9 +202,7 @@ async def complete_reset(
 
 
 @auth_router.websocket("/ws/reset/{reset_token}")
-async def reset_websocket(
-    reset_token: str, websocket: WebSocket, redis: Redis = Depends(get_redis)
-):
+async def reset_websocket(reset_token: str, websocket: WebSocket, redis: Redis = Depends(get_redis)):
     """
     Установить ws-соединение для уведомления фронтенда об сбросе пароля.
     """
@@ -227,9 +220,7 @@ async def reset_websocket(
     try:
         deadline = asyncio.get_running_loop().time() + ttl
         while asyncio.get_running_loop().time() < deadline:
-            message = await pubsub.get_message(
-                ignore_subscribe_messages=True, timeout=1.0
-            )
+            message = await pubsub.get_message(ignore_subscribe_messages=True, timeout=1.0)
             if message and message["type"] == "message":
                 await websocket.send_json({"verified": True})
                 await websocket.close()
@@ -242,6 +233,7 @@ async def reset_websocket(
         await pubsub.aclose()
 
 
+@limiter.limit("5/minute")
 @auth_router.post(
     "/set-new-password",
     response_model=AccessToken,
@@ -249,6 +241,7 @@ async def reset_websocket(
     summary="Установка нового пароля",
 )
 async def set_new_password(
+    request: Request,
     data: AuthSetNewPassword,
     response: Response,
     redis: Redis = Depends(get_redis),
