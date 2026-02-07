@@ -4,8 +4,10 @@ from typing import Annotated, Any, Literal
 from pydantic import (
     AnyUrl,
     BeforeValidator,
+    Field,
     PostgresDsn,
     computed_field,
+    model_validator,
 )
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
@@ -104,8 +106,20 @@ class Settings(BaseSettings):
     CAPTURE: bool = True  # True - автосписание, False - после подтверждения. Обговорить с Сашей
 
     # TG URL
-    VERIFICATION: str = "https://t.me/kupibuket74_bot?start="
-    RESET: str = "https://t.me/kupibuket74_bot?start=reset_"
+    TELEGRAM_BOT_URL: str = Field(
+        default="https://t.me/kupibuket74_bot",
+        description="Telegram bot URL for verification deeplinks",
+    )
+
+    @computed_field
+    @property
+    def VERIFICATION(self) -> str:
+        return f"{self.TELEGRAM_BOT_URL}?start="
+
+    @computed_field
+    @property
+    def RESET(self) -> str:
+        return f"{self.TELEGRAM_BOT_URL}?start=reset_"
 
     @computed_field
     @property
@@ -123,6 +137,16 @@ class Settings(BaseSettings):
             port=self.POSTGRES_PORT,
             path=self.POSTGRES_DB,
         )
+
+    @model_validator(mode="after")
+    def validate_production_secrets(self) -> "Settings":
+        """Validate that production secrets are not default values."""
+        if self.ENVIRONMENT == "production":
+            if self.SECRET_KEY == "your-secret-key-here":  # noqa: S105
+                raise ValueError("SECRET_KEY must be changed in production")
+            if self.CSRF_SECRET_KEY == "your-csrf-secret-key-here":  # noqa: S105
+                raise ValueError("CSRF_SECRET_KEY must be changed in production")
+        return self
 
 
 settings = Settings()  # type: ignore
