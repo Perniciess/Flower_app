@@ -4,7 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.deps import require_admin, require_client
 from app.db.session import get_db
 from app.models.users_model import User
-from app.schemas.carts_schema import CartItemResponse, CartItemUpdate, CartResponse
+from app.schemas.carts_schema import CartItemResponse, CartResponse
 from app.service import carts_service
 
 cart_router = APIRouter(prefix="/carts", tags=["carts"])
@@ -69,7 +69,7 @@ async def create_cart_item(
 
 @cart_router.patch(
     "/cart_item/{cart_item_id}",
-    response_model=CartItemUpdate,
+    response_model=CartItemResponse,
     status_code=status.HTTP_200_OK,
     summary="Обновить количество товара в корзине",
 )
