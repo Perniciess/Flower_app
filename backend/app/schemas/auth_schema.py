@@ -11,7 +11,7 @@ class AuthLogin(BaseModel):
     """Схема для авторизации пользователя."""
 
     phone_number: PhoneNumber = Field(..., description="Номер телефона пользователя")
-    password: str = Field(..., min_length=8, description="Пароль")
+    password: str = Field(..., min_length=8, max_length=128, description="Пароль")
 
     @field_validator("phone_number")
     @classmethod
@@ -44,8 +44,8 @@ class AuthRegister(UserCreate):
 
 
 class AuthChangePassword(BaseModel):
-    old_password: str = Field(..., min_length=8, description="Старый пароль")
-    new_password: str = Field(..., min_length=8, description="Новый пароль")
+    old_password: str = Field(..., min_length=8, max_length=128, description="Старый пароль")
+    new_password: str = Field(..., min_length=8, max_length=128, description="Новый пароль")
 
     @field_validator("old_password", "new_password", mode="before")
     @classmethod
@@ -55,7 +55,7 @@ class AuthChangePassword(BaseModel):
 
 class AuthSetNewPassword(BaseModel):
     reset_token: str = Field(..., description="Токен сброса пароля")
-    new_password: str = Field(..., min_length=8, description="Новый пароль")
+    new_password: str = Field(..., min_length=8, max_length=128, description="Новый пароль")
 
     @field_validator("new_password", mode="before")
     @classmethod
@@ -76,9 +76,7 @@ class VerificationDeepLink(BaseModel):
     token: str = Field(..., description="Токен подтверждения сброса пароля")
     telegram_link: str = Field(..., description="Deeplink telegram")
     expires_in: int = Field(
-        ...,
-        ge=settings.VERIFICATION_TOKEN_EXPIRY_SECONDS,
-        le=settings.VERIFICATION_TOKEN_EXPIRY_SECONDS,
+        default=settings.VERIFICATION_TOKEN_EXPIRY_SECONDS,
         description="Срок истечения кода в секундах",
     )
 
