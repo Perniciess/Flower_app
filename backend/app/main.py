@@ -114,9 +114,7 @@ app.add_middleware(
         re.compile(re.escape(settings.API_V1_STR) + r"/auth/login"),
         re.compile(re.escape(settings.API_V1_STR) + r"/auth/refresh"),
         re.compile(re.escape(settings.API_V1_STR) + r"/auth/complete-register/.*"),
-        re.compile(
-            re.escape(settings.API_V1_STR) + r"/auth/complete-reset-verification/.*"
-        ),
+        re.compile(re.escape(settings.API_V1_STR) + r"/auth/complete-reset-verification/.*"),
         re.compile(re.escape(settings.API_V1_STR) + r"/orders/webhook"),
     ],
 )
@@ -125,8 +123,8 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.all_cors_origins,
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allow_headers=["Content-Type", "Authorization", settings.CSRF_HEADER_NAME],
 )
 
 api_router = APIRouter(prefix=settings.API_V1_STR)
