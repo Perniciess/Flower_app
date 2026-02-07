@@ -42,6 +42,7 @@ class Settings(BaseSettings):
     COOKIE_SECURE: bool = False
     COOKIE_SAMESITE: Literal["lax", "strict", "none"] = "strict"
     BACKEND_CORS_ORIGINS: Annotated[list[AnyUrl] | str, BeforeValidator(parse_cors)] = []
+    TRUSTED_PROXIES: list[str] = []
 
     # SECURITY.PY
     REFRESH_TOKEN_BYTES: int = 64
