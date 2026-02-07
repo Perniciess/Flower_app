@@ -18,4 +18,4 @@ class ProductFilter(Filter):
 
     class Constants(Filter.Constants):
         model = Product
-        search_model_fields = ["name", "description"]
+        search_model_fields = ["name", "description"]  # noqa: RUF012

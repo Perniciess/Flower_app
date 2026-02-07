@@ -38,7 +38,7 @@ exclude = ["migrations", "*.html", "alembic"]
 select = ["E", "F", "I", "UP", "B", "PERF", "FIX002", "PLE", "PLW", "F822", "N", "S", "RUF", "ASYNC"]
 ignore = ["E501", "D104", "D100", "B008"]
 exclude = [".git", "__pycache__", "venv", ".venv"]
-allowed-confusables = ["а", "е", "о", "р", "с", "у", "х", "і", "г", "б", "Б", "В", "в"]
+allowed-confusables = ["а", "е", "о", "р", "с", "у", "х", "і", "г", "б", "Б", "В", "в", "С", "с", "Н", "н", "У", "у"]
 
 [tool.ruff.lint.flake8-quotes]
 docstring-quotes = "double"

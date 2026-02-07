@@ -3,6 +3,7 @@ import asyncio
 from fastapi import (
     APIRouter,
     Depends,
+    Path,
     Request,
     Response,
     WebSocket,
@@ -12,7 +13,8 @@ from fastapi import (
 from redis.asyncio import Redis
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.core.deps import get_current_user
+from app.core.config import settings
+from app.core.deps import get_current_user, verify_bot_api_key
 from app.core.limiter import limiter
 from app.core.redis import get_redis
 from app.core.security import oauth2_scheme
@@ -132,9 +134,10 @@ async def refresh_token(
 @limiter.limit("10/minute")
 async def complete_register(
     request: Request,
-    verification_token: str,
+    verification_token: str = Path(max_length=128),
     redis: Redis = Depends(get_redis),
     session: AsyncSession = Depends(get_db),
+    _bot_auth: None = Depends(verify_bot_api_key),
 ) -> dict[str, str]:
     """Завершить регистрацию после подтверждения номера в телеграме."""
     await auth_service.complete_register(session=session, redis=redis, verification_token=verification_token)
@@ -193,7 +196,11 @@ async def reset_password(
     response_model=dict[str, str],
     status_code=status.HTTP_200_OK,
 )
-async def complete_reset(reset_token: str, redis: Redis = Depends(get_redis)) -> dict[str, str]:
+async def complete_reset(
+    reset_token: str = Path(max_length=128),
+    redis: Redis = Depends(get_redis),
+    _bot_auth: None = Depends(verify_bot_api_key),
+) -> dict[str, str]:
     """
     Завершить сброс пароля пользователя.
     """
@@ -202,10 +209,18 @@ async def complete_reset(reset_token: str, redis: Redis = Depends(get_redis)) ->
 
 
 @auth_router.websocket("/ws/reset/{reset_token}")
-async def reset_websocket(reset_token: str, websocket: WebSocket, redis: Redis = Depends(get_redis)):
+async def reset_websocket(
+    reset_token: str = Path(max_length=128), *, websocket: WebSocket, redis: Redis = Depends(get_redis)
+):
     """
     Установить ws-соединение для уведомления фронтенда об сбросе пароля.
     """
+    origin = websocket.headers.get("origin")
+    allowed_origins = settings.all_cors_origins
+    if origin not in allowed_origins:
+        await websocket.close(code=1008, reason="Origin not allowed")
+        return
+
     redis_data = await redis.get(f"r:{reset_token}")
     if redis_data is None:
         await websocket.accept()

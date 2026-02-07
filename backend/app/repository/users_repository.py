@@ -29,7 +29,9 @@ async def get_user_by_id(*, session: AsyncSession, user_id: int) -> User | None:
     return user.scalar_one_or_none()
 
 
-async def update_user(*, session: AsyncSession, user_id: int, data: Mapping[str, object]) -> User | None:
+async def update_user(
+    *, session: AsyncSession, user_id: int, data: Mapping[str, object]
+) -> User | None:
     statement = update(User).where(User.id == user_id).values(**data).returning(User)
     result = await session.execute(statement)
     await session.flush()

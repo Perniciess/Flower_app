@@ -105,6 +105,9 @@ class Settings(BaseSettings):
     ORDER_EXPIRATION_MINUTES: int = 30
     CAPTURE: bool = True  # True - автосписание, False - после подтверждения. Обговорить с Сашей
 
+    # BOT
+    BOT_API_KEY: str
+
     # TG URL
     TELEGRAM_BOT_URL: str = Field(
         default="https://t.me/kupibuket74_bot",
