@@ -2,6 +2,7 @@ import json
 from typing import Any
 
 from redis.asyncio import Redis
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import settings
@@ -77,7 +78,12 @@ async def complete_register(*, session: AsyncSession, redis: Redis, verification
     data_user = await _get_redis_data(redis, f"v:{verification_token}")
     user_exist = await users_repository.get_user_by_phone(session=session, phone_number=data_user["phone_number"])
     if not user_exist:
-        await users_repository.create_user(session=session, data=data_user)
+        try:
+            await users_repository.create_user(session=session, data=data_user)
+        except IntegrityError:
+            # User was created by concurrent request — this is fine
+            # The unique constraint on phone_number prevents duplicates
+            pass
 
     await redis.delete(f"v:{verification_token}")
 
