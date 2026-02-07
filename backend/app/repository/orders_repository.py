@@ -62,6 +62,7 @@ async def get_pending_order_by_user_id(*, session: AsyncSession, user_id: int) -
         .options(selectinload(Order.order_item))
         .where(Order.user_id == user_id)
         .where(Order.status == Status.PENDING)
+        .with_for_update()
     )
     result = await session.execute(statement)
     return result.scalar_one_or_none()
