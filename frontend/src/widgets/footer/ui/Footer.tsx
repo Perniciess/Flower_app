@@ -4,7 +4,7 @@ import { footerColumns } from "../config";
 
 export function Footer() {
     return (
-        <footer className="bg-[#326964] text-[18px] font-normal leading-none tracking-normal text-white">
+        <footer className="bg-brand text-[18px] font-normal leading-none tracking-normal text-white">
             <div className="flex flex-col items-center border-b border-white/20 px-4 py-8">
                 <Image
                     src="/images/logo_white.png"
@@ -25,7 +25,7 @@ export function Footer() {
                 </Link>
             </div>
             <div className="border-b border-white/20 py-16">
-                <div className="mx-auto grid max-w-[1350px] grid-cols-[1fr_1fr_1fr_1fr_auto] gap-8 px-8">
+                <div className="mx-auto grid max-w-337.5 grid-cols-[1fr_1fr_1fr_1fr_auto] gap-8 px-8">
                     {footerColumns.map(column => (
                         <div key={column.title}>
                             <p className="mb-4 text-[20px] font-semibold">{column.title}</p>
