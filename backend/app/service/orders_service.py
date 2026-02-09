@@ -12,6 +12,7 @@ from app.core.exceptions import (
     InsufficientPermissionError,
     OrderNotFoundError,
     OrderNotUpdatedError,
+    ProductOutOfStockError,
 )
 from app.models.orders_model import Order, Status
 from app.models.users_model import Role, User
@@ -62,6 +63,11 @@ async def create_order(
 
     product_ids = [item.product_id for item in cart.cart_item]
     products = await products_repository.get_products_by_ids(session=session, product_ids=product_ids)
+
+    out_of_stock = [p for p in products if not p.in_stock]
+    if out_of_stock:
+        raise ProductOutOfStockError(product_ids=[p.id for p in out_of_stock])
+
     discount_map = await discounts_service.enrich_products(session=session, products=products)
 
     product_base_prices = {p.id: p.price for p in products}
