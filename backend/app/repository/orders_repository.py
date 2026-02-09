@@ -69,7 +69,7 @@ async def get_pending_order_by_user_id(*, session: AsyncSession, user_id: int) -
 
 
 async def get_order_by_payment_id(*, session: AsyncSession, payment_id: str) -> Order | None:
-    statement = select(Order).where(Order.payment_id == payment_id)
+    statement = select(Order).where(Order.payment_id == payment_id).with_for_update()
     result = await session.execute(statement)
     return result.scalar_one_or_none()
 
