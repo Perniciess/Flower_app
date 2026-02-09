@@ -131,7 +131,7 @@ async def refresh_token(
     status_code=status.HTTP_200_OK,
     summary="Завершение регистрации",
 )
-@limiter.limit("10/minute")
+@limiter.limit("3/minute")
 async def complete_register(
     request: Request,
     verification_token: str = Path(max_length=128),
@@ -196,7 +196,9 @@ async def reset_password(
     response_model=dict[str, str],
     status_code=status.HTTP_200_OK,
 )
+@limiter.limit("3/minute")
 async def complete_reset(
+    request: Request,
     reset_token: str = Path(max_length=128),
     redis: Redis = Depends(get_redis),
     _bot_auth: None = Depends(verify_bot_api_key),
@@ -248,7 +250,7 @@ async def reset_websocket(
         await pubsub.aclose()
 
 
-@limiter.limit("5/minute")
+@limiter.limit("3/minute")
 @auth_router.post(
     "/set-new-password",
     response_model=AccessToken,

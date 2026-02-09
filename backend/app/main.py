@@ -30,6 +30,7 @@ from app.core.limiter import init_limiter, limiter
 from app.core.logger import get_logger, setup_logging
 from app.core.logging_middleware import LoggingMiddleware
 from app.core.redis import get_redis, redis_manager
+from app.core.security_headers_middleware import SecurityHeadersMiddleware
 from app.db.session import engine
 
 setup_logging()
@@ -99,6 +100,7 @@ app.add_exception_handler(Exception, unhandled_exception_handler)
 csrf_header_scheme = APIKeyHeader(name=settings.CSRF_HEADER_NAME, auto_error=False)
 
 app.add_middleware(LoggingMiddleware)
+app.add_middleware(SecurityHeadersMiddleware)
 
 app.add_middleware(
     CSRFMiddleware,
@@ -115,9 +117,7 @@ app.add_middleware(
         re.compile(re.escape(settings.API_V1_STR) + r"/auth/login"),
         re.compile(re.escape(settings.API_V1_STR) + r"/auth/refresh"),
         re.compile(re.escape(settings.API_V1_STR) + r"/auth/complete-register/.*"),
-        re.compile(
-            re.escape(settings.API_V1_STR) + r"/auth/complete-reset-verification/.*"
-        ),
+        re.compile(re.escape(settings.API_V1_STR) + r"/auth/complete-reset-verification/.*"),
         re.compile(re.escape(settings.API_V1_STR) + r"/orders/webhook"),
     ],
 )
