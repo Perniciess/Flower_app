@@ -7,6 +7,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import settings
 from app.core.exceptions import (
+    AccountLockedError,
     InvalidTokenError,
     PasswordsDoNotMatchError,
     UserNotFoundError,
@@ -90,32 +91,46 @@ async def complete_register(*, session: AsyncSession, redis: Redis, verification
     await redis.delete(f"v:{verification_token}")
 
 
-async def login(*, session: AsyncSession, data: AuthLogin) -> Tokens:
+async def login(*, session: AsyncSession, redis: Redis, data: AuthLogin) -> Tokens:
     """
     Авторизует пользователя в системе.
 
     Args:
         session: сессия базы данных
+        redis: сессия Redis
         data: данные для авторизации пользователя
 
     Returns:
         Tokens: access и refresh токены
 
     Raises:
+        AccountLockedError: если аккаунт заблокирован после 10 неудачных попыток
         UserNotFoundError: если пользователь с таким phone_number не существует
         PasswordsDoNotMatchError: если пароли не совпадают
     """
+    lockout_key = f"lockout:{data.phone_number}"
+    attempts = await redis.get(lockout_key)
+    if attempts and int(attempts) >= 10:
+        raise AccountLockedError()
+
     user = await users_repository.get_user_by_phone(session=session, phone_number=data.phone_number)
     if user is None:
         # Constant-time: always run password verification even for non-existent users
         # to prevent timing oracle attacks that reveal phone number existence
         verify_password(data.password, get_password_hash("dummy-constant-time-pad"))
+        attempts = await redis.incr(lockout_key)
+        if attempts == 1:
+            await redis.expire(lockout_key, 900)
         raise PasswordsDoNotMatchError("Неверный номер телефона или пароль")
     if not verify_password(data.password, user.password_hash):
+        attempts = await redis.incr(lockout_key)
+        if attempts == 1:
+            await redis.expire(lockout_key, 900)
         raise PasswordsDoNotMatchError("Неверный номер телефона или пароль")
 
     access_token = create_access_token(user_id=user.id)
     refresh_token = await _save_refresh_token(session=session, user_id=user.id)
+    await redis.delete(lockout_key)
 
     return Tokens(access_token=access_token, refresh_token=refresh_token)
 

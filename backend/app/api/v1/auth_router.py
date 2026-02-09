@@ -63,10 +63,11 @@ async def login(
     request: Request,
     response: Response,
     data: AuthLogin,
+    redis: Redis = Depends(get_redis),
     session: AsyncSession = Depends(get_db),
 ) -> AccessToken:
     """Авторизация пользователя."""
-    tokens = await auth_service.login(session=session, data=data)
+    tokens = await auth_service.login(session=session, redis=redis, data=data)
     set_token(response=response, tokens=tokens)
     return AccessToken(access_token=tokens.access_token)
 

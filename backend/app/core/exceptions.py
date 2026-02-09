@@ -33,6 +33,14 @@ class PasswordsDoNotMatchError(HTTPException):
         super().__init__(status_code=400, detail=message or "Неправильный пароль")
 
 
+class AccountLockedError(HTTPException):
+    def __init__(self) -> None:
+        super().__init__(
+            status_code=429,
+            detail="Аккаунт временно заблокирован. Попробуйте через 15 минут",
+        )
+
+
 class InsufficientPermissionError(HTTPException):
     def __init__(self) -> None:
         super().__init__(status_code=403, detail="Отсутствуют права на выполнение операции")
