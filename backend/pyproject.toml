@@ -25,6 +25,7 @@ dependencies = [
   "python-magic>=0.4.27",
   "slowapi>=0.1.9",
   "structlog>=25.5.0",
+  "scalar-fastapi>=1.6.1",
 ]
 
 

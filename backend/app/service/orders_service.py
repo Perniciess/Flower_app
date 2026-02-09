@@ -58,25 +58,44 @@ async def create_order(
         raise EmptyCartError(cart_id=cart.id)
 
     if data.pickup_point_id is not None:
-        await pickups_service.validate_pickup_point(session=session, pickup_point_id=data.pickup_point_id)
+        await pickups_service.validate_pickup_point(
+            session=session, pickup_point_id=data.pickup_point_id
+        )
 
     product_ids = [item.product_id for item in cart.cart_item]
-    products = await products_repository.get_products_by_ids(session=session, product_ids=product_ids)
-    discount_map = await discounts_service.enrich_products(session=session, products=products)
+    products = await products_repository.get_products_by_ids(
+        session=session, product_ids=product_ids
+    )
+    discount_map = await discounts_service.enrich_products(
+        session=session, products=products
+    )
 
     price_map: dict[int, Decimal] = {}
     for item in cart.cart_item:
         discounted_price, _ = discount_map.get(item.product_id, (None, None))
-        price_map[item.product_id] = discounted_price if discounted_price is not None else item.price
+        price_map[item.product_id] = (
+            discounted_price if discounted_price is not None else item.price
+        )
 
-    pending_order = await orders_repository.get_pending_order_by_user_id(session=session, user_id=user_id)
+    pending_order = await orders_repository.get_pending_order_by_user_id(
+        session=session, user_id=user_id
+    )
     if pending_order is not None:
-        if pending_order.expires_at > datetime.now(UTC) and pending_order.payment_id is not None:
-            payment_status, confirmation_url = payments_service.find_yookassa_payment(pending_order.payment_id)
+        if (
+            pending_order.expires_at > datetime.now(UTC)
+            and pending_order.payment_id is not None
+        ):
+            payment_status, confirmation_url = payments_service.find_yookassa_payment(
+                pending_order.payment_id
+            )
             if payment_status == "pending" and confirmation_url is not None:
-                return _build_response_with_payment(pending_order, pending_order.payment_id, confirmation_url)
+                return _build_response_with_payment(
+                    pending_order, pending_order.payment_id, confirmation_url
+                )
 
-        await orders_repository.update_order_status(session=session, order_id=pending_order.id, status=Status.CANCELLED)
+        await orders_repository.update_order_status(
+            session=session, order_id=pending_order.id, status=Status.CANCELLED
+        )
 
     order = await orders_repository.create_order(
         session=session,
@@ -90,7 +109,9 @@ async def create_order(
     payment_id, confirmation_url = payments_service.create_yookassa_payment(
         amount=order.total_price, order_id=order.id, idempotency_key=idempotency_key
     )
-    await orders_repository.update_payment_id(session=session, order_id=order.id, payment_id=payment_id)
+    await orders_repository.update_payment_id(
+        session=session, order_id=order.id, payment_id=payment_id
+    )
 
     return _build_response_with_payment(order, payment_id, confirmation_url)
 
@@ -106,17 +127,23 @@ async def process_webhook(*, session: AsyncSession, payload: WebhookPayload) -> 
     Returns:
         None
     """
-    order = await orders_repository.get_order_by_payment_id(session=session, payment_id=payload.object.id)
+    order = await orders_repository.get_order_by_payment_id(
+        session=session, payment_id=payload.object.id
+    )
     if order is None:
         return
 
     if payload.event == "payment.succeeded":
         await orders_repository.mark_order_paid(session=session, order_id=order.id)
-        cart = await carts_repository.get_cart_by_user_id(session=session, user_id=order.user_id)
+        cart = await carts_repository.get_cart_by_user_id(
+            session=session, user_id=order.user_id
+        )
         if cart is not None:
             await carts_repository.clear_cart(session=session, cart_id=cart.id)
     elif payload.event == "payment.canceled":
-        await orders_repository.update_order_status(session=session, order_id=order.id, status=Status.CANCELLED)
+        await orders_repository.update_order_status(
+            session=session, order_id=order.id, status=Status.CANCELLED
+        )
 
 
 async def get_orders(session: AsyncSession, user_id: int) -> Page[OrderResponse]:
@@ -133,7 +160,9 @@ async def get_orders(session: AsyncSession, user_id: int) -> Page[OrderResponse]
     return await paginate(session, query)
 
 
-async def get_order_by_id(session: AsyncSession, order_id: int, current_user: User) -> OrderResponse:
+async def get_order_by_id(
+    session: AsyncSession, order_id: int, current_user: User
+) -> OrderResponse:
     """
     Возвращает заказ.
 
@@ -151,7 +180,9 @@ async def get_order_by_id(session: AsyncSession, order_id: int, current_user: Us
     return OrderResponse.model_validate(order)
 
 
-async def update_order_status(session: AsyncSession, order_id: int, status: Status) -> OrderResponse:
+async def update_order_status(
+    session: AsyncSession, order_id: int, status: Status
+) -> OrderResponse:
     """
     Изменяет статус заказа.
 
@@ -169,14 +200,18 @@ async def update_order_status(session: AsyncSession, order_id: int, status: Stat
     order = await orders_repository.get_order_by_id(session=session, order_id=order_id)
     if order is None:
         raise OrderNotFoundError(order_id=order_id)
-    updated = await orders_repository.update_order_status(session=session, order_id=order_id, status=status)
+    updated = await orders_repository.update_order_status(
+        session=session, order_id=order_id, status=status
+    )
     if updated is None:
         raise OrderNotUpdatedError(order_id=order_id)
 
     return OrderResponse.model_validate(updated)
 
 
-async def cancel_order(session: AsyncSession, order_id: int, user_id: int) -> OrderResponse:
+async def cancel_order(
+    session: AsyncSession, order_id: int, user_id: int
+) -> OrderResponse:
     order = await orders_repository.get_order_by_id(session=session, order_id=order_id)
     if order is None:
         raise OrderNotFoundError(order_id=order_id)
@@ -185,7 +220,9 @@ async def cancel_order(session: AsyncSession, order_id: int, user_id: int) -> Or
     if order.status not in (Status.PENDING, Status.PAID):
         raise OrderNotUpdatedError(order_id=order_id)
 
-    updated = await orders_repository.update_order_status(session=session, order_id=order_id, status=Status.CANCELLED)
+    updated = await orders_repository.update_order_status(
+        session=session, order_id=order_id, status=Status.CANCELLED
+    )
     if updated is None:
         raise OrderNotUpdatedError(order_id=order_id)
     return OrderResponse.model_validate(updated)
@@ -217,7 +254,9 @@ async def get_all_paid_orders(session: AsyncSession) -> Page[OrderResponse]:
     return await paginate(session, query)
 
 
-def _build_response_with_payment(order: Order, payment_id: str, confirmation_url: str) -> OrderResponseWithPayment:
+def _build_response_with_payment(
+    order: Order, payment_id: str, confirmation_url: str
+) -> OrderResponseWithPayment:
     """
     Собирает ответ заказа с данными оплаты.
 

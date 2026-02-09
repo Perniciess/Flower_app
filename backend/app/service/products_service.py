@@ -22,18 +22,35 @@ from app.utils.filters.products import ProductFilter
 from app.utils.validators.image import validate_image
 
 
-async def create_product(*, session: AsyncSession, product_data: ProductCreate) -> ProductResponse:
+async def create_product(
+    *, session: AsyncSession, product_data: ProductCreate, image: UploadFile | None = None
+) -> ProductResponse:
     """
     Создает новый товар в базе данных.
 
     Args:
         session: сессия базы данных
         product_data: данные для создания цветка
+        image: опциональное изображение товара
 
     Returns:
         ProductResponse с данными созданного цветка
     """
     product = await products_repository.create_product(session=session, product_data=product_data)
+
+    if image is not None:
+        ext = validate_image(image)
+        settings.PRODUCT_UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
+        filename = f"{uuid.uuid4()}{ext}"
+        file_path = settings.PRODUCT_UPLOAD_DIR / filename
+
+        content = await image.read()
+        async with await anyio.open_file(file_path, "wb") as f:
+            await f.write(content)
+
+        url = settings.get_product_image_url(filename)
+        await products_repository.create_product_image(session=session, product_id=product.id, url=url, sort_order=0)
+
     product = await products_repository.get_product_by_id(session=session, product_id=product.id)
     return ProductResponse.model_validate(product)
 

@@ -11,6 +11,7 @@ class Banner(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True, index=True)
     title: Mapped[str | None] = mapped_column(String(255))
+    description: Mapped[str | None] = mapped_column(String(200))
     image_url: Mapped[str | None] = mapped_column(String(512))
     link: Mapped[str | None] = mapped_column(String(512))
     sort_order: Mapped[int] = mapped_column(Integer, default=0, index=True)

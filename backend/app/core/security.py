@@ -53,7 +53,9 @@ def generate_verification_token() -> str:
 async def add_to_blacklist(redis: Redis, access_token: str) -> None:
     """Добавить токен в blacklist до его истечения."""
     try:
-        payload = jwt.decode(access_token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
+        payload = jwt.decode(
+            access_token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM]
+        )
         exp = payload.get("exp")
         if exp:
             expires_in = exp - int(datetime.now(tz=UTC).timestamp())

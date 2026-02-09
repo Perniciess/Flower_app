@@ -121,7 +121,7 @@ class Delivery(Base):
     comment: Mapped[str | None] = mapped_column(String(512))
     delivery_date: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
     created_at: Mapped[datetime] = mapped_column(
-        DateTime(timezone=True), server_defauwt=func.now()
+        DateTime(timezone=True), server_default=func.now()
     )
     updated_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now(), onupdate=func.now()

@@ -5,6 +5,7 @@ from fastapi import APIRouter, Depends, FastAPI
 from fastapi.security import APIKeyHeader
 from fastapi.staticfiles import StaticFiles
 from fastapi_pagination import add_pagination
+from scalar_fastapi import get_scalar_api_reference
 from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 from sqlalchemy import text
@@ -114,7 +115,9 @@ app.add_middleware(
         re.compile(re.escape(settings.API_V1_STR) + r"/auth/login"),
         re.compile(re.escape(settings.API_V1_STR) + r"/auth/refresh"),
         re.compile(re.escape(settings.API_V1_STR) + r"/auth/complete-register/.*"),
-        re.compile(re.escape(settings.API_V1_STR) + r"/auth/complete-reset-verification/.*"),
+        re.compile(
+            re.escape(settings.API_V1_STR) + r"/auth/complete-reset-verification/.*"
+        ),
         re.compile(re.escape(settings.API_V1_STR) + r"/orders/webhook"),
     ],
 )
@@ -140,6 +143,14 @@ api_router.include_router(pickup_point_router)
 api_router.include_router(flower_router)
 api_router.include_router(banner_router)
 app.include_router(api_router, dependencies=[Depends(csrf_header_scheme)])
+
+
+@app.get("/scalar", include_in_schema=False)
+async def scalar_html():
+    return get_scalar_api_reference(
+        openapi_url=app.openapi_url,
+    )
+
 
 settings.ROOT_DIR.mkdir(parents=True, exist_ok=True)
 
