@@ -40,7 +40,7 @@ def real_ip(request: Request) -> str:
 
 _storage: RedisStorage | None = None
 
-limiter = Limiter(key_func=real_ip)
+limiter = Limiter(key_func=real_ip, default_limits=["60/minute"])
 
 
 def init_limiter() -> None:
