@@ -1,6 +1,7 @@
 import json
 from typing import Any
 
+import structlog
 from redis.asyncio import Redis
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -31,6 +32,8 @@ from app.schemas.auth_schema import (
     Tokens,
     VerificationDeepLink,
 )
+
+logger = structlog.get_logger(__name__)
 
 
 async def register(*, session: AsyncSession, redis: Redis, data: AuthRegister) -> VerificationDeepLink:
@@ -88,6 +91,7 @@ async def complete_register(*, session: AsyncSession, redis: Redis, verification
                 raise
             # Concurrent request already created user with this phone — safe to ignore
 
+    logger.info("auth_register_complete", verification_token=verification_token[:8] + "...")
     await redis.delete(f"v:{verification_token}")
 
 
@@ -111,6 +115,7 @@ async def login(*, session: AsyncSession, redis: Redis, data: AuthLogin) -> Toke
     lockout_key = f"lockout:{data.phone_number}"
     attempts = await redis.get(lockout_key)
     if attempts and int(attempts) >= 10:
+        logger.warning("auth_account_locked", phone_number=data.phone_number, attempts=int(attempts))
         raise AccountLockedError()
 
     user = await users_repository.get_user_by_phone(session=session, phone_number=data.phone_number)
@@ -121,17 +126,20 @@ async def login(*, session: AsyncSession, redis: Redis, data: AuthLogin) -> Toke
         attempts = await redis.incr(lockout_key)
         if attempts == 1:
             await redis.expire(lockout_key, 900)
+        logger.warning("auth_login_failed", phone_number=data.phone_number, reason="user_not_found")
         raise PasswordsDoNotMatchError("Неверный номер телефона или пароль")
     if not verify_password(data.password, user.password_hash):
         attempts = await redis.incr(lockout_key)
         if attempts == 1:
             await redis.expire(lockout_key, 900)
+        logger.warning("auth_login_failed", phone_number=data.phone_number, reason="invalid_password")
         raise PasswordsDoNotMatchError("Неверный номер телефона или пароль")
 
     access_token = create_access_token(user_id=user.id)
     refresh_token = await _save_refresh_token(session=session, user_id=user.id)
     await redis.delete(lockout_key)
 
+    logger.info("auth_login_success", phone_number=data.phone_number, user_id=user.id)
     return Tokens(access_token=access_token, refresh_token=refresh_token)
 
 
@@ -242,6 +250,7 @@ async def change_password(
     new_access_token = create_access_token(user_id=user.id)
     refresh_token = await _save_refresh_token(session=session, user_id=user.id)
     await add_to_blacklist(redis=redis, access_token=access_token)
+    logger.info("auth_password_changed", user_id=user.id)
     return Tokens(access_token=new_access_token, refresh_token=refresh_token)
 
 
@@ -276,6 +285,7 @@ async def reset_password(*, session: AsyncSession, redis: Redis, phone_number: s
     }
     await redis.set(f"r:{reset_token}", json.dumps(user_data), ex=300)
     telegram_link = f"{settings.RESET}{reset_token}"
+    logger.info("auth_password_reset_initiated", user_id=user_exist.id, reset_token=reset_token[:8] + "...")
     return VerificationDeepLink(token=reset_token, telegram_link=telegram_link, expires_in=300)
 
 
@@ -338,6 +348,7 @@ async def set_new_password(*, session: AsyncSession, redis: Redis, reset_token: 
     await auth_repository.revoke_all(session=session, user_id=user_id)
     await redis.delete(f"r:{reset_token}")
 
+    logger.info("auth_password_reset_complete", user_id=user_id)
     access_token = create_access_token(user_id=user_id)
     refresh_token = await _save_refresh_token(session=session, user_id=user_id)
     return Tokens(access_token=access_token, refresh_token=refresh_token)
