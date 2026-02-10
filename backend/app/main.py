@@ -116,8 +116,8 @@ app.add_middleware(
         re.compile(r"/openapi.json"),
         re.compile(re.escape(settings.API_V1_STR) + r"/auth/login"),
         re.compile(re.escape(settings.API_V1_STR) + r"/auth/refresh"),
-        re.compile(re.escape(settings.API_V1_STR) + r"/auth/complete-register/.*"),
-        re.compile(re.escape(settings.API_V1_STR) + r"/auth/complete-reset-verification/.*"),
+        re.compile(re.escape(settings.API_V1_STR) + r"/auth/complete-register/[^/]+$"),
+        re.compile(re.escape(settings.API_V1_STR) + r"/auth/complete-reset-verification/[^/]+$"),
         re.compile(re.escape(settings.API_V1_STR) + r"/orders/webhook"),
     ],
 )
