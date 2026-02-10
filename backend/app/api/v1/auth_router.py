@@ -141,7 +141,9 @@ async def complete_register(
     _bot_auth: None = Depends(verify_bot_api_key),
 ) -> dict[str, str]:
     """Завершить регистрацию после подтверждения номера в телеграме."""
-    await auth_service.complete_register(session=session, redis=redis, verification_token=verification_token)
+    await auth_service.complete_register(
+        session=session, redis=redis, verification_token=verification_token
+    )
     return {"message": "Успешная регистрация"}
 
 
@@ -178,7 +180,9 @@ async def change_password(
     return AccessToken(access_token=tokens.access_token)
 
 
-@auth_router.post("/reset_password", status_code=status.HTTP_200_OK, summary="Сброс пароля")
+@auth_router.post(
+    "/reset_password", status_code=status.HTTP_200_OK, summary="Сброс пароля"
+)
 @limiter.limit("3/hour")
 async def reset_password(
     request: Request,
@@ -189,13 +193,16 @@ async def reset_password(
     """
     Сбросить пароля пользователя с подтверждением в ТГ.
     """
-    return await auth_service.reset_password(session=session, redis=redis, phone_number=data.phone_number)
+    return await auth_service.reset_password(
+        session=session, redis=redis, phone_number=data.phone_number
+    )
 
 
 @auth_router.post(
     "/complete-reset-verification/{reset_token}",
     response_model=dict[str, str],
     status_code=status.HTTP_200_OK,
+    summary="Завершение сброса пароля",
 )
 @limiter.limit("3/minute")
 async def complete_reset(
@@ -241,7 +248,9 @@ async def reset_websocket(
     try:
         deadline = asyncio.get_running_loop().time() + ttl
         while asyncio.get_running_loop().time() < deadline:
-            message = await pubsub.get_message(ignore_subscribe_messages=True, timeout=1.0)
+            message = await pubsub.get_message(
+                ignore_subscribe_messages=True, timeout=1.0
+            )
             if message and message["type"] == "message":
                 await websocket.send_json({"verified": True})
                 await websocket.close()

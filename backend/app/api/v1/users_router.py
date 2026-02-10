@@ -12,7 +12,10 @@ user_router = APIRouter(prefix="/users", tags=["users"])
 
 
 @user_router.get(
-    "/", response_model=Page[UserResponse], status_code=status.HTTP_200_OK, summary="Получить список всех пользователей"
+    "/",
+    response_model=Page[UserResponse],
+    status_code=status.HTTP_200_OK,
+    summary="Получить список всех пользователей",
 )
 async def get_users(
     session: AsyncSession = Depends(get_db), current_user: User = Depends(require_admin)
@@ -27,7 +30,10 @@ async def get_users(
 
 
 @user_router.get(
-    "/me", response_model=UserResponse, status_code=status.HTTP_200_OK, summary="Получить активного пользователя"
+    "/me",
+    response_model=UserResponse,
+    status_code=status.HTTP_200_OK,
+    summary="Получить активного пользователя",
 )
 async def get_me(current_user: User = Depends(get_current_user)):
     """
@@ -39,7 +45,10 @@ async def get_me(current_user: User = Depends(get_current_user)):
 
 
 @user_router.get(
-    "/{user_id}", response_model=UserResponse, status_code=status.HTTP_200_OK, summary="Получить пользователя по ID"
+    "/{user_id}",
+    response_model=UserResponse,
+    status_code=status.HTTP_200_OK,
+    summary="Получить пользователя по ID",
 )
 async def get_user_by_id(
     user_id: int,

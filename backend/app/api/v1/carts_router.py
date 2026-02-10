@@ -28,7 +28,9 @@ async def get_current_user_cart(
     return cart
 
 
-@cart_router.delete("/{cart_id}", status_code=status.HTTP_204_NO_CONTENT, summary="Удалить корзину")
+@cart_router.delete(
+    "/{cart_id}", status_code=status.HTTP_204_NO_CONTENT, summary="Удалить корзину"
+)
 async def delete_cart(
     cart_id: int,
     user: User = Depends(require_admin),
@@ -111,4 +113,6 @@ async def delete_cart_item(
 
     Требует авторизации.
     """
-    await carts_service.delete_cart_item(session=session, cart_item_id=cart_item_id, current_user=current_user)
+    await carts_service.delete_cart_item(
+        session=session, cart_item_id=cart_item_id, current_user=current_user
+    )

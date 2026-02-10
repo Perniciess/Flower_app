@@ -8,7 +8,11 @@ from app.core.deps import require_admin
 from app.core.limiter import limiter
 from app.db.session import get_db
 from app.models.users_model import User
-from app.schemas.pickups_schema import PickupPointCreate, PickupPointResponse, PickupPointUpdate
+from app.schemas.pickups_schema import (
+    PickupPointCreate,
+    PickupPointResponse,
+    PickupPointUpdate,
+)
 from app.service import pickups_service
 
 pickup_point_router = APIRouter(prefix="/pickup-points", tags=["pickup_points"])
@@ -37,6 +41,7 @@ async def create_pickup_point(
     "/active",
     response_model=list[PickupPointResponse],
     status_code=status.HTTP_200_OK,
+    summary="Получить все активные точки самовывоза",
 )
 @limiter.limit("30/minute")
 async def get_active_pickup_points(

@@ -31,7 +31,9 @@ async def create_discount(
 
     Требует прав администратора.
     """
-    return await discounts_service.create_discount(session=session, discount_data=discount_data)
+    return await discounts_service.create_discount(
+        session=session, discount_data=discount_data
+    )
 
 
 @discount_router.get(
@@ -68,7 +70,9 @@ async def get_discount(
 
     Требует прав администратора.
     """
-    return await discounts_service.get_discount(session=session, discount_id=discount_id)
+    return await discounts_service.get_discount(
+        session=session, discount_id=discount_id
+    )
 
 
 @discount_router.patch(
@@ -93,7 +97,9 @@ async def update_discount(
     )
 
 
-@discount_router.delete("/{discount_id}", status_code=status.HTTP_204_NO_CONTENT, summary="Удалить акцию")
+@discount_router.delete(
+    "/{discount_id}", status_code=status.HTTP_204_NO_CONTENT, summary="Удалить акцию"
+)
 async def delete_discount(
     discount_id: int,
     session: AsyncSession = Depends(get_db),

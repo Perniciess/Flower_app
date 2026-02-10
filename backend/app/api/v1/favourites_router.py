@@ -49,7 +49,9 @@ async def get_favourite_list(
 
     Требует авторизации.
     """
-    favourites = await favourites_service.get_favourite_list(session=session, user_id=current_user.id)
+    favourites = await favourites_service.get_favourite_list(
+        session=session, user_id=current_user.id
+    )
     return favourites
 
 
@@ -69,5 +71,7 @@ async def delete_from_favourites(
 
     Требует авторизации.
     """
-    await favourites_service.delete_from_favourites(session=session, product_id=product_id, user_id=current_user.id)
+    await favourites_service.delete_from_favourites(
+        session=session, product_id=product_id, user_id=current_user.id
+    )
     return {"message": "Успешно удалено из избранных"}
