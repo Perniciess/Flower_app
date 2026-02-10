@@ -1,3 +1,4 @@
+import asyncio
 import re
 from contextlib import asynccontextmanager
 
@@ -31,7 +32,8 @@ from app.core.logger import get_logger, setup_logging
 from app.core.logging_middleware import LoggingMiddleware
 from app.core.redis import get_redis, redis_manager
 from app.core.security_headers_middleware import SecurityHeadersMiddleware
-from app.db.session import engine
+from app.db.session import AsyncSessionLocal, engine
+from app.repository import auth_repository
 
 setup_logging()
 logger = get_logger(__name__)
@@ -67,7 +69,30 @@ async def lifespan(app: FastAPI):
     except Exception as exc:
         logger.exception("limiter_failed", exc_info=exc)
         raise
+
+    async def _cleanup_expired_tokens():
+        while True:
+            try:
+                await asyncio.sleep(3600)
+                async with AsyncSessionLocal() as session:
+                    deleted = await auth_repository.delete_expired_tokens(session=session)
+                    await session.commit()
+                    if deleted > 0:
+                        logger.info("tokens_cleanup", deleted_count=deleted)
+            except asyncio.CancelledError:
+                break
+            except Exception as exc:
+                logger.exception("tokens_cleanup_failed", exc_info=exc)
+
+    cleanup_task = asyncio.create_task(_cleanup_expired_tokens())
+
     yield
+
+    cleanup_task.cancel()
+    try:
+        await cleanup_task
+    except asyncio.CancelledError:
+        pass
 
     logger.info("application_shutdown")
     await redis_manager.close_pool()

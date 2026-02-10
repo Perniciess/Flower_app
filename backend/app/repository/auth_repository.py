@@ -74,3 +74,29 @@ async def revoke_all(*, session: AsyncSession, user_id: int) -> bool:
     result = await session.execute(statement)
     await session.flush()
     return len(result.scalars().all()) > 0
+
+
+async def delete_expired_tokens(*, session: AsyncSession) -> int:
+    """Удаляет истекшие и отозванные refresh токены.
+
+    Args:
+        session: Асинхронная сессия БД
+
+    Returns:
+        Количество удаленных токенов
+    """
+    from sqlalchemy import delete, or_
+
+    now = datetime.now(UTC)
+    statement = (
+        delete(RefreshToken)
+        .where(
+            or_(
+                RefreshToken.expires_at < now,
+                RefreshToken.is_revoked.is_(True),
+            )
+        )
+        .returning(RefreshToken.id)
+    )
+    result = await session.execute(statement)
+    return len(result.scalars().all())
