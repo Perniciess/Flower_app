@@ -14,9 +14,7 @@ from app.schemas.pickups_schema import (
 )
 
 
-async def create_pickup_point(
-    session: AsyncSession, data: PickupPointCreate
-) -> PickupPointResponse:
+async def create_pickup_point(session: AsyncSession, data: PickupPointCreate) -> PickupPointResponse:
     """Создать точку самовывоза.
 
     Args:
@@ -30,9 +28,7 @@ async def create_pickup_point(
     return PickupPointResponse.model_validate(pickup_point)
 
 
-async def get_pickup_point_by_id(
-    session: AsyncSession, pickup_point_id: int
-) -> PickupPointResponse:
+async def get_pickup_point_by_id(session: AsyncSession, pickup_point_id: int) -> PickupPointResponse:
     """Получить точку самовывоза по ID.
 
     Args:
@@ -45,9 +41,7 @@ async def get_pickup_point_by_id(
     Raises:
         PickupPointNotFoundError: Если точка самовывоза не найдена.
     """
-    pickup_point = await pickups_repository.get_pickup_point_by_id(
-        session, pickup_point_id
-    )
+    pickup_point = await pickups_repository.get_pickup_point_by_id(session, pickup_point_id)
     if not pickup_point:
         raise PickupPointNotFoundError(pickup_point_id)
 
@@ -98,15 +92,11 @@ async def update_pickup_point(
     Raises:
         PickupPointNotFoundError: Если точка самовывоза не найдена.
     """
-    pickup_point = await pickups_repository.get_pickup_point_by_id(
-        session, pickup_point_id
-    )
+    pickup_point = await pickups_repository.get_pickup_point_by_id(session, pickup_point_id)
     if not pickup_point:
         raise PickupPointNotFoundError(pickup_point_id)
 
-    updated_pickup_point = await pickups_repository.update_pickup_point(
-        session, pickup_point, data
-    )
+    updated_pickup_point = await pickups_repository.update_pickup_point(session, pickup_point, data)
     return PickupPointResponse.model_validate(updated_pickup_point)
 
 
@@ -120,18 +110,14 @@ async def delete_pickup_point(session: AsyncSession, pickup_point_id: int) -> No
     Raises:
         PickupPointNotFoundError: Если точка самовывоза не найдена.
     """
-    pickup_point = await pickups_repository.get_pickup_point_by_id(
-        session, pickup_point_id
-    )
+    pickup_point = await pickups_repository.get_pickup_point_by_id(session, pickup_point_id)
     if not pickup_point:
         raise PickupPointNotFoundError(pickup_point_id)
 
     await pickups_repository.delete_pickup_point(session, pickup_point_id)
 
 
-async def validate_pickup_point(
-    session: AsyncSession, pickup_point_id: int
-) -> PickupPoint:
+async def validate_pickup_point(session: AsyncSession, pickup_point_id: int) -> PickupPoint:
     """Валидировать точку самовывоза для создания заказа.
 
     Args:
@@ -145,9 +131,7 @@ async def validate_pickup_point(
         PickupPointNotFoundError: Если точка самовывоза не найдена.
         PickupPointNotActiveError: Если точка самовывоза неактивна.
     """
-    pickup_point = await pickups_repository.get_pickup_point_by_id(
-        session, pickup_point_id
-    )
+    pickup_point = await pickups_repository.get_pickup_point_by_id(session, pickup_point_id)
     if not pickup_point:
         raise PickupPointNotFoundError(pickup_point_id)
 

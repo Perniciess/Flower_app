@@ -30,14 +30,10 @@ async def create_banner(
 
     Требует прав администратора
     """
-    return await banners_service.create_banner(
-        session=session, banner_data=data, image=image
-    )
+    return await banners_service.create_banner(session=session, banner_data=data, image=image)
 
 
-@banner_router.get(
-    "", response_model=Sequence[BannerResponse], status_code=status.HTTP_200_OK
-)
+@banner_router.get("", response_model=Sequence[BannerResponse], status_code=status.HTTP_200_OK)
 @limiter.limit("60/minute")
 async def get_banners(
     request: Request,
@@ -50,9 +46,7 @@ async def get_banners(
     return await banners_service.get_banners(session=session, only_active=only_active)
 
 
-@banner_router.get(
-    "/all", response_model=Sequence[BannerResponse], status_code=status.HTTP_200_OK
-)
+@banner_router.get("/all", response_model=Sequence[BannerResponse], status_code=status.HTTP_200_OK)
 async def get_all_banners(
     session: AsyncSession = Depends(get_db),
     current_user: User = Depends(require_admin),
@@ -60,9 +54,7 @@ async def get_all_banners(
     return await banners_service.get_banners(session=session, only_active=False)
 
 
-@banner_router.get(
-    "/{banner_id}", response_model=BannerResponse, status_code=status.HTTP_200_OK
-)
+@banner_router.get("/{banner_id}", response_model=BannerResponse, status_code=status.HTTP_200_OK)
 async def get_banner(
     banner_id: int,
     session: AsyncSession = Depends(get_db),
@@ -71,32 +63,24 @@ async def get_banner(
     return await banners_service.get_banner(session=session, banner_id=banner_id)
 
 
-@banner_router.patch(
-    "/{banner_id}", response_model=BannerResponse, status_code=status.HTTP_200_OK
-)
+@banner_router.patch("/{banner_id}", response_model=BannerResponse, status_code=status.HTTP_200_OK)
 async def update_banner(
     banner_id: int,
     banner_data: BannerUpdate,
     session: AsyncSession = Depends(get_db),
     current_user: User = Depends(require_admin),
 ) -> BannerResponse:
-    return await banners_service.update_banner(
-        session=session, banner_id=banner_id, banner_data=banner_data
-    )
+    return await banners_service.update_banner(session=session, banner_id=banner_id, banner_data=banner_data)
 
 
-@banner_router.post(
-    "/{banner_id}/image", response_model=BannerResponse, status_code=status.HTTP_200_OK
-)
+@banner_router.post("/{banner_id}/image", response_model=BannerResponse, status_code=status.HTTP_200_OK)
 async def upload_banner_image(
     banner_id: int,
     image: UploadFile,
     session: AsyncSession = Depends(get_db),
     current_user: User = Depends(require_admin),
 ) -> BannerResponse:
-    return await banners_service.upload_image(
-        session=session, banner_id=banner_id, image=image
-    )
+    return await banners_service.upload_image(session=session, banner_id=banner_id, image=image)
 
 
 @banner_router.delete("/{banner_id}", status_code=status.HTTP_204_NO_CONTENT)

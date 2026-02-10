@@ -10,9 +10,7 @@ logger = structlog.get_logger(__name__)
 
 
 class LoggingMiddleware(BaseHTTPMiddleware):
-    async def dispatch(
-        self, request: Request, call_next: Callable[[Request], Awaitable[Response]]
-    ) -> Response:
+    async def dispatch(self, request: Request, call_next: Callable[[Request], Awaitable[Response]]) -> Response:
         request_id = str(uuid.uuid4())
 
         structlog.contextvars.bind_contextvars(

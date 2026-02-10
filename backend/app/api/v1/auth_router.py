@@ -213,7 +213,10 @@ async def complete_reset(
 
 @auth_router.websocket("/ws/reset/{reset_token}")
 async def reset_websocket(
-    reset_token: str = Path(max_length=128), *, websocket: WebSocket, redis: Redis = Depends(get_redis)
+    reset_token: str = Path(max_length=128),
+    *,
+    websocket: WebSocket,
+    redis: Redis = Depends(get_redis),
 ):
     """
     Установить ws-соединение для уведомления фронтенда об сбросе пароля.

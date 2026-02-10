@@ -20,9 +20,7 @@ async def get_banner(*, session: AsyncSession, banner_id: int) -> Banner | None:
     return result.scalar_one_or_none()
 
 
-async def get_banners(
-    *, session: AsyncSession, only_active: bool = False
-) -> Sequence[Banner]:
+async def get_banners(*, session: AsyncSession, only_active: bool = False) -> Sequence[Banner]:
     statement = select(Banner).order_by(Banner.sort_order, Banner.id)
     if only_active:
         statement = statement.where(Banner.is_active)
@@ -30,9 +28,7 @@ async def get_banners(
     return result.scalars().all()
 
 
-async def update_banner(
-    *, session: AsyncSession, banner_id: int, banner_data: BannerUpdate
-) -> Banner | None:
+async def update_banner(*, session: AsyncSession, banner_id: int, banner_data: BannerUpdate) -> Banner | None:
     statement = (
         update(Banner)
         .where(Banner.id == banner_id)
@@ -44,15 +40,8 @@ async def update_banner(
     return result.scalar_one_or_none()
 
 
-async def update_banner_image(
-    *, session: AsyncSession, banner_id: int, image_url: str
-) -> Banner | None:
-    statement = (
-        update(Banner)
-        .where(Banner.id == banner_id)
-        .values(image_url=image_url)
-        .returning(Banner)
-    )
+async def update_banner_image(*, session: AsyncSession, banner_id: int, image_url: str) -> Banner | None:
+    statement = update(Banner).where(Banner.id == banner_id).values(image_url=image_url).returning(Banner)
     result = await session.execute(statement)
     await session.flush()
     return result.scalar_one_or_none()

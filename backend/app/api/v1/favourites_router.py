@@ -19,7 +19,9 @@ favourite_router = APIRouter(prefix="/favourite", tags=["favourite"])
     summary="Добавить товар в избранное",
 )
 async def add_to_favourite(
-    product_id: int, session: AsyncSession = Depends(get_db), current_user: User = Depends(require_client)
+    product_id: int,
+    session: AsyncSession = Depends(get_db),
+    current_user: User = Depends(require_client),
 ) -> FavouriteResponse:
     """
     Добавить товар в избранное.
@@ -39,7 +41,8 @@ async def add_to_favourite(
     summary="Получить список избранных товаров",
 )
 async def get_favourite_list(
-    session: AsyncSession = Depends(get_db), current_user: User = Depends(require_client)
+    session: AsyncSession = Depends(get_db),
+    current_user: User = Depends(require_client),
 ) -> Sequence[FavouriteResponse]:
     """
     Получить список избранных товаров пользователя.
@@ -57,7 +60,9 @@ async def get_favourite_list(
     summary="Удалить товар из избранных",
 )
 async def delete_from_favourites(
-    product_id: int, session: AsyncSession = Depends(get_db), current_user: User = Depends(require_client)
+    product_id: int,
+    session: AsyncSession = Depends(get_db),
+    current_user: User = Depends(require_client),
 ):
     """
     Удалить товар из избранных.

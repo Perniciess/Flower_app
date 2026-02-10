@@ -55,9 +55,7 @@ class Product(Base):
     )
 
     categories: Mapped[list[Category]] = relationship("Category", secondary=product_category, back_populates="products")
-    composition: Mapped[list[Flower]] = relationship(
-        "Flower", secondary=bouquet_composition, back_populates="products"
-    )
+    composition: Mapped[list[Flower]] = relationship("Flower", secondary=bouquet_composition, back_populates="products")
 
 
 class ProductImage(Base):

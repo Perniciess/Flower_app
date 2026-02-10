@@ -11,7 +11,10 @@ cart_router = APIRouter(prefix="/carts", tags=["carts"])
 
 
 @cart_router.get(
-    "", response_model=CartResponse, status_code=status.HTTP_200_OK, summary="Получить корзину текущего пользователя"
+    "",
+    response_model=CartResponse,
+    status_code=status.HTTP_200_OK,
+    summary="Получить корзину текущего пользователя",
 )
 async def get_current_user_cart(
     user: User = Depends(require_client), session: AsyncSession = Depends(get_db)
@@ -94,7 +97,9 @@ async def update_cart_item_quantity(
 
 
 @cart_router.delete(
-    "/cart_item/{cart_item_id}", status_code=status.HTTP_204_NO_CONTENT, summary="Удалить товар из корзины"
+    "/cart_item/{cart_item_id}",
+    status_code=status.HTTP_204_NO_CONTENT,
+    summary="Удалить товар из корзины",
 )
 async def delete_cart_item(
     cart_item_id: int,

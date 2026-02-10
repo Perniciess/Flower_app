@@ -53,9 +53,7 @@ async def create_product(
         is_active=is_active,
         in_stock=in_stock,
     )
-    product = await products_service.create_product(
-        session=session, product_data=product_data, image=image
-    )
+    product = await products_service.create_product(session=session, product_data=product_data, image=image)
     return product
 
 
@@ -72,9 +70,7 @@ async def get_products(
     product_filter: ProductFilter = FilterDepends(ProductFilter),
 ) -> Page[ProductResponse]:
     """Получить список товаров."""
-    products = await products_service.get_products(
-        session=session, product_filter=product_filter
-    )
+    products = await products_service.get_products(session=session, product_filter=product_filter)
     return products
 
 
@@ -85,9 +81,7 @@ async def get_products(
     summary="Получить один товар",
 )
 @limiter.limit("60/minute")
-async def get_product_by_id(
-    request: Request, product_id: int, session: AsyncSession = Depends(get_db)
-):
+async def get_product_by_id(request: Request, product_id: int, session: AsyncSession = Depends(get_db)):
     """Получить товар по ID."""
     product = await products_service.get_product(session=session, product_id=product_id)
     return product
@@ -110,15 +104,11 @@ async def update_product(
 
     Требует прав администратора.
     """
-    product = await products_service.update_product(
-        session=session, product_id=product_id, product_data=product_data
-    )
+    product = await products_service.update_product(session=session, product_id=product_id, product_data=product_data)
     return product
 
 
-@product_router.delete(
-    "/{product_id}", status_code=status.HTTP_204_NO_CONTENT, summary="Удалить товар"
-)
+@product_router.delete("/{product_id}", status_code=status.HTTP_204_NO_CONTENT, summary="Удалить товар")
 async def delete_product(
     product_id: int,
     session: AsyncSession = Depends(get_db),
@@ -194,32 +184,22 @@ async def set_product_composition(
     session: AsyncSession = Depends(get_db),
     current_user: User = Depends(require_admin),
 ) -> None:
-    await flowers_service.set_product_composition(
-        session=session, product_id=product_id, items=request.items
-    )
+    await flowers_service.set_product_composition(session=session, product_id=product_id, items=request.items)
 
 
-@product_router.post(
-    "/bulk/close", status_code=status.HTTP_200_OK, summary="Закрыть все товары к заказу"
-)
+@product_router.post("/bulk/close", status_code=status.HTTP_200_OK, summary="Закрыть все товары к заказу")
 async def close_all_products(
     session: AsyncSession = Depends(get_db),
     current_user: User = Depends(require_admin),
 ) -> dict[str, int]:
-    count = await products_service.set_all_products_in_stock(
-        session=session, in_stock=False
-    )
+    count = await products_service.set_all_products_in_stock(session=session, in_stock=False)
     return {"updated": count}
 
 
-@product_router.post(
-    "/bulk/open", status_code=status.HTTP_200_OK, summary="Открыть все товары к заказу"
-)
+@product_router.post("/bulk/open", status_code=status.HTTP_200_OK, summary="Открыть все товары к заказу")
 async def open_all_products(
     session: AsyncSession = Depends(get_db),
     current_user: User = Depends(require_admin),
 ) -> dict[str, int]:
-    count = await products_service.set_all_products_in_stock(
-        session=session, in_stock=True
-    )
+    count = await products_service.set_all_products_in_stock(session=session, in_stock=True)
     return {"updated": count}

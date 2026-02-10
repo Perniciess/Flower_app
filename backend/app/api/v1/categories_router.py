@@ -20,7 +20,10 @@ category_router = APIRouter(prefix="/category", tags=["category"])
 
 
 @category_router.post(
-    "/create", response_model=CategoryResponse, status_code=status.HTTP_201_CREATED, summary="Создание категории"
+    "/create",
+    response_model=CategoryResponse,
+    status_code=status.HTTP_201_CREATED,
+    summary="Создание категории",
 )
 async def create_category(
     category_data: CategoryCreate,
@@ -129,7 +132,11 @@ async def update_category(
     )
 
 
-@category_router.delete("/{category_id}", status_code=status.HTTP_204_NO_CONTENT, summary="Удалить категорию")
+@category_router.delete(
+    "/{category_id}",
+    status_code=status.HTTP_204_NO_CONTENT,
+    summary="Удалить категорию",
+)
 async def delete_category_by_id(
     category_id: int,
     session: AsyncSession = Depends(get_db),
@@ -184,10 +191,15 @@ async def delete_category_image(
 
 
 @category_router.get(
-    "/{slug}", response_model=CategoryResponse, status_code=status.HTTP_200_OK, summary="Получить категорию по slug"
+    "/{slug}",
+    response_model=CategoryResponse,
+    status_code=status.HTTP_200_OK,
+    summary="Получить категорию по slug",
 )
 @limiter.limit("60/minute")
-async def get_category_by_slug(request: Request, slug: str, session: AsyncSession = Depends(get_db)) -> CategoryResponse:
+async def get_category_by_slug(
+    request: Request, slug: str, session: AsyncSession = Depends(get_db)
+) -> CategoryResponse:
     """
     Получить категорию по slug.
     """
