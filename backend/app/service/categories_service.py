@@ -1,6 +1,5 @@
 import uuid
 from collections.abc import Sequence
-from pathlib import Path
 
 import anyio
 from fastapi import UploadFile
@@ -26,7 +25,9 @@ from app.schemas.categories_schema import (
 from app.utils.validators.image import validate_image
 
 
-async def create_category(session: AsyncSession, category_data: CategoryCreate) -> CategoryResponse:
+async def create_category(
+    session: AsyncSession, category_data: CategoryCreate
+) -> CategoryResponse:
     """
     Создает новую категорию в базе данных.
 
@@ -41,20 +42,28 @@ async def create_category(session: AsyncSession, category_data: CategoryCreate) 
         CategoryAlreadyExistsError: если категория уже существует
         CategoryParentNotFoundError: если заданная родительская категория не существует
     """
-    category_exist = await categories_repository.get_category_by_slug(session=session, slug=category_data.slug)
+    category_exist = await categories_repository.get_category_by_slug(
+        session=session, slug=category_data.slug
+    )
     if category_exist is not None:
         raise CategoryAlreadyExistsError(slug=category_data.slug)
 
     if category_data.parent_id:
-        parent = await categories_repository.get_category_by_id(session=session, category_id=category_data.parent_id)
+        parent = await categories_repository.get_category_by_id(
+            session=session, category_id=category_data.parent_id
+        )
         if not parent:
             raise CategoryParentNotFoundError(parent_id=category_data.parent_id)
 
-    category = await categories_repository.create_category(session=session, category_data=category_data)
+    category = await categories_repository.create_category(
+        session=session, category_data=category_data
+    )
     return CategoryResponse.model_validate(category)
 
 
-async def get_category_by_id(session: AsyncSession, category_id: int) -> CategoryResponse:
+async def get_category_by_id(
+    session: AsyncSession, category_id: int
+) -> CategoryResponse:
     """
     Возвращает категорию по ID из базы данных.
 
@@ -88,14 +97,18 @@ async def get_category_by_slug(session: AsyncSession, slug: str) -> CategoryResp
     Raises:
         CategoryNotExistsError: если категория не существует
     """
-    category = await categories_repository.get_category_by_slug(session=session, slug=slug)
+    category = await categories_repository.get_category_by_slug(
+        session=session, slug=slug
+    )
     if category is None:
         raise CategoryNotExistsError(slug=slug)
 
     return CategoryResponse.model_validate(category)
 
 
-async def update_category(session: AsyncSession, category_id: int, category_data: CategoryUpdate) -> CategoryResponse:
+async def update_category(
+    session: AsyncSession, category_id: int, category_data: CategoryUpdate
+) -> CategoryResponse:
     """
     Обновляет информацию о категории в базе данных.
 
@@ -118,18 +131,26 @@ async def update_category(session: AsyncSession, category_id: int, category_data
         raise CategoryNotExistsError(category_id=category_id)
 
     if category_data.slug and category_data.slug != category.slug:
-        existing = await categories_repository.get_category_by_slug(session, category_data.slug)
+        existing = await categories_repository.get_category_by_slug(
+            session, category_data.slug
+        )
         if existing:
             raise CategoryAlreadyExistsError(slug=category_data.slug)
 
     if category_data.parent_id is not None:
-        parent = await categories_repository.get_category_by_id(session, category_data.parent_id)
+        parent = await categories_repository.get_category_by_id(
+            session, category_data.parent_id
+        )
         if not parent:
             raise CategoryParentNotFoundError(parent_id=category_data.parent_id)
 
-        has_cycle = await _check_circular_dependency(session, category_id, category_data.parent_id)
+        has_cycle = await _check_circular_dependency(
+            session, category_id, category_data.parent_id
+        )
         if has_cycle:
-            raise CategoryCycleError(category_id=category_id, parent_id=category_data.parent_id)
+            raise CategoryCycleError(
+                category_id=category_id, parent_id=category_data.parent_id
+            )
 
     updated_category = await categories_repository.update_category(
         session=session, category_id=category_id, category_data=category_data
@@ -171,7 +192,9 @@ async def get_all_categories(session: AsyncSession) -> Page[CategoryResponse]:
     return await paginate(session, query)
 
 
-async def get_category_tree(session: AsyncSession, only_active: bool = True) -> list[CategoryWithChildren]:
+async def get_category_tree(
+    session: AsyncSession, only_active: bool = True
+) -> list[CategoryWithChildren]:
     """
     Возвращает дерево категорий, рекурсивно собирая дочерние элементы.
 
@@ -182,7 +205,9 @@ async def get_category_tree(session: AsyncSession, only_active: bool = True) -> 
     Returns:
         CategoryWithChildren список корневых категорий с вложенными дочерними элементами
     """
-    root_categories = await categories_repository.get_root_categories(session=session, only_active=only_active)
+    root_categories = await categories_repository.get_root_categories(
+        session=session, only_active=only_active
+    )
 
     async def build_tree(category: Category) -> CategoryWithChildren:
         children = await categories_repository.get_children(
@@ -217,12 +242,15 @@ async def delete_category_by_id(session: AsyncSession, category_id: int) -> None
         raise CategoryNotExistsError(category_id=category_id)
 
     if category.image_url:
-        filename = Path(category.image_url).name
-        file_path = settings.CATEGORY_UPLOAD_DIR / filename
+        file_path = (settings.ROOT_DIR / category.image_url.lstrip("/")).resolve()
+        if not str(file_path).startswith(str(settings.CATEGORY_UPLOAD_DIR.resolve())):
+            raise ValueError("Path traversal detected")
         if file_path.exists():
             file_path.unlink()
 
-    deleted = await categories_repository.delete_category(session=session, category_id=category_id)
+    deleted = await categories_repository.delete_category(
+        session=session, category_id=category_id
+    )
     if not deleted:
         raise CategoryNotExistsError(category_id=category_id)
 
@@ -246,8 +274,9 @@ async def delete_image(*, session: AsyncSession, category_id: int) -> CategoryRe
         raise CategoryNotExistsError(category_id=category_id)
 
     if category.image_url:
-        filename = Path(category.image_url).name
-        file_path = settings.CATEGORY_UPLOAD_DIR / filename
+        file_path = (settings.ROOT_DIR / category.image_url.lstrip("/")).resolve()
+        if not str(file_path).startswith(str(settings.CATEGORY_UPLOAD_DIR.resolve())):
+            raise ValueError("Path traversal detected")
         if file_path.exists():
             file_path.unlink()
 
@@ -257,7 +286,9 @@ async def delete_image(*, session: AsyncSession, category_id: int) -> CategoryRe
     return CategoryResponse.model_validate(category)
 
 
-async def upload_image(*, session: AsyncSession, category_id: int, image: UploadFile) -> CategoryResponse:
+async def upload_image(
+    *, session: AsyncSession, category_id: int, image: UploadFile
+) -> CategoryResponse:
     """
     Загружает изображение категории.
 
@@ -280,8 +311,9 @@ async def upload_image(*, session: AsyncSession, category_id: int, image: Upload
     ext = validate_image(image)
 
     if category.image_url:
-        old_filename = Path(category.image_url).name
-        old_path = settings.CATEGORY_UPLOAD_DIR / old_filename
+        old_path = (settings.ROOT_DIR / category.image_url.lstrip("/")).resolve()
+        if not str(old_path).startswith(str(settings.CATEGORY_UPLOAD_DIR.resolve())):
+            raise ValueError("Path traversal detected")
         if old_path.exists():
             old_path.unlink()
 
@@ -300,7 +332,9 @@ async def upload_image(*, session: AsyncSession, category_id: int, image: Upload
     return CategoryResponse.model_validate(category)
 
 
-async def _check_circular_dependency(session: AsyncSession, category_id: int, parent_id: int) -> bool:
+async def _check_circular_dependency(
+    session: AsyncSession, category_id: int, parent_id: int
+) -> bool:
     """
     Проверяет наличие циклической зависимости при назначении нового родителя категории.
 
