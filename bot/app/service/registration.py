@@ -26,6 +26,7 @@ async def complete(token: str, url: str) -> bool:
         async with httpx.AsyncClient() as client:
             response = await client.post(
                 f"{settings.BACKEND_URL}{settings.API_V1_STR}{url}{token}",
+                headers={"X-Bot-Api-Key": settings.BOT_API_KEY},
                 timeout=10.0,
             )
             return response.is_success
