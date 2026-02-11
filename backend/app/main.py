@@ -75,7 +75,9 @@ async def lifespan(app: FastAPI):
             try:
                 await asyncio.sleep(3600)
                 async with AsyncSessionLocal() as session:
-                    deleted = await auth_repository.delete_expired_tokens(session=session)
+                    deleted = await auth_repository.delete_expired_tokens(
+                        session=session
+                    )
                     await session.commit()
                     if deleted > 0:
                         logger.info("tokens_cleanup", deleted_count=deleted)
@@ -152,7 +154,9 @@ app.add_middleware(
         re.compile(re.escape(settings.API_V1_STR) + r"/auth/login"),
         re.compile(re.escape(settings.API_V1_STR) + r"/auth/refresh"),
         re.compile(re.escape(settings.API_V1_STR) + r"/auth/complete-register/[^/]+$"),
-        re.compile(re.escape(settings.API_V1_STR) + r"/auth/complete-reset-verification/[^/]+$"),
+        re.compile(
+            re.escape(settings.API_V1_STR) + r"/auth/complete-reset-verification/[^/]+$"
+        ),
         re.compile(re.escape(settings.API_V1_STR) + r"/orders/webhook"),
     ],
 )
@@ -178,13 +182,6 @@ api_router.include_router(pickup_point_router)
 api_router.include_router(flower_router)
 api_router.include_router(banner_router)
 app.include_router(api_router, dependencies=[Depends(csrf_header_scheme)])
-
-
-@app.get("/scalar", include_in_schema=False)
-async def scalar_html():
-    return get_scalar_api_reference(
-        openapi_url=app.openapi_url,
-    )
 
 
 settings.ROOT_DIR.mkdir(parents=True, exist_ok=True)
