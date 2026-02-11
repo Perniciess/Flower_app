@@ -1,5 +1,3 @@
-"""Сервис для работы с точками самовывоза."""
-
 from collections.abc import Sequence
 
 from fastapi_pagination import Page
@@ -9,7 +7,11 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.exceptions import PickupPointNotActiveError, PickupPointNotFoundError
 from app.models.pickups_model import PickupPoint
 from app.repository import pickups_repository
-from app.schemas.pickups_schema import PickupPointCreate, PickupPointResponse, PickupPointUpdate
+from app.schemas.pickups_schema import (
+    PickupPointCreate,
+    PickupPointResponse,
+    PickupPointUpdate,
+)
 
 
 async def create_pickup_point(session: AsyncSession, data: PickupPointCreate) -> PickupPointResponse:
@@ -46,7 +48,9 @@ async def get_pickup_point_by_id(session: AsyncSession, pickup_point_id: int) ->
     return PickupPointResponse.model_validate(pickup_point)
 
 
-async def get_all_active_pickup_points(session: AsyncSession) -> Sequence[PickupPointResponse]:
+async def get_all_active_pickup_points(
+    session: AsyncSession,
+) -> Sequence[PickupPointResponse]:
     """Получить все активные точки самовывоза.
 
     Args:

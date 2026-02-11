@@ -11,9 +11,7 @@ class RedisManager:
 
     async def init_pool(self) -> None:
         """Инициализация пула."""
-        self.pool = ConnectionPool.from_url(
-            f"{settings.REDIS_URL}", max_connections=10, decode_responses=True
-        )
+        self.pool = ConnectionPool.from_url(f"{settings.REDIS_URL}", max_connections=10, decode_responses=True)
 
     async def close_pool(self) -> None:
         """Закрытие пула."""

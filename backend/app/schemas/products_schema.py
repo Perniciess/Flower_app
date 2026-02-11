@@ -13,13 +13,22 @@ class ProductImageResponse(BaseModel):
     sort_order: int
 
 
-class ProductBase(BaseModel):
-    """Базовые поля товара, используемые в других схемах."""
+class FlowerInComposition(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
 
-    name: str = Field(..., description="Название товара")
-    price: Decimal = Field(..., description="Стоимость товара")
-    description: str = Field(..., description="Описание")
-    color: str = Field(..., description="Цвет")
+    id: int
+    name: str
+    price: Decimal
+
+
+class ProductBase(BaseModel):
+    name: str = Field(..., max_length=255, description="Название товара")
+    price: Decimal = Field(..., gt=0, description="Стоимость товара")
+    sort_order: int = Field(default=0, description="Порядок сортировки")
+    description: str = Field(..., max_length=2000, description="Описание")
+    color: str = Field(..., max_length=64, description="Цвет")
+    is_active: bool = Field(default=False, description="Активен ли товар")
+    in_stock: bool = Field(default=True, description="В наличии")
 
 
 class ProductCreate(ProductBase):
@@ -29,20 +38,31 @@ class ProductCreate(ProductBase):
 
 
 class ProductUpdate(BaseModel):
-    """Схема для частичного обновления данных товара."""
-
-    name: str | None = Field(default=None, description="Название товара")
-    price: Decimal | None = Field(default=None, description="Стоимость товара")
-    description: str | None = Field(default=None, description="Описание")
-    color: str | None = Field(default=None, description="Цвет")
+    name: str | None = Field(
+        default=None, max_length=255, description="Название товара"
+    )
+    price: Decimal | None = Field(default=None, gt=0, description="Стоимость товара")
+    description: str | None = Field(
+        default=None, max_length=2000, description="Описание"
+    )
+    color: str | None = Field(default=None, max_length=64, description="Цвет")
+    is_active: bool | None = Field(default=None, description="Активен ли товар")
+    in_stock: bool | None = Field(default=None, description="В наличии")
 
 
 class ProductResponse(ProductBase):
-    """Схема для ответа API с данными товара."""
-
     model_config = ConfigDict(from_attributes=True)
 
     id: int = Field(..., description="Уникальный идентификатор товара")
-    images: list[ProductImageResponse] = Field(default_factory=list, description="Изображения товара")
-    discounted_price: Decimal | None = Field(default=None, description="Цена со скидкой")
-    discount_percentage: Decimal | None = Field(default=None, description="Процент скидки")
+    images: list[ProductImageResponse] = Field(
+        default_factory=list, description="Изображения товара"
+    )
+    composition: list[FlowerInComposition] = Field(
+        default_factory=list, description="Состав букета"
+    )
+    discounted_price: Decimal | None = Field(
+        default=None, description="Цена со скидкой"
+    )
+    discount_percentage: Decimal | None = Field(
+        default=None, description="Процент скидки"
+    )

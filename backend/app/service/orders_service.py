@@ -12,6 +12,7 @@ from app.core.exceptions import (
     InsufficientPermissionError,
     OrderNotFoundError,
     OrderNotUpdatedError,
+    ProductOutOfStockError,
 )
 from app.models.orders_model import Order, Status
 from app.models.users_model import Role, User
@@ -50,6 +51,8 @@ async def create_order(
         CartNotFoundError: если корзина пользователя не найдена
         EmptyCartError: если корзина пустая
     """
+    await orders_repository.acquire_user_order_lock(session=session, user_id=user_id)
+
     cart = await carts_repository.get_cart_by_user_id(session=session, user_id=user_id)
     if cart is None:
         raise CartNotFoundError(user_id=user_id)
@@ -62,12 +65,20 @@ async def create_order(
 
     product_ids = [item.product_id for item in cart.cart_item]
     products = await products_repository.get_products_by_ids(session=session, product_ids=product_ids)
+
+    out_of_stock = [p for p in products if not p.in_stock]
+    if out_of_stock:
+        raise ProductOutOfStockError(product_ids=[p.id for p in out_of_stock])
+
     discount_map = await discounts_service.enrich_products(session=session, products=products)
 
+    product_base_prices = {p.id: p.price for p in products}
     price_map: dict[int, Decimal] = {}
     for item in cart.cart_item:
         discounted_price, _ = discount_map.get(item.product_id, (None, None))
-        price_map[item.product_id] = discounted_price if discounted_price is not None else item.price
+        price_map[item.product_id] = (
+            discounted_price if discounted_price is not None else product_base_prices[item.product_id]
+        )
 
     pending_order = await orders_repository.get_pending_order_by_user_id(session=session, user_id=user_id)
     if pending_order is not None:
@@ -109,6 +120,9 @@ async def process_webhook(*, session: AsyncSession, payload: WebhookPayload) -> 
     order = await orders_repository.get_order_by_payment_id(session=session, payment_id=payload.object.id)
     if order is None:
         return
+
+    if order.status != Status.PENDING:
+        return  # Already processed — idempotent
 
     if payload.event == "payment.succeeded":
         await orders_repository.mark_order_paid(session=session, order_id=order.id)

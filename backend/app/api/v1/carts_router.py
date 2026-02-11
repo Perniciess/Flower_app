@@ -4,14 +4,17 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.deps import require_admin, require_client
 from app.db.session import get_db
 from app.models.users_model import User
-from app.schemas.carts_schema import CartItemResponse, CartItemUpdate, CartResponse
+from app.schemas.carts_schema import CartItemResponse, CartResponse
 from app.service import carts_service
 
 cart_router = APIRouter(prefix="/carts", tags=["carts"])
 
 
 @cart_router.get(
-    "", response_model=CartResponse, status_code=status.HTTP_200_OK, summary="Получить корзину текущего пользователя"
+    "",
+    response_model=CartResponse,
+    status_code=status.HTTP_200_OK,
+    summary="Получить корзину текущего пользователя",
 )
 async def get_current_user_cart(
     user: User = Depends(require_client), session: AsyncSession = Depends(get_db)
@@ -25,7 +28,9 @@ async def get_current_user_cart(
     return cart
 
 
-@cart_router.delete("/{cart_id}", status_code=status.HTTP_204_NO_CONTENT, summary="Удалить корзину")
+@cart_router.delete(
+    "/{cart_id}", status_code=status.HTTP_204_NO_CONTENT, summary="Удалить корзину"
+)
 async def delete_cart(
     cart_id: int,
     user: User = Depends(require_admin),
@@ -69,7 +74,7 @@ async def create_cart_item(
 
 @cart_router.patch(
     "/cart_item/{cart_item_id}",
-    response_model=CartItemUpdate,
+    response_model=CartItemResponse,
     status_code=status.HTTP_200_OK,
     summary="Обновить количество товара в корзине",
 )
@@ -94,7 +99,9 @@ async def update_cart_item_quantity(
 
 
 @cart_router.delete(
-    "/cart_item/{cart_item_id}", status_code=status.HTTP_204_NO_CONTENT, summary="Удалить товар из корзины"
+    "/cart_item/{cart_item_id}",
+    status_code=status.HTTP_204_NO_CONTENT,
+    summary="Удалить товар из корзины",
 )
 async def delete_cart_item(
     cart_item_id: int,
@@ -106,4 +113,6 @@ async def delete_cart_item(
 
     Требует авторизации.
     """
-    await carts_service.delete_cart_item(session=session, cart_item_id=cart_item_id, current_user=current_user)
+    await carts_service.delete_cart_item(
+        session=session, cart_item_id=cart_item_id, current_user=current_user
+    )

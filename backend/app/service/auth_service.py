@@ -1,11 +1,14 @@
 import json
 from typing import Any
 
+import structlog
 from redis.asyncio import Redis
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import settings
 from app.core.exceptions import (
+    AccountLockedError,
     InvalidTokenError,
     PasswordsDoNotMatchError,
     UserNotFoundError,
@@ -29,6 +32,8 @@ from app.schemas.auth_schema import (
     Tokens,
     VerificationDeepLink,
 )
+
+logger = structlog.get_logger(__name__)
 
 
 async def register(
@@ -78,40 +83,74 @@ async def complete_register(
     Raises:
         InvalidTokenError: неправильный токен
     """
-    data_user = await _get_redis_data(redis, f"v:{verification_token}")
+    data_user = await _pop_redis_data(redis, f"v:{verification_token}")
     user_exist = await users_repository.get_user_by_phone(
         session=session, phone_number=data_user["phone_number"]
     )
     if not user_exist:
-        await users_repository.create_user(session=session, data=data_user)
+        try:
+            await users_repository.create_user(session=session, data=data_user)
+        except IntegrityError as exc:
+            await session.rollback()
+            error_info = str(exc.orig) if exc.orig else ""
+            if "phone_number" not in error_info:
+                raise
+    logger.info(
+        "auth_register_complete", verification_token=verification_token[:8] + "..."
+    )
 
-    await redis.delete(f"v:{verification_token}")
 
-
-async def login(*, session: AsyncSession, data: AuthLogin) -> Tokens:
+async def login(*, session: AsyncSession, redis: Redis, data: AuthLogin) -> Tokens:
     """
     Авторизует пользователя в системе.
 
     Args:
         session: сессия базы данных
+        redis: сессия Redis
         data: данные для авторизации пользователя
 
     Returns:
         Tokens: access и refresh токены
 
     Raises:
+        AccountLockedError: если аккаунт заблокирован после 10 неудачных попыток
         UserNotFoundError: если пользователь с таким phone_number не существует
         PasswordsDoNotMatchError: если пароли не совпадают
     """
+    lockout_key = f"lockout:{data.phone_number}"
+    attempts = await redis.get(lockout_key)
+    if attempts and int(attempts) >= 10:
+        logger.warning(
+            "auth_account_locked",
+            phone_number=data.phone_number,
+            attempts=int(attempts),
+        )
+        raise AccountLockedError()
+
     user = await users_repository.get_user_by_phone(
         session=session, phone_number=data.phone_number
     )
-    if user is None or not verify_password(data.password, user.password_hash):
+    if user is None:
+        verify_password(data.password, get_password_hash("dummy-constant-time-pad"))
+        await _increment_login_attempts(redis, lockout_key)
+        logger.warning(
+            "auth_login_failed", phone_number=data.phone_number, reason="user_not_found"
+        )
+        raise PasswordsDoNotMatchError("Неверный номер телефона или пароль")
+    if not verify_password(data.password, user.password_hash):
+        await _increment_login_attempts(redis, lockout_key)
+        logger.warning(
+            "auth_login_failed",
+            phone_number=data.phone_number,
+            reason="invalid_password",
+        )
         raise PasswordsDoNotMatchError("Неверный номер телефона или пароль")
 
     access_token = create_access_token(user_id=user.id)
     refresh_token = await _save_refresh_token(session=session, user_id=user.id)
+    await redis.delete(lockout_key)
 
+    logger.info("auth_login_success", phone_number=data.phone_number, user_id=user.id)
     return Tokens(access_token=access_token, refresh_token=refresh_token)
 
 
@@ -230,6 +269,7 @@ async def change_password(
     new_access_token = create_access_token(user_id=user.id)
     refresh_token = await _save_refresh_token(session=session, user_id=user.id)
     await add_to_blacklist(redis=redis, access_token=access_token)
+    logger.info("auth_password_changed", user_id=user.id)
     return Tokens(access_token=new_access_token, refresh_token=refresh_token)
 
 
@@ -268,6 +308,11 @@ async def reset_password(
     }
     await redis.set(f"r:{reset_token}", json.dumps(user_data), ex=300)
     telegram_link = f"{settings.RESET}{reset_token}"
+    logger.info(
+        "auth_password_reset_initiated",
+        user_id=user_exist.id,
+        reset_token=reset_token[:8] + "...",
+    )
     return VerificationDeepLink(
         token=reset_token, telegram_link=telegram_link, expires_in=300
     )
@@ -285,7 +330,7 @@ async def complete_reset(*, redis: Redis, reset_token: str) -> None:
     Returns:
         None
     """
-    key = f"r{reset_token}"
+    key = f"r:{reset_token}"
     ttl = await redis.ttl(key)
 
     if ttl <= 0:
@@ -296,7 +341,7 @@ async def complete_reset(*, redis: Redis, reset_token: str) -> None:
     new_ttl = await redis.ttl(key)
     data_user["verified"] = True
     await redis.set(key, json.dumps(data_user), ex=new_ttl)
-    await redis.publish(key, "verified")
+    await redis.publish(f"reset:{reset_token}", "verified")
 
 
 async def set_new_password(
@@ -318,7 +363,7 @@ async def set_new_password(
         InvalidTokenError: если токен сброса не совпадает с токеном из хранилища
         UserNotUpdatedError: если пользователь не нгайден
     """
-    data_user = await _get_redis_data(redis, f"r:{reset_token}")
+    data_user = await _pop_redis_data(redis, f"r:{reset_token}")
 
     if not data_user.get("verified"):
         raise InvalidTokenError()
@@ -332,8 +377,8 @@ async def set_new_password(
         raise UserNotUpdatedError(user_id=user_id)
 
     await auth_repository.revoke_all(session=session, user_id=user_id)
-    await redis.delete(f"r:{reset_token}")
 
+    logger.info("auth_password_reset_complete", user_id=user_id)
     access_token = create_access_token(user_id=user_id)
     refresh_token = await _save_refresh_token(session=session, user_id=user_id)
     return Tokens(access_token=access_token, refresh_token=refresh_token)
@@ -386,3 +431,22 @@ async def _get_redis_data(redis: Redis, key: str) -> dict[str, Any]:
     except json.JSONDecodeError:
         await redis.delete(key)
         raise InvalidTokenError() from None
+
+
+async def _pop_redis_data(redis: Redis, key: str) -> dict[str, Any]:
+    """Атомарно читает и удаляет данные из Redis (GETDEL). Предотвращает повторное использование токена."""
+    raw = await redis.getdel(key)
+    if raw is None:
+        raise InvalidTokenError()
+    try:
+        return json.loads(raw)
+    except json.JSONDecodeError:
+        raise InvalidTokenError() from None
+
+
+async def _increment_login_attempts(redis: Redis, lockout_key: str) -> None:
+    """Атомарно увеличивает счётчик неудачных попыток входа (INCR + EXPIRE в pipeline)."""
+    async with redis.pipeline(transaction=True) as pipe:
+        pipe.incr(lockout_key)
+        pipe.expire(lockout_key, 900)
+        await pipe.execute()

@@ -16,13 +16,13 @@ class CartItemCreate(BaseModel):
     """Схема для создания товара в корзине."""
 
     product_id: int = Field(..., description="Уникальный идентификатор товара")
-    quantity: int = Field(default=1, ge=1)
+    quantity: int = Field(default=1, ge=1, le=999)
 
 
 class CartItemUpdate(BaseModel):
     """Схема для частичного обновления товара в корзине."""
 
-    quantity: int | None = Field(default=None, description="Количество товара")
+    quantity: int | None = Field(default=None, ge=1, le=999, description="Количество товара")
 
 
 class CartItemResponse(CartItemBase):

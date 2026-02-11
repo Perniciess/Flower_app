@@ -3,13 +3,18 @@ from collections.abc import Sequence
 from datetime import UTC, datetime
 from decimal import Decimal
 
-from sqlalchemy import Select, select, update
+from sqlalchemy import Select, select, text, update
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
 from app.models.carts_model import Cart
 from app.models.orders_model import Delivery, Order, OrderItem, Status
 from app.schemas.orders_schema import CreateOrderRequest
+
+
+async def acquire_user_order_lock(*, session: AsyncSession, user_id: int) -> None:
+    """Транзакционная advisory-блокировка для предотвращения конкурентного создания заказов одним пользователем."""
+    await session.execute(text("SELECT pg_advisory_xact_lock(:id)"), {"id": user_id})
 
 
 async def create_order(
@@ -62,13 +67,14 @@ async def get_pending_order_by_user_id(*, session: AsyncSession, user_id: int) -
         .options(selectinload(Order.order_item))
         .where(Order.user_id == user_id)
         .where(Order.status == Status.PENDING)
+        .with_for_update()
     )
     result = await session.execute(statement)
     return result.scalar_one_or_none()
 
 
 async def get_order_by_payment_id(*, session: AsyncSession, payment_id: str) -> Order | None:
-    statement = select(Order).where(Order.payment_id == payment_id)
+    statement = select(Order).where(Order.payment_id == payment_id).with_for_update()
     result = await session.execute(statement)
     return result.scalar_one_or_none()
 

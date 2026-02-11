@@ -1,6 +1,5 @@
 import uuid
 from collections.abc import Sequence
-from pathlib import Path
 
 import anyio
 from fastapi import UploadFile
@@ -217,8 +216,9 @@ async def delete_category_by_id(session: AsyncSession, category_id: int) -> None
         raise CategoryNotExistsError(category_id=category_id)
 
     if category.image_url:
-        filename = Path(category.image_url).name
-        file_path = settings.CATEGORY_UPLOAD_DIR / filename
+        file_path = (settings.ROOT_DIR / category.image_url.lstrip("/")).resolve()
+        if not str(file_path).startswith(str(settings.CATEGORY_UPLOAD_DIR.resolve())):
+            raise ValueError("Path traversal detected")
         if file_path.exists():
             file_path.unlink()
 
@@ -246,8 +246,9 @@ async def delete_image(*, session: AsyncSession, category_id: int) -> CategoryRe
         raise CategoryNotExistsError(category_id=category_id)
 
     if category.image_url:
-        filename = Path(category.image_url).name
-        file_path = settings.CATEGORY_UPLOAD_DIR / filename
+        file_path = (settings.ROOT_DIR / category.image_url.lstrip("/")).resolve()
+        if not str(file_path).startswith(str(settings.CATEGORY_UPLOAD_DIR.resolve())):
+            raise ValueError("Path traversal detected")
         if file_path.exists():
             file_path.unlink()
 
@@ -280,8 +281,9 @@ async def upload_image(*, session: AsyncSession, category_id: int, image: Upload
     ext = validate_image(image)
 
     if category.image_url:
-        old_filename = Path(category.image_url).name
-        old_path = settings.CATEGORY_UPLOAD_DIR / old_filename
+        old_path = (settings.ROOT_DIR / category.image_url.lstrip("/")).resolve()
+        if not str(old_path).startswith(str(settings.CATEGORY_UPLOAD_DIR.resolve())):
+            raise ValueError("Path traversal detected")
         if old_path.exists():
             old_path.unlink()
 

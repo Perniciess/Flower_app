@@ -9,6 +9,7 @@ class Settings(BaseSettings):
     )
 
     BOT_TOKEN: str
+    BOT_API_KEY: str
     REDIS_URL: str
     BACKEND_URL: str
     WEBSITE_URL: str

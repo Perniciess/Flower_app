@@ -5,13 +5,22 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.deps import require_admin
 from app.db.session import get_db
 from app.models.users_model import User
-from app.schemas.discounts_schema import DiscountCreate, DiscountResponse, DiscountUpdate
+from app.schemas.discounts_schema import (
+    DiscountCreate,
+    DiscountResponse,
+    DiscountUpdate,
+)
 from app.service import discounts_service
 
 discount_router = APIRouter(prefix="/discounts", tags=["discounts"])
 
 
-@discount_router.post("", response_model=DiscountResponse, status_code=status.HTTP_201_CREATED, summary="Создать акцию")
+@discount_router.post(
+    "",
+    response_model=DiscountResponse,
+    status_code=status.HTTP_201_CREATED,
+    summary="Создать акцию",
+)
 async def create_discount(
     discount_data: DiscountCreate,
     session: AsyncSession = Depends(get_db),
@@ -22,11 +31,16 @@ async def create_discount(
 
     Требует прав администратора.
     """
-    return await discounts_service.create_discount(session=session, discount_data=discount_data)
+    return await discounts_service.create_discount(
+        session=session, discount_data=discount_data
+    )
 
 
 @discount_router.get(
-    "", response_model=Page[DiscountResponse], status_code=status.HTTP_200_OK, summary="Список всех акций"
+    "",
+    response_model=Page[DiscountResponse],
+    status_code=status.HTTP_200_OK,
+    summary="Список всех акций",
 )
 async def get_discounts(
     session: AsyncSession = Depends(get_db),
@@ -41,7 +55,10 @@ async def get_discounts(
 
 
 @discount_router.get(
-    "/{discount_id}", response_model=DiscountResponse, status_code=status.HTTP_200_OK, summary="Получить акцию по ID"
+    "/{discount_id}",
+    response_model=DiscountResponse,
+    status_code=status.HTTP_200_OK,
+    summary="Получить акцию по ID",
 )
 async def get_discount(
     discount_id: int,
@@ -53,11 +70,16 @@ async def get_discount(
 
     Требует прав администратора.
     """
-    return await discounts_service.get_discount(session=session, discount_id=discount_id)
+    return await discounts_service.get_discount(
+        session=session, discount_id=discount_id
+    )
 
 
 @discount_router.patch(
-    "/{discount_id}", response_model=DiscountResponse, status_code=status.HTTP_200_OK, summary="Обновить акцию"
+    "/{discount_id}",
+    response_model=DiscountResponse,
+    status_code=status.HTTP_200_OK,
+    summary="Обновить акцию",
 )
 async def update_discount(
     discount_id: int,
@@ -75,7 +97,9 @@ async def update_discount(
     )
 
 
-@discount_router.delete("/{discount_id}", status_code=status.HTTP_204_NO_CONTENT, summary="Удалить акцию")
+@discount_router.delete(
+    "/{discount_id}", status_code=status.HTTP_204_NO_CONTENT, summary="Удалить акцию"
+)
 async def delete_discount(
     discount_id: int,
     session: AsyncSession = Depends(get_db),

@@ -4,8 +4,10 @@ from typing import Annotated, Any, Literal
 from pydantic import (
     AnyUrl,
     BeforeValidator,
+    Field,
     PostgresDsn,
     computed_field,
+    model_validator,
 )
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
@@ -20,7 +22,7 @@ def parse_cors(v: Any) -> list[str] | str:
 
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
-        env_file="../.env",
+        env_file=".env",
         env_ignore_empty=True,
         extra="ignore",
     )
@@ -37,13 +39,14 @@ class Settings(BaseSettings):
 
     ALGORITHM: str = "HS256"
 
-    FRONTEND_HOST: str = "http://localhost:5173"
+    FRONTEND_HOST: str = "http://localhost:3000"
     ENVIRONMENT: Literal["local", "staging", "production"] = "local"
     COOKIE_SECURE: bool = False
     COOKIE_SAMESITE: Literal["lax", "strict", "none"] = "strict"
     BACKEND_CORS_ORIGINS: Annotated[
         list[AnyUrl] | str, BeforeValidator(parse_cors)
     ] = []
+    TRUSTED_PROXIES: list[str] = []
 
     # SECURITY.PY
     REFRESH_TOKEN_BYTES: int = 64
@@ -64,6 +67,11 @@ class Settings(BaseSettings):
 
     @computed_field
     @property
+    def BANNER_UPLOAD_DIR(self) -> Path:
+        return Path(self.STATIC_FILES_DIR) / "banners"
+
+    @computed_field
+    @property
     def ROOT_DIR(self) -> Path:
         return Path(self.STATIC_FILES_DIR)
 
@@ -72,8 +80,10 @@ class Settings(BaseSettings):
         return f"/{self.STATIC_FILES_DIR}/products/{filename}"
 
     def get_category_image_url(self, filename: str) -> str:
-        """Генерирует URL для изображения категории."""
         return f"/{self.STATIC_FILES_DIR}/categories/{filename}"
+
+    def get_banner_image_url(self, filename: str) -> str:
+        return f"/{self.STATIC_FILES_DIR}/banners/{filename}"
 
     @computed_field
     @property
@@ -101,9 +111,24 @@ class Settings(BaseSettings):
         True  # True - автосписание, False - после подтверждения. Обговорить с Сашей
     )
 
+    # BOT
+    BOT_API_KEY: str
+
     # TG URL
-    VERIFICATION: str = "https://t.me/kupibuket74_bot?start="
-    RESET: str = "https://t.me/kupibuket74_bot?start=reset_"
+    TELEGRAM_BOT_URL: str = Field(
+        default="https://t.me/kupibuket74_bot",
+        description="Telegram bot URL for verification deeplinks",
+    )
+
+    @computed_field
+    @property
+    def VERIFICATION(self) -> str:
+        return f"{self.TELEGRAM_BOT_URL}?start="
+
+    @computed_field
+    @property
+    def RESET(self) -> str:
+        return f"{self.TELEGRAM_BOT_URL}?start=reset_"
 
     @computed_field
     @property
@@ -121,6 +146,16 @@ class Settings(BaseSettings):
             port=self.POSTGRES_PORT,
             path=self.POSTGRES_DB,
         )
+
+    @model_validator(mode="after")
+    def validate_production_secrets(self) -> "Settings":
+        """Validate that production secrets are not default values."""
+        if self.ENVIRONMENT == "production":
+            if self.SECRET_KEY == "your-secret-key-here":  # noqa: S105
+                raise ValueError("SECRET_KEY must be changed in production")
+            if self.CSRF_SECRET_KEY == "your-csrf-secret-key-here":  # noqa: S105
+                raise ValueError("CSRF_SECRET_KEY must be changed in production")
+        return self
 
 
 settings = Settings()  # type: ignore

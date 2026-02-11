@@ -20,7 +20,10 @@ category_router = APIRouter(prefix="/category", tags=["category"])
 
 
 @category_router.post(
-    "/create", response_model=CategoryResponse, status_code=status.HTTP_201_CREATED, summary="Создание категории"
+    "/create",
+    response_model=CategoryResponse,
+    status_code=status.HTTP_201_CREATED,
+    summary="Создание категории",
 )
 async def create_category(
     category_data: CategoryCreate,
@@ -32,7 +35,9 @@ async def create_category(
 
     Требует прав администратора.
     """
-    category = await categories_service.create_category(session=session, category_data=category_data)
+    category = await categories_service.create_category(
+        session=session, category_data=category_data
+    )
     return category
 
 
@@ -88,7 +93,9 @@ async def get_category_tree(
     """
     Получить дерево категорий.
     """
-    return await categories_service.get_category_tree(session=session, only_active=only_active)
+    return await categories_service.get_category_tree(
+        session=session, only_active=only_active
+    )
 
 
 @category_router.get(
@@ -104,7 +111,9 @@ async def get_category_by_id(
     """
     Получить категорию по ID.
     """
-    return await categories_service.get_category_by_id(session=session, category_id=category_id)
+    return await categories_service.get_category_by_id(
+        session=session, category_id=category_id
+    )
 
 
 @category_router.patch(
@@ -129,7 +138,11 @@ async def update_category(
     )
 
 
-@category_router.delete("/{category_id}", status_code=status.HTTP_204_NO_CONTENT, summary="Удалить категорию")
+@category_router.delete(
+    "/{category_id}",
+    status_code=status.HTTP_204_NO_CONTENT,
+    summary="Удалить категорию",
+)
 async def delete_category_by_id(
     category_id: int,
     session: AsyncSession = Depends(get_db),
@@ -140,7 +153,9 @@ async def delete_category_by_id(
 
     Требует прав администратора.
     """
-    await categories_service.delete_category_by_id(session=session, category_id=category_id)
+    await categories_service.delete_category_by_id(
+        session=session, category_id=category_id
+    )
 
 
 @category_router.post(
@@ -160,7 +175,9 @@ async def upload_category_image(
 
     Требует прав администратора.
     """
-    category = await categories_service.upload_image(session=session, category_id=category_id, image=image)
+    category = await categories_service.upload_image(
+        session=session, category_id=category_id, image=image
+    )
     return category
 
 
@@ -180,14 +197,21 @@ async def delete_category_image(
 
     Требует прав администратора.
     """
-    return await categories_service.delete_image(session=session, category_id=category_id)
+    return await categories_service.delete_image(
+        session=session, category_id=category_id
+    )
 
 
 @category_router.get(
-    "/{slug}", response_model=CategoryResponse, status_code=status.HTTP_200_OK, summary="Получить категорию по slug"
+    "/{slug}",
+    response_model=CategoryResponse,
+    status_code=status.HTTP_200_OK,
+    summary="Получить категорию по slug",
 )
 @limiter.limit("60/minute")
-async def get_category_by_slug(request: Request, slug: str, session: AsyncSession = Depends(get_db)) -> CategoryResponse:
+async def get_category_by_slug(
+    request: Request, slug: str, session: AsyncSession = Depends(get_db)
+) -> CategoryResponse:
     """
     Получить категорию по slug.
     """

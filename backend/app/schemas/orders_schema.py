@@ -39,10 +39,10 @@ class DeliveryResponse(BaseModel):
 class DeliveryRequest(BaseModel):
     """Схема доставки в запросе на создание заказа."""
 
-    address: str = Field(..., description="Адрес доставки")
-    recipient_name: str | None = Field(None, description="Имя получателя")
+    address: str = Field(..., min_length=1, max_length=512, description="Адрес доставки")
+    recipient_name: str | None = Field(None, max_length=128, description="Имя получателя")
     recipient_phone: PhoneNumber = Field(..., description="Телефон получателя")
-    comment: str | None = Field(None, description="Комментарий")
+    comment: str | None = Field(None, max_length=512, description="Комментарий")
 
     @field_validator("recipient_phone")
     @classmethod

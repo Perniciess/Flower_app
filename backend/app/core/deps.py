@@ -1,3 +1,5 @@
+import hmac
+
 import jwt
 from fastapi import Depends, HTTPException, Request, status
 from redis.asyncio import Redis
@@ -15,13 +17,12 @@ from .security import is_blacklisted, oauth2_scheme
 
 
 async def get_current_user(
-    request: Request,
     session: AsyncSession = Depends(get_db),
     redis: Redis = Depends(get_redis),
     header_token: str | None = Depends(oauth2_scheme),
 ):
     """Получение активного пользователя из токена."""
-    token = header_token or request.cookies.get("access_token")
+    token = header_token
 
     if not token:
         raise HTTPException(
@@ -35,6 +36,8 @@ async def get_current_user(
     try:
         payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
         sub = payload.get("sub")
+        if not sub:
+            raise HTTPException(status_code=401, detail="Could not validate credentials")
         user_id = int(sub)
     except (jwt.InvalidTokenError, TypeError, ValueError):
         raise HTTPException(status_code=401, detail="Could not validate credentials") from None
@@ -60,6 +63,12 @@ class RoleChecker:
 
 require_admin = RoleChecker([Role.ADMIN])
 require_client = RoleChecker([Role.CLIENT, Role.ADMIN])
+
+
+async def verify_bot_api_key(request: Request) -> None:
+    api_key = request.headers.get("X-Bot-Api-Key")
+    if not api_key or not hmac.compare_digest(api_key, settings.BOT_API_KEY):
+        raise HTTPException(status_code=403, detail="Forbidden: invalid bot API key")
 
 
 async def verify_yookassa_request(request: Request) -> None:
