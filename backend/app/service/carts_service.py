@@ -98,7 +98,13 @@ async def create_cart_item(
 
     cart = await carts_repository.get_cart_by_user_id(session=session, user_id=user_id)
     if not cart:
-        cart = await carts_repository.create_cart(session=session, user_id=user_id)
+        try:
+            cart = await carts_repository.create_cart(session=session, user_id=user_id)
+        except IntegrityError:
+            await session.rollback()
+            cart = await carts_repository.get_cart_by_user_id(session=session, user_id=user_id)
+            if cart is None:
+                raise
 
     cart_item_exists = await carts_repository.get_cart_item_for_update(
         session=session, cart_id=cart.id, product_id=product_id
@@ -148,7 +154,7 @@ async def update_cart_item_quantity(
         CartNotFoundError: корзина по ID не найдена
         InsufficientPermissionError: нет прав на изменение корзины
     """
-    cart_item = await carts_repository.get_cart_item_by_id(session=session, cart_item_id=cart_item_id)
+    cart_item = await carts_repository.get_cart_item_by_id_for_update(session=session, cart_item_id=cart_item_id)
     if cart_item is None:
         raise CartItemNotFoundError(cart_item_id)
 
@@ -176,7 +182,7 @@ async def delete_cart_item(*, session: AsyncSession, cart_item_id: int, current_
         CartItemNotFoundError: товар корзины по ID не найден
         InsufficientPermissionError: нет прав на удаление товара из чужой корзины
     """
-    cart_item = await carts_repository.get_cart_item_by_id(session=session, cart_item_id=cart_item_id)
+    cart_item = await carts_repository.get_cart_item_by_id_for_update(session=session, cart_item_id=cart_item_id)
     if cart_item is None:
         raise CartItemNotFoundError(cart_item_id)
 

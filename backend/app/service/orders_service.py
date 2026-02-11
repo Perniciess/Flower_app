@@ -51,6 +51,8 @@ async def create_order(
         CartNotFoundError: если корзина пользователя не найдена
         EmptyCartError: если корзина пустая
     """
+    await orders_repository.acquire_user_order_lock(session=session, user_id=user_id)
+
     cart = await carts_repository.get_cart_by_user_id(session=session, user_id=user_id)
     if cart is None:
         raise CartNotFoundError(user_id=user_id)

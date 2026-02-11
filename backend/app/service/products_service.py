@@ -23,7 +23,10 @@ from app.utils.validators.image import validate_image
 
 
 async def create_product(
-    *, session: AsyncSession, product_data: ProductCreate, image: UploadFile | None = None
+    *,
+    session: AsyncSession,
+    product_data: ProductCreate,
+    image: UploadFile | None = None,
 ) -> ProductResponse:
     """
     Создает новый товар в базе данных.
@@ -36,7 +39,9 @@ async def create_product(
     Returns:
         ProductResponse с данными созданного цветка
     """
-    product = await products_repository.create_product(session=session, product_data=product_data)
+    product = await products_repository.create_product(
+        session=session, product_data=product_data
+    )
 
     if image is not None:
         ext = validate_image(image)
@@ -49,13 +54,19 @@ async def create_product(
             await f.write(content)
 
         url = settings.get_product_image_url(filename)
-        await products_repository.create_product_image(session=session, product_id=product.id, url=url, sort_order=0)
+        await products_repository.create_product_image(
+            session=session, product_id=product.id, url=url, sort_order=0
+        )
 
-    product = await products_repository.get_product_by_id(session=session, product_id=product.id)
+    product = await products_repository.get_product_by_id(
+        session=session, product_id=product.id
+    )
     return ProductResponse.model_validate(product)
 
 
-async def get_products(*, session: AsyncSession, product_filter: ProductFilter) -> Page[ProductResponse]:
+async def get_products(
+    *, session: AsyncSession, product_filter: ProductFilter
+) -> Page[ProductResponse]:
     """
     Возвращает отфильтрованный пагинированный список товаров из базы данных.
 
@@ -71,7 +82,9 @@ async def get_products(*, session: AsyncSession, product_filter: ProductFilter) 
     sorted_query = product_filter.sort(filtered_query)
     page = await paginate(session, sorted_query)
 
-    discount_map = await discounts_service.enrich_products(session=session, products=page.items)
+    discount_map = await discounts_service.enrich_products(
+        session=session, products=page.items
+    )
 
     enriched_items = []
     for product in page.items:
@@ -99,11 +112,15 @@ async def get_product(*, session: AsyncSession, product_id: int) -> ProductRespo
     Raises:
         ProductNotFoundError: если товар не найден
     """
-    product = await products_repository.get_product(session=session, product_id=product_id)
+    product = await products_repository.get_product(
+        session=session, product_id=product_id
+    )
     if product is None:
         raise ProductNotFoundError(product_id=product_id)
 
-    discount_map = await discounts_service.enrich_products(session=session, products=[product])
+    discount_map = await discounts_service.enrich_products(
+        session=session, products=[product]
+    )
     response = ProductResponse.model_validate(product)
     discounted_price, discount = discount_map.get(product.id, (None, None))
     response.discounted_price = discounted_price
@@ -111,7 +128,9 @@ async def get_product(*, session: AsyncSession, product_id: int) -> ProductRespo
     return response
 
 
-async def update_product(*, session: AsyncSession, product_id: int, product_data: ProductUpdate) -> ProductResponse:
+async def update_product(
+    *, session: AsyncSession, product_id: int, product_data: ProductUpdate
+) -> ProductResponse:
     """
     Обновляет данные товара в базе данных.
 
@@ -142,7 +161,9 @@ async def delete_product(*, session: AsyncSession, product_id: int) -> bool:
     Returns:
         bool: товар удален или нет
     """
-    deleted = await products_repository.delete_product(session=session, product_id=product_id)
+    deleted = await products_repository.delete_product(
+        session=session, product_id=product_id
+    )
     if not deleted:
         raise ProductNotFoundError(product_id=product_id)
     return True
@@ -183,7 +204,9 @@ async def upload_image(
     return ProductImageResponse.model_validate(product_image)
 
 
-async def get_product_images(*, session: AsyncSession) -> Sequence[ProductImageResponse]:
+async def get_product_images(
+    *, session: AsyncSession
+) -> Sequence[ProductImageResponse]:
     """
     Получает список изображений товара.
 
@@ -208,7 +231,9 @@ async def delete_product_image(*, session: AsyncSession, image_id: int) -> bool:
     Returns:
         bool: изображение удалено или нет
     """
-    url = await products_repository.delete_product_image(session=session, image_id=image_id)
+    url = await products_repository.delete_product_image(
+        session=session, image_id=image_id
+    )
     if url is None:
         raise ImageNotFoundError(image_id=image_id)
 
@@ -222,11 +247,15 @@ async def delete_product_image(*, session: AsyncSession, image_id: int) -> bool:
 
 
 async def get_product_price(*, session: AsyncSession, product_id: int) -> Decimal:
-    price = await products_repository.get_product_price(session=session, product_id=product_id)
+    price = await products_repository.get_product_price(
+        session=session, product_id=product_id
+    )
     if price is None:
         raise ProductNotFoundError(product_id=product_id)
     return price
 
 
 async def set_all_products_in_stock(*, session: AsyncSession, in_stock: bool) -> int:
-    return await products_repository.set_all_products_in_stock(session=session, in_stock=in_stock)
+    return await products_repository.set_all_products_in_stock(
+        session=session, in_stock=in_stock
+    )
