@@ -13,7 +13,7 @@ export function Banners() {
         return null;
 
     return (
-        <section className="py-8 w-full overflow-hidden">
+        <section className="mt-[80px] w-full overflow-hidden">
             <div className="container mx-auto px-4">
                 <ul className="flex flex-nowrap md:justify-center gap-5 overflow-x-auto pb-6 scrollbar-hide">
                     {banners.map(banner => (

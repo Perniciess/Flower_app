@@ -34,6 +34,7 @@ async def create_product(
     current_user: User = Depends(require_admin),
     name: str = Form(..., max_length=255, description="Название товара"),
     price: Decimal = Form(..., gt=0, description="Стоимость товара"),
+    sort_order: int = Form(default=0, description="Порядок сортировки"),
     description: str = Form(..., max_length=2000, description="Описание"),
     color: str = Form(..., max_length=64, description="Цвет"),
     is_active: bool = Form(default=False, description="Активен ли товар"),
@@ -52,6 +53,7 @@ async def create_product(
         color=color,
         is_active=is_active,
         in_stock=in_stock,
+        sort_order=sort_order,
     )
     product = await products_service.create_product(
         session=session, product_data=product_data, image=image

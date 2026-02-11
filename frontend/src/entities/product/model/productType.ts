@@ -23,6 +23,7 @@ export interface IProduct {
     discounted_price: string | null;
     discount_percentage: string | null;
 }
-export interface ProductCardProprs {
-    product_id: number;
+
+export interface ProductCardProps {
+    product: IProduct;
 }

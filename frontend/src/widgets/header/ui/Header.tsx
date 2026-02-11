@@ -15,7 +15,7 @@ export function Header() {
                     quality={100}
                     unoptimized
                 />
-                <div className="absolute right-[59px] top-[34px] flex items-center gap-[20px]">
+                <div className="absolute right-[59px] top-[34px] flex items-center gap-[27.5px]">
                     <Link href="">
                         {" "}
                         <svg

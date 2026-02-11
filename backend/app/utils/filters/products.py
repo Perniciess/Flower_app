@@ -14,7 +14,7 @@ class ProductFilter(Filter):
     is_active: bool | None = None
     in_stock: bool | None = None
     search: str | None = None
-    order_by: list[str] | None = Field(default=["id"])
+    order_by: list[str] | None = Field(default=["sort_order"])
 
     class Constants(Filter.Constants):
         model = Product

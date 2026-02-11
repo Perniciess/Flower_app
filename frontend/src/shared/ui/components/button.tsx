@@ -7,7 +7,7 @@ import { buttonVariants } from "./button-variants";
 
 function Button({
     className,
-    variant = "primary",
+    variant = "white_primary",
     size = "default",
     asChild = false,
     ...props
