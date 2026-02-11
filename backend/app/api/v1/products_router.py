@@ -36,7 +36,7 @@ async def create_product(
     price: Decimal = Form(..., gt=0, description="Стоимость товара"),
     description: str = Form(..., max_length=2000, description="Описание"),
     color: str = Form(..., max_length=64, description="Цвет"),
-    is_active: bool = Form(default=True, description="Активен ли товар"),
+    is_active: bool = Form(default=False, description="Активен ли товар"),
     in_stock: bool = Form(default=True, description="В наличии"),
     image: UploadFile | None = None,
 ) -> ProductResponse:

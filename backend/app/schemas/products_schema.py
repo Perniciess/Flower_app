@@ -24,6 +24,7 @@ class FlowerInComposition(BaseModel):
 class ProductBase(BaseModel):
     name: str = Field(..., max_length=255, description="Название товара")
     price: Decimal = Field(..., gt=0, description="Стоимость товара")
+    sort_order: int = Field(default=0, description="Порядок сортировки")
     description: str = Field(..., max_length=2000, description="Описание")
     color: str = Field(..., max_length=64, description="Цвет")
     is_active: bool = Field(default=False, description="Активен ли товар")
