@@ -6,7 +6,7 @@ import { navItems } from "../config";
 
 export function Header() {
     return (
-        <header className="absolute top-0 left-0 z-20 flex h-34.35 w-full flex-col items-center justify-between border-b border-white bg-transparent pt-4.25 pb-3.25">
+        <header className="absolute top-0 left-0 z-20 flex h-34.35 w-full flex-col items-center border-b border-white bg-transparent pt-4.25 pb-3.25">
             <div className="flex w-full items-start justify-center px-10">
                 <Image
                     src="/images/logo_white.png"
@@ -33,7 +33,7 @@ export function Header() {
                     </Link>
                 </div>
             </div>
-            <nav>
+            <nav className="mt-[23px]">
                 <ul className="flex items-center gap-12.5">
                     {navItems.map(item => (
                         <li key={item.href}>
