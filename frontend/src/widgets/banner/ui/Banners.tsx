@@ -15,7 +15,7 @@ export function Banners() {
     return (
         <section className="py-8 w-full overflow-hidden">
             <div className="container mx-auto px-4">
-                <ul className="flex flex-nowrap md:justify-center gap-8 overflow-x-auto pb-6 scrollbar-hide">
+                <ul className="flex flex-nowrap md:justify-center gap-5 overflow-x-auto pb-6 scrollbar-hide">
                     {banners.map(banner => (
                         <li
                             key={banner.id}
