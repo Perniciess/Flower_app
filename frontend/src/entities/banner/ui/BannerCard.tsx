@@ -32,19 +32,19 @@ export function BannerCard({ banner }: BannerCardProps) {
                         "linear-gradient(180deg, rgba(0, 0, 0, 0.5) 0.29%, rgba(0, 0, 0, 0) 51.92%, rgba(0, 0, 0, 0.5) 100%)",
                 }}
             >
-                <h3 className="absolute left-6 top-6 font-montserrat text-[28px] font-medium leading-none tracking-normal transition-transform duration-300 ease-out group-hover:translate-y-2">
+                <h3 className="absolute left-8 top-8 font-montserrat text-[28px] font-medium leading-none tracking-normal transition-transform duration-300 ease-out group-hover:translate-y-2">
                     {banner.title ?? ""}
                 </h3>
                 {banner.description !== null && banner.description.trim() !== ""
                     ? (
-                            <p className="absolute bottom-10 left-6 max-w-[80%] font-montserrat text-[28px] font-medium leading-none tracking-normal opacity-95 line-clamp-2 transition-transform duration-300 ease-out group-hover:-translate-y-2">
+                            <p className="absolute bottom-8 left-8 max-w-[80%] font-montserrat text-[28px] font-medium leading-none tracking-normal opacity-95 line-clamp-2 transition-transform duration-300 ease-out group-hover:-translate-y-2">
                                 {banner.description}
                             </p>
                         )
                     : null}
             </div>
             <div
-                className="pointer-events-none absolute top-[11px] right-4 bottom-5 left-[11px] z-30 rounded-lg border border-white opacity-0 transition-opacity duration-200 group-hover:opacity-100"
+                className="pointer-events-none absolute top-[15px] right-4 bottom-4 left-[15px] z-30 rounded-lg border border-white opacity-0 transition-opacity duration-200 group-hover:opacity-100"
                 aria-hidden
             />
         </div>
