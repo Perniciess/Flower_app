@@ -11,8 +11,8 @@ export function Banners() {
         return null;
 
     return (
-        <section className="mt-[80px] w-full overflow-hidden">
-            <div className="container mx-auto px-4">
+        <section className="mt-20 w-full">
+            <div className="mx-auto w-full max-w-[1440px] px-4">
                 <ul className="flex flex-nowrap md:justify-center gap-5 overflow-x-auto pb-6 scrollbar-hide">
                     {banners.items.map(banner => (
                         <li

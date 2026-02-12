@@ -66,26 +66,6 @@ async def get_products(
     return products
 
 
-@product_router.get(
-    path="/bouqets",
-    response_model=Page[ProductResponse],
-    status_code=status.HTTP_200_OK,
-    summary="Получить список букетов",
-)
-async def get_bouquets(
-    session: AsyncSession = Depends(get_db),
-    product_filter: ProductFilter = FilterDepends(ProductFilter),
-) -> Page[ProductResponse]:
-    """Получить список букетов"""
-    from app.schemas.products_schema import ProductType
-
-    product_filter.type = ProductType.FLOWER
-    products = await products_service.get_products(
-        session=session, product_filter=product_filter
-    )
-    return products
-
-
 @limiter.limit("60/minute")
 async def get_product_by_id(
     request: Request, product_id: int, session: AsyncSession = Depends(get_db)

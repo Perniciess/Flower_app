@@ -37,4 +37,6 @@ export interface ProductFilters {
     in_stock?: boolean;
     search?: string;
     order_by?: string[];
+    type?: "flower" | "gift";
+    flower_id?: number;
 }

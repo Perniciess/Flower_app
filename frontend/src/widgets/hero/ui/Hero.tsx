@@ -33,26 +33,26 @@ export function Hero() {
                         Посмотреть каталог
                     </Button>
                 </div>
-                <div className="absolute left-1/2 top-[87.7%] z-10 flex w-[1038px] -translate-x-1/2 items-center justify-center gap-[23px]">
-                    <div className="flex items-center gap-4">
+                <div className="absolute left-1/2 top-[87.7%] z-10 flex w-[1038px] -translate-x-1/2 items-center justify-center gap-[42px]">
+                    <div className="flex h-16 w-[380px] flex-none grow-0 items-center gap-[20px] rounded-2xl border border-white/15 bg-black/25 px-3 py-2 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.08)] backdrop-blur-xxl backdrop-saturate-150">
                         <CameraIcon />
-                        <p className="text-[18px] text-white">
+                        <p className="font-medium text-[20px] leading-[100%] text-white">
                             Фото вашего букета
                             <br />
                             перед отправкой
                         </p>
                     </div>
-                    <div className="flex items-center gap-4">
+                    <div className="flex h-16 w-[380px] flex-none grow-0 items-center gap-[20px] rounded-2xl border border-white/15 bg-black/25 px-3 py-2 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.08)] backdrop-blur-xxl backdrop-saturate-150">
                         <CarIcon />
-                        <p className="text-[18px] text-white">
+                        <p className="font-medium text-[20px] leading-[100%] text-white">
                             Наша доставка работает
                             <br />
                             24 часа в сутки
                         </p>
                     </div>
-                    <div className="flex items-center gap-4">
+                    <div className="flex h-16 w-[380px] flex-none grow-0 items-center gap-[20px] rounded-2xl border border-white/15 bg-black/25 px-3 py-2 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.08)] backdrop-blur-xxl backdrop-saturate-150">
                         <FlowerIcon />
-                        <p className="text-[18px] text-white">
+                        <p className="font-medium text-[20px] leading-[100%] text-white">
                             Соберите свой букет
                             <br />
                             в нашем конструкторе

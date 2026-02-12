@@ -15,23 +15,8 @@ export function ReasonsCollection() {
         if (!container || !categories || categories.length === 0)
             return 0;
 
-        // Рассчитываем максимальную прокрутку так, чтобы последняя карточка была полностью видна
-        // и не появлялось пустое место справа
-        //
-        // scrollWidth включает весь контент включая padding (left 60px + cards + right 200px)
-        // clientWidth - видимая ширина контейнера
-        //
-        // Когда мы прокручиваем до конца, мы хотим, чтобы:
-        // - Последняя карточка была полностью видна
-        // - Не было пустого места справа
-        //
-        // Стандартная формула: maxScroll = scrollWidth - clientWidth
-        // Но нужно убедиться, что это значение не позволяет прокрутить дальше, чем нужно
         const standardMaxScroll = container.scrollWidth - container.clientWidth;
 
-        // Проверяем, что стандартный расчет корректен
-        // Если scrollWidth включает padding справа (200px), то стандартный расчет должен быть правильным
-        // Но для безопасности ограничиваем максимум этим значением
         const maxScroll = Math.max(0, standardMaxScroll);
 
         return maxScroll;
@@ -45,16 +30,9 @@ export function ReasonsCollection() {
 
         const maxScroll = getMaxScroll();
         const scrollLeft = container.scrollLeft;
-        const scrollAmount = 335; // Размер прокрутки за один клик
-        const threshold = 2; // Порог для учета погрешностей округления
-
-        // Можно прокрутить влево, если мы не в начале
+        const scrollAmount = 335;
+        const threshold = 2;
         const canLeft = scrollLeft > threshold;
-
-        // Можно прокрутить вправо только если:
-        // 1. Мы еще не достигли maxScroll (с учетом порога)
-        // 2. После прокрутки мы не превысим maxScroll
-        // Это предотвращает появление пустого места
         const isNearEnd = scrollLeft >= maxScroll - threshold;
         const wouldExceedMax = scrollLeft + scrollAmount > maxScroll + threshold;
         const canRight = !isNearEnd && !wouldExceedMax;
@@ -67,7 +45,6 @@ export function ReasonsCollection() {
         if (!container || !categories)
             return;
 
-        // Блокируем прокрутку, если она невозможна
         if (direction === "left" && !canScrollLeft)
             return;
         if (direction === "right" && !canScrollRight)
@@ -78,12 +55,10 @@ export function ReasonsCollection() {
 
         let newScrollLeft = container.scrollLeft + (direction === "left" ? -scrollAmount : scrollAmount);
 
-        // Строго ограничиваем прокрутку границами
         if (newScrollLeft < 0) {
             newScrollLeft = 0;
         }
         else if (newScrollLeft > maxScroll) {
-            // Если превышаем максимум, устанавливаем точно на максимум
             newScrollLeft = maxScroll;
         }
 
@@ -92,8 +67,6 @@ export function ReasonsCollection() {
             behavior: "smooth",
         });
 
-        // Обновляем состояние кнопок сразу после установки новой позиции
-        // и после завершения анимации прокрутки
         const state = updateScrollButtons();
         setCanScrollLeft(state.canScrollLeft);
         setCanScrollRight(state.canScrollRight);
@@ -105,7 +78,6 @@ export function ReasonsCollection() {
         }, 350);
     };
 
-    // Обновление состояния кнопок при изменении прокрутки
     useEffect(() => {
         const container = scrollContainerRef.current;
         if (!container || !categories)
@@ -117,14 +89,12 @@ export function ReasonsCollection() {
             setCanScrollRight(state.canScrollRight);
         };
 
-        // Обновляем состояние кнопок при монтировании
         updateState();
 
         const handleScroll = () => {
             const maxScroll = getMaxScroll();
             const scrollLeft = container.scrollLeft;
 
-            // Строго ограничиваем прокрутку границами
             if (scrollLeft > maxScroll) {
                 container.scrollTo({
                     left: maxScroll,
@@ -134,7 +104,6 @@ export function ReasonsCollection() {
                 return;
             }
 
-            // Ensure we don't scroll before the start
             if (scrollLeft < 0) {
                 container.scrollTo({
                     left: 0,
@@ -144,8 +113,6 @@ export function ReasonsCollection() {
                 return;
             }
 
-            // Когда близко к концу, принудительно устанавливаем на maxScroll
-            // Это предотвращает появление пустого места
             const threshold = 2;
             if (maxScroll > 0 && scrollLeft >= maxScroll - threshold && scrollLeft < maxScroll) {
                 container.scrollTo({
@@ -154,7 +121,6 @@ export function ReasonsCollection() {
                 });
             }
 
-            // Обновляем состояние кнопок после прокрутки
             updateState();
         };
 

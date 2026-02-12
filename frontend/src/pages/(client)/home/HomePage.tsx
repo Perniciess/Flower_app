@@ -11,9 +11,9 @@ export function HomePage() {
             <main className="flex-1">
                 <Hero />
                 <Banners />
-                <PopularCollection title="Популярные букеты с доставкой" />
+                <PopularCollection title="Новая коллекция букетов" />
                 <ReasonsCollection />
-                <PopularCollection title="Букеты роз" search="розы" />
+                <PopularCollection title="Букеты роз" type="flower" flower_id={1} />
             </main>
             <Footer />
         </div>

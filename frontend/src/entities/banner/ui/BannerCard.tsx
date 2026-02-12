@@ -7,7 +7,7 @@ export function BannerCard({ banner }: BannerCardProps) {
 
     return (
         <div className="container mx-auto px-4">
-            <div className="absolute inset-0">
+            <div className="absolute inset-0 transition-transform duration-300 ease-out group-hover:scale-105">
                 {typeof banner.image_url === "string" && banner.image_url.length > 0
                     ? (
                             <Image
@@ -19,13 +19,19 @@ export function BannerCard({ banner }: BannerCardProps) {
                             />
                         )
                     : (
-                            <div className="w-full h-full flex items-center justify-center text-gray-400">
+                            <div className="flex h-full w-full items-center justify-center text-gray-400">
                                 Нет изображения
                             </div>
                         )}
             </div>
 
-            <div className="absolute inset-0 z-20 bg-linear-to-t from-black/80 via-transparent to-transparent text-white">
+            <div
+                className="absolute inset-0 z-20 text-white"
+                style={{
+                    background:
+                        "linear-gradient(180deg, rgba(0, 0, 0, 0.5) 0.29%, rgba(0, 0, 0, 0) 51.92%, rgba(0, 0, 0, 0.5) 100%)",
+                }}
+            >
                 <h3 className="absolute left-6 top-6 font-montserrat text-[28px] font-medium leading-none tracking-normal">
                     {banner.title ?? ""}
                 </h3>
@@ -37,6 +43,10 @@ export function BannerCard({ banner }: BannerCardProps) {
                         )
                     : null}
             </div>
+            <div
+                className="pointer-events-none absolute inset-3 z-30 rounded-xl border border-white opacity-0 transition-opacity duration-200 group-hover:opacity-100"
+                aria-hidden
+            />
         </div>
     );
 }

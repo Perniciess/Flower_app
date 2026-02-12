@@ -13,7 +13,7 @@ export function useProductQuery(productId: number) {
 }
 
 export function useProductsQuery(
-    size = 10,
+    size = 8,
     page = 1,
     filters?: ProductFilters,
 ) {
@@ -38,8 +38,14 @@ function buildQueryString(
     });
 
     if (filters) {
-        const { name__ilike, color__in, price__gte, price__lte, is_active, in_stock, search, order_by } = filters;
+        const { type, flower_id, name__ilike, color__in, price__gte, price__lte, is_active, in_stock, search, order_by } = filters;
 
+        if (type !== undefined) {
+            params.append("type", type);
+        }
+        if (flower_id !== undefined) {
+            params.append("flower_id", flower_id.toString());
+        }
         if (name__ilike !== undefined && name__ilike.length > 0) {
             params.append("name__ilike", name__ilike);
         }
