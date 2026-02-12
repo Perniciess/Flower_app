@@ -6,16 +6,24 @@ export function CategoryCard({ category }: CategoryCardProps) {
     const apiUrl = "http://localhost:8000";
 
     return (
-        <div className="relative flex h-75 w-78.75 flex-col items-start justify-end gap-2.5 rounded-2xl overflow-hidden p-[15px_12px]">
-            <Image
-                src={`${apiUrl}${imagePath}`}
-                alt={category.name}
-                fill
-                className="object-cover -z-10"
-                unoptimized
-            />
+        <div className="group relative flex h-75 w-78.75 flex-col items-start justify-end gap-2.5 overflow-hidden rounded-2xl p-[15px_12px]">
+            <div className="absolute inset-0 -z-10 transition-transform duration-300 ease-out group-hover:scale-105">
+                <Image
+                    src={`${apiUrl}${imagePath}`}
+                    alt={category.name}
+                    fill
+                    className="object-cover"
+                    unoptimized
+                />
+            </div>
             <div className="absolute inset-0 bg-linear-to-b from-transparent to-black/20 -z-5" />
-            <p className="text-white font-medium text-[28px] leading-[100%] tracking-normal">{category.name}</p>
+            <p className="relative z-20 text-[28px] font-medium leading-[100%] tracking-normal text-white">
+                {category.name}
+            </p>
+            <div
+                className="pointer-events-none absolute inset-3 z-10 rounded-xl border border-white opacity-0 transition-opacity duration-200 group-hover:opacity-100"
+                aria-hidden
+            />
         </div>
     );
 }
