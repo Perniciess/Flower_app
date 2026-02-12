@@ -1,6 +1,6 @@
 from collections.abc import Sequence
 
-from fastapi import APIRouter, Depends, Request, UploadFile, status
+from fastapi import APIRouter, Depends, Request, UploadFile, status, Form
 from fastapi_pagination import Page
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -26,21 +26,33 @@ category_router = APIRouter(prefix="/category", tags=["category"])
     summary="Создание категории",
 )
 async def create_category(
-    category_data: CategoryCreate,
     session: AsyncSession = Depends(get_db),
     current_user: User = Depends(require_admin),
+    name: str = Form(..., min_length=1, max_length=255, description="Название категории"),
+    slug: str = Form(..., min_length=1, max_length=255, description="URL-friendly идентификатор категории"),
+    description: str | None = Form(default=None, max_length=2000, description="Описание категории"),
+    parent_id: int | None = Form(default=None, description="ID родительской категории"),
+    sort_order: int = Form(default=0, description="Порядок сортировки"),
+    is_active: bool = Form(default=False, description="Статус активности категории"),
+    image: UploadFile | None = None,
 ) -> CategoryResponse:
     """
     Создать категорию.
 
     Требует прав администратора.
     """
+    category_data = CategoryCreate(
+        name=name,
+        slug=slug,
+        description=description,
+        parent_id=parent_id,
+        sort_order=sort_order,
+        is_active=is_active,
+    )
     category = await categories_service.create_category(
-        session=session, category_data=category_data
+        session=session, category_data=category_data, image=image
     )
     return category
-
-
 @category_router.get(
     "/all_active",
     response_model=Sequence[CategoryResponse],

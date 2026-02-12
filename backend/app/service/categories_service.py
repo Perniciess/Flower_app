@@ -25,13 +25,19 @@ from app.schemas.categories_schema import (
 from app.utils.validators.image import validate_image
 
 
-async def create_category(session: AsyncSession, category_data: CategoryCreate) -> CategoryResponse:
+
+async def create_category(
+    session: AsyncSession, 
+    category_data: CategoryCreate,
+    image: UploadFile | None = None,
+) -> CategoryResponse:
     """
     Создает новую категорию в базе данных.
 
     Args:
         session: сессия базы данных
         category_data: данные для создания категории
+        image: опциональное изображение категории
 
     Returns:
         CategoryResponse с данными созданной категории
@@ -50,9 +56,22 @@ async def create_category(session: AsyncSession, category_data: CategoryCreate) 
             raise CategoryParentNotFoundError(parent_id=category_data.parent_id)
 
     category = await categories_repository.create_category(session=session, category_data=category_data)
+    
+    if image is not None:
+        ext = validate_image(image)
+        settings.CATEGORY_UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
+        filename = f"{uuid.uuid4()}{ext}"
+        file_path = settings.CATEGORY_UPLOAD_DIR / filename
+
+        content = await image.read()
+        async with await anyio.open_file(file_path, "wb") as f:
+            await f.write(content)
+
+        url = settings.get_category_image_url(filename)
+        category.image_url = url
+        await session.flush()
+    
     return CategoryResponse.model_validate(category)
-
-
 async def get_category_by_id(session: AsyncSession, category_id: int) -> CategoryResponse:
     """
     Возвращает категорию по ID из базы данных.
@@ -227,36 +246,6 @@ async def delete_category_by_id(session: AsyncSession, category_id: int) -> None
         raise CategoryNotExistsError(category_id=category_id)
 
 
-async def delete_image(*, session: AsyncSession, category_id: int) -> CategoryResponse:
-    """
-    Удаляет изображение категории.
-
-    Args:
-        session: сессия базы данных
-        category_id: идентификатор категории
-
-    Returns:
-        CategoryResponse с данными о категории
-
-    Raises:
-        CategoryNotExistsError: если категория не существует
-    """
-    category = await categories_repository.get_category_by_id(session, category_id)
-    if not category:
-        raise CategoryNotExistsError(category_id=category_id)
-
-    if category.image_url:
-        file_path = (settings.ROOT_DIR / category.image_url.lstrip("/")).resolve()
-        if not str(file_path).startswith(str(settings.CATEGORY_UPLOAD_DIR.resolve())):
-            raise ValueError("Path traversal detected")
-        if file_path.exists():
-            file_path.unlink()
-
-        category.image_url = None
-        await session.flush()
-
-    return CategoryResponse.model_validate(category)
-
 
 async def upload_image(*, session: AsyncSession, category_id: int, image: UploadFile) -> CategoryResponse:
     """
@@ -298,8 +287,44 @@ async def upload_image(*, session: AsyncSession, category_id: int, image: Upload
     url = settings.get_category_image_url(filename)
     category.image_url = url
     await session.flush()
+    await session.refresh(category)
 
     return CategoryResponse.model_validate(category)
+    
+
+async def delete_image(*, session: AsyncSession, category_id: int) -> CategoryResponse:
+    """
+    Удаляет изображение категории.
+
+    Args:
+        session: сессия базы данных
+        category_id: идентификатор категории
+
+    Returns:
+        CategoryResponse с данными о категории
+
+    Raises:
+        CategoryNotExistsError: если категория не существует
+    """
+    category = await categories_repository.get_category_by_id(session, category_id)
+    if not category:
+        raise CategoryNotExistsError(category_id=category_id)
+
+    if category.image_url:
+        file_path = (settings.ROOT_DIR / category.image_url.lstrip("/")).resolve()
+        if not str(file_path).startswith(str(settings.CATEGORY_UPLOAD_DIR.resolve())):
+            raise ValueError("Path traversal detected")
+        if file_path.exists():
+            file_path.unlink()
+
+        category.image_url = None
+        await session.flush()
+        await session.refresh(category)
+
+    return CategoryResponse.model_validate(category)
+
+
+   
 
 
 async def _check_circular_dependency(session: AsyncSession, category_id: int, parent_id: int) -> bool:
