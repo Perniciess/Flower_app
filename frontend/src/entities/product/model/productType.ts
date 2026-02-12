@@ -27,3 +27,14 @@ export interface IProduct {
 export interface ProductCardProps {
     product: IProduct;
 }
+
+export interface ProductFilters {
+    name__ilike?: string;
+    color__in?: string[];
+    price__gte?: string;
+    price__lte?: string;
+    is_active?: boolean;
+    in_stock?: boolean;
+    search?: string;
+    order_by?: string[];
+}

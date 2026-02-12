@@ -30,7 +30,6 @@ export function ReasonsCollection() {
 
         let newScrollLeft = container.scrollLeft + (direction === "left" ? -scrollAmount : scrollAmount);
 
-        // Ограничиваем прокрутку
         if (newScrollLeft < 0) {
             newScrollLeft = 0;
         }

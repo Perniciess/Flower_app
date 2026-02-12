@@ -15,7 +15,7 @@ export function CategoryCard({ category }: CategoryCardProps) {
                 unoptimized
             />
             <div className="absolute inset-0 bg-linear-to-b from-transparent to-black/20 -z-5" />
-            <p className="text-white font-medium">{category.name}</p>
+            <p className="text-white font-medium text-[28px] leading-[100%] tracking-normal">{category.name}</p>
         </div>
     );
 }
