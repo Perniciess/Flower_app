@@ -1,5 +1,9 @@
+export { ArrowLeft } from "./ArrowLeft";
 export { ArrowRight } from "./ArrowRight";
+export { CameraIcon } from "./CameraIcon";
+export { CarIcon } from "./CarIcon";
 export { CartIcon } from "./CartIcon";
+export { FlowerIcon } from "./FlowerIcon";
 export { LikeIcon } from "./LikeIcon";
 export { SearchIcon } from "./SearchIcon";
 export { UserIcon } from "./UserIcon";

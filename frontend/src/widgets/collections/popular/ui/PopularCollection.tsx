@@ -4,7 +4,7 @@ import { ProductCard, useProductsQuery } from "@/entities/product";
 import { Button } from "@/shared/ui/components/button";
 import { ArrowRight } from "@/shared/ui/icons";
 
-export function CollectionList() {
+export function PopularCollection() {
     const { data: products, isPending } = useProductsQuery();
 
     if (isPending)
