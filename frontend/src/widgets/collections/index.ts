@@ -1,2 +1,2 @@
-export { PopularCollection } from "./popular/ui/PopularCollection";
-export { ReasonsCollection } from "./reasons/ui/ReasonsCollection";
+export { PopularCollection } from "./ui/PopularCollection";
+export { ReasonsCollection } from "./ui/ReasonsCollection";
