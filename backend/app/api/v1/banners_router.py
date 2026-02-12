@@ -1,7 +1,7 @@
-from collections.abc import Sequence
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, Form, Request, UploadFile, status
+from fastapi_pagination import Page
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.deps import require_admin
@@ -39,7 +39,7 @@ async def create_banner(
 
 @banner_router.get(
     "",
-    response_model=Sequence[BannerResponse],
+    response_model=Page[BannerResponse],
     status_code=status.HTTP_200_OK,
     summary="Получить список активных баннеров",
 )
@@ -48,7 +48,7 @@ async def get_banners(
     request: Request,
     only_active: bool = True,
     session: AsyncSession = Depends(get_db),
-) -> Sequence[BannerResponse]:
+) -> Page[BannerResponse]:
     """
     Получить список активных баннеров.
     """
@@ -57,14 +57,14 @@ async def get_banners(
 
 @banner_router.get(
     "/all",
-    response_model=Sequence[BannerResponse],
+    response_model=Page[BannerResponse],
     status_code=status.HTTP_200_OK,
     summary="Получить список всех баннеров",
 )
 async def get_all_banners(
     session: AsyncSession = Depends(get_db),
     current_user: User = Depends(require_admin),
-) -> Sequence[BannerResponse]:
+) -> Page[BannerResponse]:
     """
     Получить список всех баннеров.
 

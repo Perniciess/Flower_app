@@ -6,7 +6,7 @@ export function CategoryCard({ category }: CategoryCardProps) {
     const apiUrl = "http://localhost:8000";
 
     return (
-        <div className="relative flex h-[300px] w-[315px] flex-col items-start justify-end gap-2.5 rounded-2xl overflow-hidden p-[15px_12px]">
+        <div className="relative flex h-75 w-78.75 flex-col items-start justify-end gap-2.5 rounded-2xl overflow-hidden p-[15px_12px]">
             <Image
                 src={`${apiUrl}${imagePath}`}
                 alt={category.name}

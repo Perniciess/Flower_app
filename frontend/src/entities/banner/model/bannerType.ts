@@ -6,3 +6,7 @@ export interface IBanner {
     image_url: string | null;
     sort_order: number;
 }
+
+export interface BannerCardProps {
+    banner: IBanner;
+}

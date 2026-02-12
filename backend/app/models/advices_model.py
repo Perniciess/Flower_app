@@ -14,6 +14,8 @@ class Advice(Base):
     id: Mapped[int] = mapped_column(primary_key=True, index=True)
     title: Mapped[str] = mapped_column(String(255), unique=True, index=True)
     description: Mapped[str] = mapped_column(Text())
+    image_url: Mapped[str | None] = mapped_column(String(512))
+    link: Mapped[str | None] = mapped_column(String(512))
     sort_order: Mapped[int] = mapped_column(Integer, default=0, index=True)
     is_active: Mapped[bool] = mapped_column(Boolean, default=True, index=True)
     created_at: Mapped[datetime] = mapped_column(

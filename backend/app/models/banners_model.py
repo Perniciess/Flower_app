@@ -7,10 +7,12 @@ from app.db.base import Base
 
 
 class Banner(Base):
+    """Сущность баннера."""
+
     __tablename__ = "banner"
 
     id: Mapped[int] = mapped_column(primary_key=True, index=True)
-    title: Mapped[str | None] = mapped_column(String(255))
+    title: Mapped[str] = mapped_column(String(255))
     description: Mapped[str | None] = mapped_column(String(200))
     image_url: Mapped[str | None] = mapped_column(String(512))
     link: Mapped[str | None] = mapped_column(String(512))
