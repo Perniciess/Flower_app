@@ -28,7 +28,7 @@ export function ReasonsCollection() {
         // Стандартная формула: maxScroll = scrollWidth - clientWidth
         // Но нужно убедиться, что это значение не позволяет прокрутить дальше, чем нужно
         const standardMaxScroll = container.scrollWidth - container.clientWidth;
-        
+
         // Проверяем, что стандартный расчет корректен
         // Если scrollWidth включает padding справа (200px), то стандартный расчет должен быть правильным
         // Но для безопасности ограничиваем максимум этим значением

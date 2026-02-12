@@ -1,11 +1,11 @@
 from collections.abc import Sequence
-from decimal import Decimal
+from typing import Annotated
 
 from fastapi import APIRouter, Depends, Form, Request, UploadFile, status
 from fastapi_filter import FilterDepends
 from fastapi_pagination import Page
 from sqlalchemy.ext.asyncio import AsyncSession
-from app.models.products_model import ProductType
+
 from app.core.deps import require_admin
 from app.core.limiter import limiter
 from app.db.session import get_db
@@ -30,16 +30,9 @@ product_router = APIRouter(prefix="/products", tags=["products"])
     summary="Создать товар",
 )
 async def create_product(
+    data: Annotated[ProductCreate, Form()],
     session: AsyncSession = Depends(get_db),
     current_user: User = Depends(require_admin),
-    name: str = Form(..., max_length=255, description="Название товара"),
-    type: ProductType = Form(default=ProductType.FLOWER, description="Тип товара"),
-    price: Decimal = Form(..., gt=0, description="Стоимость товара"),
-    sort_order: int = Form(default=0, description="Порядок сортировки"),
-    description: str = Form(..., max_length=2000, description="Описание"),
-    color: str = Form(..., max_length=64, description="Цвет"),
-    is_active: bool = Form(default=False, description="Активен ли товар"),
-    in_stock: bool = Form(default=True, description="В наличии"),
     image: UploadFile | None = None,
 ) -> ProductResponse:
     """
@@ -47,19 +40,8 @@ async def create_product(
 
     Требует прав администратора.
     """
-    product_data = ProductCreate(
-        name=name,
-        type=type,
-        price=price,
-        description=description,
-        color=color,
-        is_active=is_active,
-        in_stock=in_stock,
-        sort_order=sort_order,
-        
-    )
     product = await products_service.create_product(
-        session=session, product_data=product_data, image=image
+        session=session, product_data=data, image=image
     )
 
     return product
@@ -85,11 +67,25 @@ async def get_products(
 
 
 @product_router.get(
-    "/{product_id}",
-    response_model=ProductResponse,
+    path="/bouqets",
+    response_model=Page[ProductResponse],
     status_code=status.HTTP_200_OK,
-    summary="Получить один товар",
+    summary="Получить список букетов",
 )
+async def get_bouquets(
+    session: AsyncSession = Depends(get_db),
+    product_filter: ProductFilter = FilterDepends(ProductFilter),
+) -> Page[ProductResponse]:
+    """Получить список букетов"""
+    from app.schemas.products_schema import ProductType
+
+    product_filter.type = ProductType.FLOWER
+    products = await products_service.get_products(
+        session=session, product_filter=product_filter
+    )
+    return products
+
+
 @limiter.limit("60/minute")
 async def get_product_by_id(
     request: Request, product_id: int, session: AsyncSession = Depends(get_db)

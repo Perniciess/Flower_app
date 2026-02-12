@@ -6,7 +6,7 @@ import { Button } from "@/shared/ui/components/button";
 import { ArrowRight } from "@/shared/ui/icons";
 
 export function PopularCollection({ title, search }: PopularCollectionProps) {
-    const { data: products, isPending } = useProductsQuery(10, 1, {
+    const { data: products, isPending } = useProductsQuery(8, 1, {
         search,
     });
 

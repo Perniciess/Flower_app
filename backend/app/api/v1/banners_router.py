@@ -1,4 +1,5 @@
 from collections.abc import Sequence
+from typing import Annotated
 
 from fastapi import APIRouter, Depends, Form, Request, UploadFile, status
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -20,11 +21,7 @@ banner_router = APIRouter(prefix="/banners", tags=["banners"])
     summary="Создать баннер",
 )
 async def create_banner(
-    title: str = Form(...),
-    description: str = Form(...),
-    link: str = Form(default=None),
-    sort_order: int = Form(default=0),
-    is_active: bool = Form(default=False),
+    data: Annotated[BannerCreate, Form()],
     session: AsyncSession = Depends(get_db),
     current_user: User = Depends(require_admin),
     image: UploadFile | None = None,
@@ -34,15 +31,9 @@ async def create_banner(
 
     Требует прав администратора
     """
-    banner_data = BannerCreate(
-        title=title,
-        description=description,
-        link=link,
-        sort_order=sort_order,
-        is_active=is_active,
-    )
+
     return await banners_service.create_banner(
-        session=session, banner_data=banner_data, image=image
+        session=session, banner_data=data, image=image
     )
 
 

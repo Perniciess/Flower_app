@@ -1,5 +1,5 @@
 {
-  "include": ["app"],
+  "include": ["backend/app", "bot/app"],
   "exclude": [
     "**/node_modules",
     "**/__pycache__",
@@ -8,11 +8,13 @@
     "**/.idea",
     "**/migrations",
     "**/alembic",
+    "frontend"
   ],
   "venvPath": ".",
-  "venv": ".venv",
+  "venv": "backend/.venv",
   "pythonVersion": "3.13",
   "typeCheckingMode": "strict",
+  "extraPaths": ["backend/app", "bot/app"],
 
   "reportMissingImports": true,
   "reportDeprecated": true,
@@ -27,5 +29,5 @@
   "reportUnknownParameterType": false,
   "reportMissingTypeStubs": false,
   "reportUnknownLambdaType": false,
-  "reportAny": false,
+  "reportAny": false
 }

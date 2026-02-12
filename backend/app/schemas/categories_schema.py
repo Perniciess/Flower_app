@@ -1,36 +1,35 @@
-import re
 from datetime import datetime
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator
+
+from app.utils.validators.slug import validate_slug
 
 
 class CategoryBase(BaseModel):
     """Базовые поля категории, используемые в других схемах."""
 
-    name: str = Field(..., description="Название категории", min_length=1, max_length=255)
+    name: str = Field(
+        ..., description="Название категории", min_length=1, max_length=255
+    )
     slug: str = Field(
         ...,
         description="URL-friendly идентификатор категории",
         min_length=1,
         max_length=255,
     )
-    description: str | None = Field(default=None, max_length=2000, description="Описание категории")
-    image_url: str | None = Field(default=None, max_length=512, description="URL изображения категории")
+    description: str | None = Field(
+        default=None, max_length=2000, description="Описание категории"
+    )
+    image_url: str | None = Field(
+        default=None, max_length=512, description="URL изображения категории"
+    )
     parent_id: int | None = Field(default=None, description="ID родительской категории")
     sort_order: int = Field(default=0, description="Порядок сортировки")
 
     @field_validator("slug")
     @classmethod
     def validate_slug(cls, v: str) -> str:
-        v = v.lower().strip()
-
-        if not re.match(r"^[a-z0-9]+(?:-[a-z0-9]+)*$", v):
-            raise ValueError(
-                "Slug может содержать только строчные латинские буквы, цифры и дефисы. "
-                "Дефис не может быть в начале или конце."
-            )
-
-        return v
+        return validate_slug(v)
 
 
 class CategoryCreate(CategoryBase):
@@ -42,34 +41,31 @@ class CategoryCreate(CategoryBase):
 class CategoryUpdate(BaseModel):
     """Схема для обновление категории."""
 
-    name: str | None = Field(default=None, description="Название категории", min_length=1, max_length=255)
+    name: str | None = Field(
+        default=None, description="Название категории", min_length=1, max_length=255
+    )
     slug: str | None = Field(
         default=None,
         description="URL-friendly идентификатор категории",
         min_length=1,
         max_length=255,
     )
-    description: str | None = Field(default=None, max_length=2000, description="Описание категории")
-    image_url: str | None = Field(default=None, max_length=512, description="URL изображения категории")
+    description: str | None = Field(
+        default=None, max_length=2000, description="Описание категории"
+    )
+    image_url: str | None = Field(
+        default=None, max_length=512, description="URL изображения категории"
+    )
     parent_id: int | None = Field(default=None, description="ID родительской категории")
-    is_active: bool | None = Field(default=None, description="Статус активности категории")
+    is_active: bool | None = Field(
+        default=None, description="Статус активности категории"
+    )
     sort_order: int | None = Field(default=None, description="Порядок сортировки")
 
     @field_validator("slug")
     @classmethod
-    def validate_slug(cls, v: str | None) -> str | None:
-        if v is None:
-            return v
-
-        v = v.lower().strip()
-
-        if not re.match(r"^[a-z0-9]+(?:-[a-z0-9]+)*$", v):
-            raise ValueError(
-                "Slug может содержать только строчные латинские буквы, цифры и дефисы. "
-                "Дефис не может быть в начале или конце."
-            )
-
-        return v
+    def validate_slug(cls, v: str) -> str:
+        return validate_slug(v)
 
 
 class CategoryResponse(CategoryBase):
@@ -86,7 +82,9 @@ class CategoryResponse(CategoryBase):
 class CategoryWithChildren(CategoryResponse):
     """Схема ответа API ответа об древовидной структура категорий."""
 
-    children: list["CategoryWithChildren"] = Field(default_factory=list, description="Подкатегории")
+    children: list["CategoryWithChildren"] = Field(
+        default_factory=list, description="Подкатегории"
+    )
 
 
 CategoryWithChildren.model_rebuild()

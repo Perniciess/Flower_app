@@ -1,7 +1,9 @@
 from decimal import Decimal
 
 from pydantic import BaseModel, ConfigDict, Field
+
 from app.models.products_model import ProductType
+
 
 class ProductImageResponse(BaseModel):
     """Схема для ответа API с изображениями товара."""
