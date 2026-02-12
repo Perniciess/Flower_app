@@ -5,7 +5,7 @@ from fastapi import APIRouter, Depends, Form, Request, UploadFile, status
 from fastapi_filter import FilterDepends
 from fastapi_pagination import Page
 from sqlalchemy.ext.asyncio import AsyncSession
-
+from app.models.products_model import ProductType
 from app.core.deps import require_admin
 from app.core.limiter import limiter
 from app.db.session import get_db
@@ -33,6 +33,7 @@ async def create_product(
     session: AsyncSession = Depends(get_db),
     current_user: User = Depends(require_admin),
     name: str = Form(..., max_length=255, description="Название товара"),
+    type: ProductType = Form(default=ProductType.FLOWER, description="Тип товара"),
     price: Decimal = Form(..., gt=0, description="Стоимость товара"),
     sort_order: int = Form(default=0, description="Порядок сортировки"),
     description: str = Form(..., max_length=2000, description="Описание"),
@@ -48,12 +49,14 @@ async def create_product(
     """
     product_data = ProductCreate(
         name=name,
+        type=type,
         price=price,
         description=description,
         color=color,
         is_active=is_active,
         in_stock=in_stock,
         sort_order=sort_order,
+        
     )
     product = await products_service.create_product(
         session=session, product_data=product_data, image=image

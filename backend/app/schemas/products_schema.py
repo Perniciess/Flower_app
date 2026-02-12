@@ -1,7 +1,7 @@
 from decimal import Decimal
 
 from pydantic import BaseModel, ConfigDict, Field
-
+from app.models.products_model import ProductType
 
 class ProductImageResponse(BaseModel):
     """Схема для ответа API с изображениями товара."""
@@ -23,6 +23,7 @@ class FlowerInComposition(BaseModel):
 
 class ProductBase(BaseModel):
     name: str = Field(..., max_length=255, description="Название товара")
+    type: ProductType = Field(default=ProductType.FLOWER, description="Тип товара")
     price: Decimal = Field(..., gt=0, description="Стоимость товара")
     sort_order: int = Field(default=0, description="Порядок сортировки")
     description: str = Field(..., max_length=2000, description="Описание")
