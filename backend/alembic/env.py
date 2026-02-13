@@ -11,7 +11,7 @@ from app.core.config import settings
 from app.db.base import Base  # <-- твой declarative_base()
 from app.models.users_model import User
 from app.models.auth_model import RefreshToken
-from app.models.products_model import Product, ProductImage, Flower
+from app.models.products_model import Product, Image, Flower
 from app.models.carts_model import Cart, CartItem
 from app.models.orders_model import Order, OrderItem, Delivery
 from app.models.categories_model import Category
