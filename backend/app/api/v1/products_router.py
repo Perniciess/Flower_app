@@ -79,7 +79,7 @@ async def get_product_by_id(
     "/{product_id}",
     response_model=ProductResponse,
     status_code=status.HTTP_200_OK,
-    summary="Получить товар по ID",
+    summary="Измененить информацию о товаре",
 )
 async def update_product(
     product_id: int,
@@ -142,7 +142,7 @@ async def upload_image(
     "/images",
     response_model=Sequence[ProductImageResponse],
     status_code=status.HTTP_200_OK,
-    summary="Получить изображения товара",
+    summary="Получить изображения товаров",
 )
 async def get_products_images(
     session: AsyncSession = Depends(get_db),
