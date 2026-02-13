@@ -39,7 +39,7 @@ async def create_image(
     async with await anyio.open_file(file_path, "wb") as f:
         await f.write(content)
 
-    hash = get_file_hash(url)
+    hash = await get_file_hash(url)
 
     image_data = ImageCreate(
         path=url,
