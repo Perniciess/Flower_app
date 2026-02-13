@@ -72,6 +72,16 @@ class Settings(BaseSettings):
 
     @computed_field
     @property
+    def ADVICE_UPLOAD_DIR(self) -> Path:
+        return Path(self.STATIC_FILES_DIR) / "advices"
+
+    @computed_field
+    @property
+    def SHARED_UPLOAD_DIR(self) -> Path:
+        return Path(self.STATIC_FILES_DIR) / "shared"
+
+    @computed_field
+    @property
     def ROOT_DIR(self) -> Path:
         return Path(self.STATIC_FILES_DIR)
 
@@ -84,6 +94,12 @@ class Settings(BaseSettings):
 
     def get_banner_image_url(self, filename: str) -> str:
         return f"/{self.STATIC_FILES_DIR}/banners/{filename}"
+
+    def get_advice_image_url(self, filename: str) -> str:
+        return f"/{self.STATIC_FILES_DIR}/advices/{filename}"
+
+    def get_shared_image_url(self, filename: str) -> str:
+        return f"/{self.STATIC_FILES_DIR}/shared/{filename}"
 
     @computed_field
     @property

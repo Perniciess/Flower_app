@@ -26,7 +26,9 @@ async def get_flowers(*, session: AsyncSession) -> Sequence[Flower]:
     return result.scalars().all()
 
 
-async def update_flower(*, session: AsyncSession, flower_id: int, flower_data: FlowerUpdate) -> Flower | None:
+async def update_flower(
+    *, session: AsyncSession, flower_id: int, flower_data: FlowerUpdate
+) -> Flower | None:
     statement = (
         update(Flower)
         .where(Flower.id == flower_id)
@@ -44,16 +46,31 @@ async def delete_flower(*, session: AsyncSession, flower_id: int) -> bool:
     return result.scalar_one_or_none() is not None
 
 
-async def set_product_composition(*, session: AsyncSession, product_id: int, items: list[CompositionItem]) -> None:
-    await session.execute(delete(bouquet_composition).where(bouquet_composition.c.product_id == product_id))
+async def set_product_composition(
+    *, session: AsyncSession, product_id: int, items: list[CompositionItem]
+) -> None:
+    await session.execute(
+        delete(bouquet_composition).where(
+            bouquet_composition.c.product_id == product_id
+        )
+    )
 
     if items:
-        values = [{"product_id": product_id, "flower_id": item.flower_id, "quantity": item.quantity} for item in items]
+        values = [
+            {
+                "product_id": product_id,
+                "flower_id": item.flower_id,
+                "quantity": item.quantity,
+            }
+            for item in items
+        ]
         await session.execute(insert(bouquet_composition).values(values))
     await session.flush()
 
 
-async def get_product_for_composition(*, session: AsyncSession, product_id: int) -> Product | None:
+async def get_product_for_composition(
+    *, session: AsyncSession, product_id: int
+) -> Product | None:
     statement = select(Product).where(Product.id == product_id)
     result = await session.execute(statement)
     return result.scalar_one_or_none()

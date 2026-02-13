@@ -53,7 +53,9 @@ def generate_verification_token() -> str:
 async def add_to_blacklist(redis: Redis, access_token: str) -> None:
     """Добавить токен в blacklist до его истечения."""
     try:
-        payload = jwt.decode(access_token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
+        payload = jwt.decode(
+            access_token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM]
+        )
         exp = payload.get("exp")
         if exp:
             expires_in = exp - int(datetime.now(tz=UTC).timestamp())
@@ -68,3 +70,12 @@ async def is_blacklisted(redis: Redis, token: str) -> bool:
     """Проверить, находится ли токен в blacklist."""
     token_hash = hashlib.sha256(token.encode()).hexdigest()
     return await redis.exists(f"bl:{token_hash}") > 0
+
+
+def get_file_hash(filename: str, algorithm: str = "md5"):
+    """Generates a cryptographic hash for a file."""
+    h = hashlib.new(algorithm)
+    with open(filename, "rb") as f:
+        while chunk := f.read(8192):
+            h.update(chunk)
+    return h.hexdigest()
