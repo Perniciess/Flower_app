@@ -21,6 +21,7 @@ from app.api.v1.categories_router import category_router
 from app.api.v1.discounts_router import discount_router
 from app.api.v1.favourites_router import favourite_router
 from app.api.v1.flowers_router import flower_router
+from app.api.v1.images_router import image_router
 from app.api.v1.orders_router import order_router
 from app.api.v1.pickups_router import pickup_point_router
 from app.api.v1.products_router import product_router
@@ -181,6 +182,7 @@ api_router.include_router(discount_router)
 api_router.include_router(pickup_point_router)
 api_router.include_router(flower_router)
 api_router.include_router(banner_router)
+api_router.include_router(image_router)
 app.include_router(api_router, dependencies=[Depends(csrf_header_scheme)])
 
 

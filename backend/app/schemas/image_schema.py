@@ -1,12 +1,18 @@
 from pydantic import BaseModel, ConfigDict, Field
 
 
-class ImageCreate(BaseModel):
-    """Внутренняя схема для создания записи изображения в БД."""
-
+class ImageBase(BaseModel):
     path: str = Field(..., max_length=512, description="Путь до файла на сервере")
     hash: str = Field(..., max_length=64, description="Хеш содержимого файла")
-    filename: str = Field(..., max_length=255, description="Оригинальное имя файла")
+    original_filename: str = Field(
+        ..., max_length=255, description="Оригинальное имя файла"
+    )
+
+
+class ImageCreate(ImageBase):
+    """Внутренняя схема для создания записи изображения в БД."""
+
+    pass
 
 
 class ImageUpdate(BaseModel):
@@ -21,11 +27,7 @@ class ImageUpdate(BaseModel):
     )
 
 
-class ImageResponse(BaseModel):
-    """Схема для ответа API с изображениями товара."""
-
+class ImageResponse(ImageBase):
     model_config = ConfigDict(from_attributes=True)
 
-    id: int = Field(..., description="Идентификатор изображения")
-    url: str = Field(..., description="Ссылка на изображение")
-    sort_order: int = Field(..., description="Порядок сортировки")
+    id: int

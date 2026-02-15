@@ -6,7 +6,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import settings
 from app.core.security import get_file_hash
-from app.repository import image_repository
+from app.repository import images_repository
 from app.schemas.image_schema import ImageCreate, ImageResponse
 from app.utils.validators.image import validate_image
 
@@ -14,7 +14,6 @@ from app.utils.validators.image import validate_image
 async def create_image(
     *, session: AsyncSession, image: UploadFile, type: str
 ) -> ImageResponse:
-
     ext = validate_image(image)
     filename = f"{uuid.uuid4()}{ext}"
 
@@ -39,13 +38,13 @@ async def create_image(
     async with await anyio.open_file(file_path, "wb") as f:
         await f.write(content)
 
-    hash = await get_file_hash(url)
+    hash = await get_file_hash(str(file_path))
 
     image_data = ImageCreate(
         path=url,
         hash=hash,
-        filename=filename,
+        original_filename=filename,
     )
 
-    img = await image_repository.create_image(session=session, image_data=image_data)
+    img = await images_repository.create_image(session=session, image_data=image_data)
     return ImageResponse.model_validate(img)
