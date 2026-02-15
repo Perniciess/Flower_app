@@ -8,12 +8,23 @@ from app.models.categories_model import Category
 from app.schemas.categories_schema import CategoryCreate, CategoryUpdate
 
 
-async def get_category_by_id(session: AsyncSession, category_id: int, with_relations: bool = False) -> Category | None:
+async def create_category(
+    session: AsyncSession, category_data: CategoryCreate, image_id: int | None
+) -> Category:
+    category = Category(**category_data.model_dump(), image_id=image_id)
+    session.add(category)
+    await session.flush()
+    return category
+
+
+async def get_category_by_id(
+    session: AsyncSession, category_id: int, with_relations: bool = False
+) -> Category | None:
     statement = select(Category).where(Category.id == category_id)
-
     if with_relations:
-        statement = statement.options(selectinload(Category.children), selectinload(Category.parent))
-
+        statement = statement.options(
+            selectinload(Category.children), selectinload(Category.parent)
+        )
     result = await session.execute(statement)
     return result.scalar_one_or_none()
 
@@ -24,21 +35,22 @@ async def get_category_by_slug(session: AsyncSession, slug: str) -> Category | N
     return result.scalar_one_or_none()
 
 
-async def create_category(session: AsyncSession, category_data: CategoryCreate) -> Category:
-    category = Category(**category_data.model_dump())
-    session.add(category)
-    await session.flush()
-    return category
-
-
-async def update_category(*, session: AsyncSession, category_id: int, category_data: CategoryUpdate) -> Category | None:
+async def update_category(
+    *,
+    session: AsyncSession,
+    category_id: int,
+    category_data: CategoryUpdate,
+    image_id: int | None = None,
+) -> Category | None:
+    update_data = category_data.model_dump(exclude_unset=True)
+    if image_id is not None:
+        update_data["image_id"] = image_id
     statement = (
         update(Category)
         .where(Category.id == category_id)
-        .values(**category_data.model_dump(exclude_unset=True))
+        .values(**update_data)
         .returning(Category)
     )
-
     result = await session.execute(statement)
     await session.flush()
     return result.scalar_one_or_none()
@@ -47,24 +59,34 @@ async def update_category(*, session: AsyncSession, category_id: int, category_d
 async def get_all_active_categories(
     session: AsyncSession,
 ) -> Sequence[Category]:
-    statement = select(Category).where(Category.is_active).order_by(Category.sort_order, Category.id)
+    statement = (
+        select(Category)
+        .where(Category.is_active)
+        .order_by(Category.sort_order, Category.id)
+    )
     result = await session.execute(statement)
     return result.scalars().all()
 
 
-async def get_root_categories(session: AsyncSession, only_active: bool = True) -> Sequence[Category]:
+async def get_root_categories(
+    session: AsyncSession, only_active: bool = True
+) -> Sequence[Category]:
     statement = select(Category).where(Category.parent_id.is_(None))
 
     if only_active:
         statement = statement.where(Category.is_active)
 
-    statement = statement.order_by(Category.sort_order, Category.id).options(selectinload(Category.children))
+    statement = statement.order_by(Category.sort_order, Category.id).options(
+        selectinload(Category.children)
+    )
 
     result = await session.execute(statement)
     return result.scalars().all()
 
 
-async def get_children(session: AsyncSession, parent_id: int, only_active: bool = True) -> Sequence[Category]:
+async def get_children(
+    session: AsyncSession, parent_id: int, only_active: bool = True
+) -> Sequence[Category]:
     statement = select(Category).where(Category.parent_id == parent_id)
 
     if only_active:
@@ -81,6 +103,22 @@ def get_categories_query() -> Select[tuple[Category]]:
 
 
 async def delete_category(*, session: AsyncSession, category_id: int) -> bool:
-    statement = delete(Category).where(Category.id == category_id).returning(Category.id)
+    statement = (
+        delete(Category).where(Category.id == category_id).returning(Category.id)
+    )
     result = await session.execute(statement)
     return result.scalar_one_or_none() is not None
+
+
+async def set_category_image(
+    *, session: AsyncSession, category_id: int, image_id: int | None
+) -> Category | None:
+    statement = (
+        update(Category)
+        .where(Category.id == category_id)
+        .values(image_id=image_id)
+        .returning(Category)
+    )
+    result = await session.execute(statement)
+    await session.flush()
+    return result.scalar_one_or_none()

@@ -20,9 +20,6 @@ class CategoryBase(BaseModel):
     description: str | None = Field(
         default=None, max_length=2000, description="Описание категории"
     )
-    image_url: str | None = Field(
-        default=None, max_length=512, description="URL изображения категории"
-    )
     parent_id: int | None = Field(default=None, description="ID родительской категории")
     sort_order: int = Field(default=0, description="Порядок сортировки")
 
@@ -53,9 +50,6 @@ class CategoryUpdate(BaseModel):
     description: str | None = Field(
         default=None, max_length=2000, description="Описание категории"
     )
-    image_url: str | None = Field(
-        default=None, max_length=512, description="URL изображения категории"
-    )
     parent_id: int | None = Field(default=None, description="ID родительской категории")
     is_active: bool | None = Field(
         default=None, description="Статус активности категории"
@@ -75,6 +69,7 @@ class CategoryResponse(CategoryBase):
 
     id: int = Field(..., description="Уникальный идентификатор категории")
     is_active: bool = Field(..., description="Статус активности категории")
+    image_id: int | None = Field(default=None, description="ID изображения")
     created_at: datetime = Field(..., description="Дата создания")
     updated_at: datetime = Field(..., description="Дата последнего обновления")
 

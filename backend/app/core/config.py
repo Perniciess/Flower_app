@@ -54,31 +54,36 @@ class Settings(BaseSettings):
 
     # IMAGE PATH
     STATIC_FILES_DIR: str = "static/uploads"
+    PRODUCTS: str = "products"
+    CATEGORIES: str = "categories"
+    BANNERS: str = "banners"
+    ADVICES: str = "advices"
+    SHARED: str = "shared"
 
     @computed_field
     @property
     def PRODUCT_UPLOAD_DIR(self) -> Path:
-        return Path(self.STATIC_FILES_DIR) / "products"
+        return Path(self.STATIC_FILES_DIR) / self.PRODUCTS
 
     @computed_field
     @property
     def CATEGORY_UPLOAD_DIR(self) -> Path:
-        return Path(self.STATIC_FILES_DIR) / "categories"
+        return Path(self.STATIC_FILES_DIR) / self.CATEGORIES
 
     @computed_field
     @property
     def BANNER_UPLOAD_DIR(self) -> Path:
-        return Path(self.STATIC_FILES_DIR) / "banners"
+        return Path(self.STATIC_FILES_DIR) / self.BANNERS
 
     @computed_field
     @property
     def ADVICE_UPLOAD_DIR(self) -> Path:
-        return Path(self.STATIC_FILES_DIR) / "advices"
+        return Path(self.STATIC_FILES_DIR) / self.ADVICES
 
     @computed_field
     @property
     def SHARED_UPLOAD_DIR(self) -> Path:
-        return Path(self.STATIC_FILES_DIR) / "shared"
+        return Path(self.STATIC_FILES_DIR) / self.SHARED
 
     @computed_field
     @property
@@ -87,19 +92,19 @@ class Settings(BaseSettings):
 
     def get_product_image_url(self, filename: str) -> str:
         """Генерирует URL для изображения продукта."""
-        return f"/{self.STATIC_FILES_DIR}/products/{filename}"
+        return f"/{self.STATIC_FILES_DIR}/{self.PRODUCTS}/{filename}"
 
     def get_category_image_url(self, filename: str) -> str:
-        return f"/{self.STATIC_FILES_DIR}/categories/{filename}"
+        return f"/{self.STATIC_FILES_DIR}/{self.CATEGORIES}/{filename}"
 
     def get_banner_image_url(self, filename: str) -> str:
-        return f"/{self.STATIC_FILES_DIR}/banners/{filename}"
+        return f"/{self.STATIC_FILES_DIR}/{self.BANNERS}/{filename}"
 
     def get_advice_image_url(self, filename: str) -> str:
-        return f"/{self.STATIC_FILES_DIR}/advices/{filename}"
+        return f"/{self.STATIC_FILES_DIR}/{self.ADVICES}/{filename}"
 
     def get_shared_image_url(self, filename: str) -> str:
-        return f"/{self.STATIC_FILES_DIR}/shared/{filename}"
+        return f"/{self.STATIC_FILES_DIR}/{self.SHARED}/{filename}"
 
     @computed_field
     @property

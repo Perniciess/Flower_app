@@ -1,7 +1,5 @@
-import uuid
 from collections.abc import Sequence
 
-import anyio
 from fastapi import UploadFile
 from fastapi_pagination import Page
 from fastapi_pagination.ext.sqlalchemy import paginate
@@ -22,7 +20,8 @@ from app.schemas.categories_schema import (
     CategoryUpdate,
     CategoryWithChildren,
 )
-from app.utils.validators.image import validate_image
+
+from . import images_service
 
 
 async def create_category(
@@ -50,32 +49,23 @@ async def create_category(
     )
     if category_exist is not None:
         raise CategoryAlreadyExistsError(slug=category_data.slug)
-
-    if category_data.parent_id:
+    if category_data.parent_id is not None and category_data.parent_id > 0:
         parent = await categories_repository.get_category_by_id(
             session=session, category_id=category_data.parent_id
         )
         if not parent:
             raise CategoryParentNotFoundError(parent_id=category_data.parent_id)
 
+    image_id = None
+    if image:
+        img = await images_service.create_image(
+            session=session, image=image, type=settings.CATEGORIES
+        )
+        image_id = img.id
+
     category = await categories_repository.create_category(
-        session=session, category_data=category_data
+        session=session, category_data=category_data, image_id=image_id
     )
-
-    if image is not None:
-        ext = validate_image(image)
-        settings.CATEGORY_UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
-        filename = f"{uuid.uuid4()}{ext}"
-        file_path = settings.CATEGORY_UPLOAD_DIR / filename
-
-        content = await image.read()
-        async with await anyio.open_file(file_path, "wb") as f:
-            await f.write(content)
-
-        url = settings.get_category_image_url(filename)
-        category.image_url = url
-        await session.flush()
-
     return CategoryResponse.model_validate(category)
 
 
@@ -125,7 +115,10 @@ async def get_category_by_slug(session: AsyncSession, slug: str) -> CategoryResp
 
 
 async def update_category(
-    session: AsyncSession, category_id: int, category_data: CategoryUpdate
+    session: AsyncSession,
+    category_id: int,
+    category_data: CategoryUpdate,
+    image: UploadFile | None = None,
 ) -> CategoryResponse:
     """
     Обновляет информацию о категории в базе данных.
@@ -134,6 +127,7 @@ async def update_category(
         session: сессия базы данных
         category_id: идентификатор категории
         category_data: новые данные категории
+        image: изображение категории
 
     Returns:
         CategoryResponse с данными обновленной категории
@@ -147,21 +141,18 @@ async def update_category(
     category = await categories_repository.get_category_by_id(session, category_id)
     if not category:
         raise CategoryNotExistsError(category_id=category_id)
-
     if category_data.slug and category_data.slug != category.slug:
         existing = await categories_repository.get_category_by_slug(
             session, category_data.slug
         )
         if existing:
             raise CategoryAlreadyExistsError(slug=category_data.slug)
-
     if category_data.parent_id is not None:
         parent = await categories_repository.get_category_by_id(
             session, category_data.parent_id
         )
         if not parent:
             raise CategoryParentNotFoundError(parent_id=category_data.parent_id)
-
         has_cycle = await _check_circular_dependency(
             session, category_id, category_data.parent_id
         )
@@ -169,14 +160,20 @@ async def update_category(
             raise CategoryCycleError(
                 category_id=category_id, parent_id=category_data.parent_id
             )
-
+    image_id = None
+    if image:
+        img = await images_service.create_image(
+            session=session, image=image, type=settings.CATEGORIES
+        )
+        image_id = img.id
     updated_category = await categories_repository.update_category(
-        session=session, category_id=category_id, category_data=category_data
+        session=session,
+        category_id=category_id,
+        category_data=category_data,
+        image_id=image_id,
     )
-
     if not updated_category:
         raise CategoryNotExistsError(category_id=category_id)
-
     return CategoryResponse.model_validate(updated_category)
 
 
@@ -243,7 +240,7 @@ async def get_category_tree(
 
 async def delete_category_by_id(session: AsyncSession, category_id: int) -> None:
     """
-    Удаляет категорию по ID и ее изображение.
+    Удаляет категорию по ID.
 
     Args:
         session: сессия базы данных
@@ -255,17 +252,6 @@ async def delete_category_by_id(session: AsyncSession, category_id: int) -> None
     Raises:
         CategoryNotExistsError: если категория не существует
     """
-    category = await categories_repository.get_category_by_id(session, category_id)
-    if not category:
-        raise CategoryNotExistsError(category_id=category_id)
-
-    if category.image_url:
-        file_path = (settings.ROOT_DIR / category.image_url.lstrip("/")).resolve()
-        if not str(file_path).startswith(str(settings.CATEGORY_UPLOAD_DIR.resolve())):
-            raise ValueError("Path traversal detected")
-        if file_path.exists():
-            file_path.unlink()
-
     deleted = await categories_repository.delete_category(
         session=session, category_id=category_id
     )
@@ -294,30 +280,13 @@ async def upload_image(
     category = await categories_repository.get_category_by_id(session, category_id)
     if not category:
         raise CategoryNotExistsError(category_id=category_id)
-
-    ext = validate_image(image)
-
-    if category.image_url:
-        old_path = (settings.ROOT_DIR / category.image_url.lstrip("/")).resolve()
-        if not str(old_path).startswith(str(settings.CATEGORY_UPLOAD_DIR.resolve())):
-            raise ValueError("Path traversal detected")
-        if old_path.exists():
-            old_path.unlink()
-
-    settings.CATEGORY_UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
-    filename = f"{uuid.uuid4()}{ext}"
-    file_path = settings.CATEGORY_UPLOAD_DIR / filename
-
-    content = await image.read()
-    async with await anyio.open_file(file_path, "wb") as f:
-        await f.write(content)
-
-    url = settings.get_category_image_url(filename)
-    category.image_url = url
-    await session.flush()
-    await session.refresh(category)
-
-    return CategoryResponse.model_validate(category)
+    img = await images_service.create_image(
+        session=session, image=image, type=settings.CATEGORIES
+    )
+    updated = await categories_repository.set_category_image(
+        session=session, category_id=category_id, image_id=img.id
+    )
+    return CategoryResponse.model_validate(updated)
 
 
 async def delete_image(*, session: AsyncSession, category_id: int) -> CategoryResponse:
@@ -337,19 +306,10 @@ async def delete_image(*, session: AsyncSession, category_id: int) -> CategoryRe
     category = await categories_repository.get_category_by_id(session, category_id)
     if not category:
         raise CategoryNotExistsError(category_id=category_id)
-
-    if category.image_url:
-        file_path = (settings.ROOT_DIR / category.image_url.lstrip("/")).resolve()
-        if not str(file_path).startswith(str(settings.CATEGORY_UPLOAD_DIR.resolve())):
-            raise ValueError("Path traversal detected")
-        if file_path.exists():
-            file_path.unlink()
-
-        category.image_url = None
-        await session.flush()
-        await session.refresh(category)
-
-    return CategoryResponse.model_validate(category)
+    updated = await categories_repository.set_category_image(
+        session=session, category_id=category_id, image_id=None
+    )
+    return CategoryResponse.model_validate(updated)
 
 
 async def _check_circular_dependency(

@@ -34,13 +34,17 @@ def validate_image(image: UploadFile) -> str:
         raise ValueError(f"Недопустимое расширение файла: {ext}")
 
     if image.size is not None and image.size > MAX_IMAGE_SIZE:
-        raise ValueError(f"Размер файла превышает лимит {MAX_IMAGE_SIZE // (1024 * 1024)} MB")
+        raise ValueError(
+            f"Размер файла превышает лимит {MAX_IMAGE_SIZE // (1024 * 1024)} MB"
+        )
 
     header = image.file.read(2048)
     image.file.seek(0)
 
     actual_mime = magic.from_buffer(header, mime=True)
     if actual_mime not in ALLOWED_IMAGE_TYPES:
-        raise ValueError(f"Файл маскируется под изображение. Реальный тип: {actual_mime}")
+        raise ValueError(
+            f"Файл маскируется под изображение. Реальный тип: {actual_mime}"
+        )
 
     return ext

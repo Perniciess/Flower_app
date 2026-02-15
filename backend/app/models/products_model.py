@@ -3,7 +3,6 @@ from __future__ import annotations
 from datetime import datetime
 from decimal import Decimal
 from enum import StrEnum
-from typing import TYPE_CHECKING
 
 from sqlalchemy import (
     DECIMAL,
@@ -23,9 +22,8 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.db.base import Base
 from app.models.categories_model import product_category
 
-if TYPE_CHECKING:
-    from app.models.categories_model import Category
-
+from .categories_model import Category
+from .images_model import Image
 
 # Связующая таблица для состава букета (многие-ко-многим)
 bouquet_composition = Table(
@@ -58,7 +56,9 @@ class Product(Base):
     __tablename__ = "product"
 
     id: Mapped[int] = mapped_column(primary_key=True, index=True)
-    type: Mapped[ProductType] = mapped_column(Enum(ProductType), default=ProductType.FLOWER, index=True)
+    type: Mapped[ProductType] = mapped_column(
+        Enum(ProductType), default=ProductType.FLOWER, index=True
+    )
     name: Mapped[str] = mapped_column(String(255), nullable=False)
     price: Mapped[Decimal] = mapped_column(DECIMAL(precision=10, scale=2))
     sort_order: Mapped[int] = mapped_column(index=True)
@@ -72,25 +72,35 @@ class Product(Base):
     color: Mapped[str | None] = mapped_column(String(64))
     is_active: Mapped[bool] = mapped_column(Boolean, default=True, index=True)
     in_stock: Mapped[bool] = mapped_column(Boolean, default=True, index=True)
-    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now()
+    )
     updated_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now(), onupdate=func.now()
     )
-    categories: Mapped[list[Category]] = relationship("Category", secondary=product_category, back_populates="products")
-    composition: Mapped[list[Flower]] = relationship("Flower", secondary=bouquet_composition, back_populates="products")
+    categories: Mapped[list[Category]] = relationship(
+        "Category", secondary=product_category, back_populates="products"
+    )
+    composition: Mapped[list[Flower]] = relationship(
+        "Flower", secondary=bouquet_composition, back_populates="products"
+    )
 
 
 class ProductImage(Base):
     """Сущность изображений цветка."""
 
-    __tablename__ = "product_image"
+    __tablename__ = "product_images"
 
     id: Mapped[int] = mapped_column(primary_key=True, index=True)
-    product_id: Mapped[int] = mapped_column(ForeignKey("product.id", ondelete="CASCADE"), index=True)
-    url: Mapped[str] = mapped_column(String(512))
+    product_id: Mapped[int] = mapped_column(
+        ForeignKey("product.id", ondelete="CASCADE"), index=True
+    )
+    image_id: Mapped[int] = mapped_column(
+        ForeignKey("images.id", ondelete="CASCADE"), index=True
+    )
     sort_order: Mapped[int] = mapped_column(index=True)
-
     product: Mapped[Product] = relationship("Product", back_populates="images")
+    image: Mapped[Image] = relationship("Image", lazy="joined")
 
 
 class Flower(Base):
@@ -101,7 +111,9 @@ class Flower(Base):
     id: Mapped[int] = mapped_column(primary_key=True, index=True)
     name: Mapped[str] = mapped_column(String(255), nullable=False, unique=True)
     price: Mapped[Decimal] = mapped_column(DECIMAL(precision=10, scale=2))
-    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now()
+    )
     updated_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now(), onupdate=func.now()
     )

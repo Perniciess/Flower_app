@@ -11,6 +11,7 @@ class BannerBase(BaseModel):
     link: str | None = Field(
         default=None, max_length=512, description="Ссылка при клике"
     )
+
     sort_order: int = Field(default=0, description="Порядок сортировки")
     is_active: bool = Field(default=False, description="Активен ли баннер")
 
@@ -47,4 +48,4 @@ class BannerResponse(BannerBase):
     model_config = ConfigDict(from_attributes=True)
 
     id: int = Field(..., description="Уникальный идентификатор")
-    image_url: str | None = Field(default=None, description="URL изображения")
+    image_id: int | None = Field(default=None, description="ID изображения")

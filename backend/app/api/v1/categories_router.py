@@ -17,11 +17,11 @@ from app.schemas.categories_schema import (
 )
 from app.service import categories_service
 
-category_router = APIRouter(prefix="/category", tags=["category"])
+category_router = APIRouter(prefix="/categories", tags=["categories"])
 
 
 @category_router.post(
-    "/create",
+    "/",
     response_model=CategoryResponse,
     status_code=status.HTTP_201_CREATED,
     summary="Создание категории",
@@ -127,7 +127,8 @@ async def get_category_by_id(
 )
 async def update_category(
     category_id: int,
-    category_data: CategoryUpdate,
+    category_data: Annotated[CategoryUpdate, Form()],
+    image: UploadFile | None = None,
     session: AsyncSession = Depends(get_db),
     current_user: User = Depends(require_admin),
 ) -> CategoryResponse:
@@ -137,7 +138,10 @@ async def update_category(
     Требует прав администратора.
     """
     return await categories_service.update_category(
-        session=session, category_id=category_id, category_data=category_data
+        session=session,
+        category_id=category_id,
+        category_data=category_data,
+        image=image,
     )
 
 
@@ -206,7 +210,7 @@ async def delete_category_image(
 
 
 @category_router.get(
-    "/{slug}",
+    "/by-slug/{slug}",
     response_model=CategoryResponse,
     status_code=status.HTTP_200_OK,
     summary="Получить категорию по slug",

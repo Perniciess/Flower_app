@@ -47,3 +47,4 @@ class AdviceResponse(AdviceBase):
     model_config = ConfigDict(from_attributes=True)
 
     id: int = Field(..., description="Уникальный идентификатор")
+    image_id: int | None = Field(default=None, description="ID изображения")

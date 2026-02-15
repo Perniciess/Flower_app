@@ -100,7 +100,8 @@ async def get_banner(
 )
 async def update_banner(
     banner_id: int,
-    banner_data: BannerUpdate,
+    banner_data: Annotated[BannerUpdate, Form()],
+    image: UploadFile | None = None,
     session: AsyncSession = Depends(get_db),
     current_user: User = Depends(require_admin),
 ) -> BannerResponse:
@@ -110,7 +111,7 @@ async def update_banner(
     Требует прав администратора.
     """
     return await banners_service.update_banner(
-        session=session, banner_id=banner_id, banner_data=banner_data
+        session=session, banner_id=banner_id, banner_data=banner_data, image=image
     )
 
 

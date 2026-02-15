@@ -2,7 +2,6 @@ import hashlib
 import secrets
 from datetime import UTC, datetime, timedelta
 
-import anyio
 import jwt
 from fastapi.security import OAuth2PasswordBearer
 from pwdlib import PasswordHash
@@ -73,10 +72,5 @@ async def is_blacklisted(redis: Redis, token: str) -> bool:
     return await redis.exists(f"bl:{token_hash}") > 0
 
 
-async def get_file_hash(filename: str, algorithm: str = "md5"):
-    """Generates a cryptographic hash for a file."""
-    h = hashlib.new(algorithm)
-    async with await anyio.open_file(filename, "rb") as f:
-        while chunk := await f.read(8192):
-            h.update(chunk)
-    return h.hexdigest()
+async def get_content_hash(content: bytes, algorithm: str = "md5") -> str:
+    return hashlib.new(algorithm, content).hexdigest()

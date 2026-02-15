@@ -7,8 +7,10 @@ from app.models.banners_model import Banner
 from app.schemas.banners_schema import BannerCreate, BannerUpdate
 
 
-async def create_banner(*, session: AsyncSession, banner_data: BannerCreate) -> Banner:
-    banner = Banner(**banner_data.model_dump())
+async def create_banner(
+    *, session: AsyncSession, banner_data: BannerCreate, image_id: int | None
+) -> Banner:
+    banner = Banner(**banner_data.model_dump(), image_id=image_id)
     session.add(banner)
     await session.flush()
     return banner
@@ -38,12 +40,19 @@ def get_banners_query(*, only_active: bool = False) -> Select[tuple[Banner]]:
 
 
 async def update_banner(
-    *, session: AsyncSession, banner_id: int, banner_data: BannerUpdate
+    *,
+    session: AsyncSession,
+    banner_id: int,
+    banner_data: BannerUpdate,
+    image_id: int | None = None,
 ) -> Banner | None:
+    update_data = banner_data.model_dump(exclude_unset=True)
+    if image_id is not None:
+        update_data["image_id"] = image_id
     statement = (
         update(Banner)
         .where(Banner.id == banner_id)
-        .values(**banner_data.model_dump(exclude_unset=True))
+        .values(**update_data)
         .returning(Banner)
     )
     result = await session.execute(statement)
@@ -51,21 +60,21 @@ async def update_banner(
     return result.scalar_one_or_none()
 
 
-async def update_banner_image(
-    *, session: AsyncSession, banner_id: int, image_url: str
+async def delete_banner(*, session: AsyncSession, banner_id: int) -> bool:
+    statement = delete(Banner).where(Banner.id == banner_id).returning(Banner.id)
+    result = await session.execute(statement)
+    return result.scalar_one_or_none() is not None
+
+
+async def set_banner_image(
+    *, session: AsyncSession, banner_id: int, image_id: int | None
 ) -> Banner | None:
     statement = (
         update(Banner)
         .where(Banner.id == banner_id)
-        .values(image_url=image_url)
+        .values(image_id=image_id)
         .returning(Banner)
     )
     result = await session.execute(statement)
     await session.flush()
-    return result.scalar_one_or_none()
-
-
-async def delete_banner(*, session: AsyncSession, banner_id: int) -> str | None:
-    statement = delete(Banner).where(Banner.id == banner_id).returning(Banner.image_url)
-    result = await session.execute(statement)
     return result.scalar_one_or_none()

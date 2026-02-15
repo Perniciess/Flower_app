@@ -14,6 +14,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from starlette.middleware.cors import CORSMiddleware
 from starlette_csrf.middleware import CSRFMiddleware
 
+from app.api.v1.advices_router import advice_router
 from app.api.v1.auth_router import auth_router
 from app.api.v1.banners_router import banner_router
 from app.api.v1.carts_router import cart_router
@@ -183,6 +184,7 @@ api_router.include_router(pickup_point_router)
 api_router.include_router(flower_router)
 api_router.include_router(banner_router)
 api_router.include_router(image_router)
+api_router.include_router(advice_router)
 app.include_router(api_router, dependencies=[Depends(csrf_header_scheme)])
 
 
