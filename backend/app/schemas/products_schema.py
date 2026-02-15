@@ -11,7 +11,7 @@ class ProductImageResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
     id: int
-    url: str
+    image_id: str
     sort_order: int
 
 

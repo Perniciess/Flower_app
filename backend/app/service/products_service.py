@@ -1,8 +1,6 @@
-import uuid
 from collections.abc import Sequence
 from decimal import Decimal
 
-import anyio
 from fastapi import UploadFile
 from fastapi_pagination import Page
 from fastapi_pagination.ext.sqlalchemy import paginate
@@ -19,7 +17,8 @@ from app.schemas.products_schema import (
 )
 from app.service import discounts_service
 from app.utils.filters.products import ProductFilter
-from app.utils.validators.image import validate_image
+
+from . import images_service
 
 
 async def create_product(
@@ -44,18 +43,11 @@ async def create_product(
     )
 
     if image is not None:
-        ext = validate_image(image)
-        settings.PRODUCT_UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
-        filename = f"{uuid.uuid4()}{ext}"
-        file_path = settings.PRODUCT_UPLOAD_DIR / filename
-
-        content = await image.read()
-        async with await anyio.open_file(file_path, "wb") as f:
-            await f.write(content)
-
-        url = settings.get_product_image_url(filename)
+        img = await images_service.create_image(
+            session=session, image=image, type=settings.PRODUCTS
+        )
         await products_repository.create_product_image(
-            session=session, product_id=product.id, url=url, sort_order=0
+            session=session, product_id=product.id, image_id=img.id, sort_order=0
         )
 
     product = await products_repository.get_product_by_id(
@@ -187,25 +179,18 @@ async def upload_image(
     Raises:
         ValueError: если файл невалидный
     """
-    ext = validate_image(image)
-
-    settings.PRODUCT_UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
-    filename = f"{uuid.uuid4()}{ext}"
-    file_path = settings.PRODUCT_UPLOAD_DIR / filename
-
-    content = await image.read()
-    async with await anyio.open_file(file_path, "wb") as f:
-        await f.write(content)
-
-    url = settings.get_product_image_url(filename)
+    img = await images_service.create_image(
+        session=session, image=image, type=settings.PRODUCTS
+    )
     product_image = await products_repository.create_product_image(
-        session=session, product_id=product_id, url=url, sort_order=sort_order
+        session=session, product_id=product_id, image_id=img.id, sort_order=sort_order
     )
     return ProductImageResponse.model_validate(product_image)
 
 
 async def get_product_images(
-    *, session: AsyncSession
+    *,
+    session: AsyncSession,
 ) -> Sequence[ProductImageResponse]:
     """
     Получает список изображений товара.
@@ -231,18 +216,11 @@ async def delete_product_image(*, session: AsyncSession, image_id: int) -> bool:
     Returns:
         bool: изображение удалено или нет
     """
-    url = await products_repository.delete_product_image(
+    deleted = await products_repository.delete_product_image(
         session=session, image_id=image_id
     )
-    if url is None:
+    if not deleted:
         raise ImageNotFoundError(image_id=image_id)
-
-    file_path = (settings.ROOT_DIR / url.lstrip("/")).resolve()
-    if not str(file_path).startswith(str(settings.PRODUCT_UPLOAD_DIR.resolve())):
-        raise ValueError("Path traversal detected")
-    if file_path.exists():
-        file_path.unlink()
-
     return True
 
 

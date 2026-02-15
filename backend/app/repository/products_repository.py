@@ -65,12 +65,14 @@ async def delete_product(*, session: AsyncSession, product_id: int) -> bool:
 
 
 async def create_product_image(
-    *, session: AsyncSession, product_id: int, url: str, sort_order: int
+    *, session: AsyncSession, product_id: int, image_id: int, sort_order: int
 ) -> ProductImage:
-    statement = ProductImage(product_id=product_id, url=url, sort_order=sort_order)
-    session.add(statement)
+    product_image = ProductImage(
+        product_id=product_id, image_id=image_id, sort_order=sort_order
+    )
+    session.add(product_image)
     await session.flush()
-    return statement
+    return product_image
 
 
 async def get_product_images(*, session: AsyncSession) -> Sequence[ProductImage]:
@@ -79,14 +81,14 @@ async def get_product_images(*, session: AsyncSession) -> Sequence[ProductImage]
     return result.scalars().all()
 
 
-async def delete_product_image(*, session: AsyncSession, image_id: int) -> str | None:
+async def delete_product_image(*, session: AsyncSession, image_id: int) -> bool:
     statement = (
         delete(ProductImage)
         .where(ProductImage.id == image_id)
-        .returning(ProductImage.url)
+        .returning(ProductImage.id)
     )
     result = await session.execute(statement)
-    return result.scalar_one_or_none()
+    return result.scalar_one_or_none() is not None
 
 
 async def get_product_price(
