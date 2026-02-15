@@ -2,6 +2,7 @@ import hmac
 
 import jwt
 from fastapi import Depends, HTTPException, Request, status
+from fastapi.security import HTTPAuthorizationCredentials
 from redis.asyncio import Redis
 from sqlalchemy.ext.asyncio import AsyncSession
 from yookassa.domain.common import SecurityHelper
@@ -13,17 +14,16 @@ from app.repository import users_repository
 from .config import settings
 from .exceptions import InsufficientPermissionError, InvalidTokenError
 from .redis import get_redis
-from .security import is_blacklisted, oauth2_scheme
+from .security import bearer_scheme, is_blacklisted
 
 
 async def get_current_user(
     session: AsyncSession = Depends(get_db),
     redis: Redis = Depends(get_redis),
-    header_token: str | None = Depends(oauth2_scheme),
+    credentials: HTTPAuthorizationCredentials | None = Depends(bearer_scheme),
 ):
     """Получение активного пользователя из токена."""
-    token = header_token
-
+    token = credentials.credentials if credentials else None
     if not token:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
@@ -34,13 +34,19 @@ async def get_current_user(
     if await is_blacklisted(redis, token):
         raise InvalidTokenError()
     try:
-        payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
+        payload = jwt.decode(
+            token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM]
+        )
         sub = payload.get("sub")
         if not sub:
-            raise HTTPException(status_code=401, detail="Could not validate credentials")
+            raise HTTPException(
+                status_code=401, detail="Could not validate credentials"
+            )
         user_id = int(sub)
     except (jwt.InvalidTokenError, TypeError, ValueError):
-        raise HTTPException(status_code=401, detail="Could not validate credentials") from None
+        raise HTTPException(
+            status_code=401, detail="Could not validate credentials"
+        ) from None
 
     user = await users_repository.get_user_by_id(session=session, user_id=user_id)
     if user is None:

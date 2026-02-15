@@ -14,6 +14,7 @@ async def create_category(
     category = Category(**category_data.model_dump(), image_id=image_id)
     session.add(category)
     await session.flush()
+    await session.refresh(category, ["image"])
     return category
 
 
@@ -53,7 +54,10 @@ async def update_category(
     )
     result = await session.execute(statement)
     await session.flush()
-    return result.scalar_one_or_none()
+    category = result.scalar_one_or_none()
+    if category:
+        await session.refresh(category, ["image"])
+    return category
 
 
 async def get_all_active_categories(
@@ -121,4 +125,7 @@ async def set_category_image(
     )
     result = await session.execute(statement)
     await session.flush()
-    return result.scalar_one_or_none()
+    category = result.scalar_one_or_none()
+    if category:
+        await session.refresh(category, ["image"])
+    return category

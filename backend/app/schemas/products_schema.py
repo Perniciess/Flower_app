@@ -1,8 +1,10 @@
 from decimal import Decimal
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, computed_field
 
 from app.models.products_model import ProductType
+
+from .image_schema import ImageResponse
 
 
 class ProductImageResponse(BaseModel):
@@ -11,8 +13,14 @@ class ProductImageResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
     id: int
-    image_id: str
+    image_id: int
     sort_order: int
+    image: ImageResponse | None = Field(default=None, exclude=True)
+
+    @computed_field
+    @property
+    def image_url(self) -> str | None:
+        return self.image.path if self.image else None
 
 
 class FlowerInComposition(BaseModel):

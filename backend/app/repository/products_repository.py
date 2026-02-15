@@ -72,6 +72,7 @@ async def create_product_image(
     )
     session.add(product_image)
     await session.flush()
+    await session.refresh(product_image, ["image"])
     return product_image
 
 

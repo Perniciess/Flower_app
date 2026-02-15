@@ -69,7 +69,6 @@ class CategoryResponse(CategoryBase):
 
     id: int = Field(..., description="Уникальный идентификатор категории")
     is_active: bool = Field(..., description="Статус активности категории")
-    image_id: int | None = Field(default=None, description="ID изображения")
     created_at: datetime = Field(..., description="Дата создания")
     updated_at: datetime = Field(..., description="Дата последнего обновления")
 

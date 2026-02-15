@@ -13,6 +13,7 @@ async def create_banner(
     banner = Banner(**banner_data.model_dump(), image_id=image_id)
     session.add(banner)
     await session.flush()
+    await session.refresh(banner, ["image"])
     return banner
 
 
@@ -57,7 +58,10 @@ async def update_banner(
     )
     result = await session.execute(statement)
     await session.flush()
-    return result.scalar_one_or_none()
+    banner = result.scalar_one_or_none()
+    if banner:
+        await session.refresh(banner, ["image"])
+    return banner
 
 
 async def delete_banner(*, session: AsyncSession, banner_id: int) -> bool:
@@ -77,4 +81,7 @@ async def set_banner_image(
     )
     result = await session.execute(statement)
     await session.flush()
-    return result.scalar_one_or_none()
+    banner = result.scalar_one_or_none()
+    if banner:
+        await session.refresh(banner, ["image"])
+    return banner

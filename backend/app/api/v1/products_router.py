@@ -205,3 +205,26 @@ async def open_all_products(
         session=session, in_stock=True
     )
     return {"updated": count}
+
+
+@product_router.post(
+    "/{product_id}/images/attach",
+    response_model=ProductImageResponse,
+    status_code=status.HTTP_201_CREATED,
+    summary="Привязать существующее изображение к товару",
+)
+async def attach_image(
+    product_id: int,
+    image_id: int = Form(..., description="ID существующего изображения"),
+    sort_order: int = Form(default=0, description="Порядок сортировки"),
+    session: AsyncSession = Depends(get_db),
+    current_user: User = Depends(require_admin),
+) -> ProductImageResponse:
+    """
+    Привязать уже загруженное изображение к товару по его ID.
+
+    Требует прав администратора.
+    """
+    return await products_service.attach_image(
+        session=session, product_id=product_id, image_id=image_id, sort_order=sort_order
+    )

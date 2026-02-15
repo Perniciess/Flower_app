@@ -13,6 +13,7 @@ async def create_advice(
     advice = Advice(**advice_data.model_dump(), image_id=image_id)
     session.add(advice)
     await session.flush()
+    await session.refresh(advice, ["image"])
     return advice
 
 
@@ -57,7 +58,10 @@ async def update_advice(
     )
     result = await session.execute(statement)
     await session.flush()
-    return result.scalar_one_or_none()
+    advice = result.scalar_one_or_none()
+    if advice:
+        await session.refresh(advice, ["image"])
+    return advice
 
 
 async def delete_advice(*, session: AsyncSession, advice_id: int) -> bool:
@@ -77,4 +81,7 @@ async def set_advice_image(
     )
     result = await session.execute(statement)
     await session.flush()
-    return result.scalar_one_or_none()
+    advice = result.scalar_one_or_none()
+    if advice:
+        await session.refresh(advice, ["image"])
+    return advice

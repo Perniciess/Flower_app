@@ -60,6 +60,14 @@ async def create_image(
     return ImageResponse.model_validate(img)
 
 
+async def get_image(*, session: AsyncSession, image_id: int) -> ImageResponse:
+    image = await images_repository.get_image(session=session, image_id=image_id)
+    if not image:
+        raise ImageNotFoundError(image_id=image_id)
+
+    return ImageResponse.model_validate(image)
+
+
 async def get_images(*, session: AsyncSession) -> Sequence[ImageResponse]:
     images = await images_repository.get_images(session=session)
     return [ImageResponse.model_validate(img) for img in images]

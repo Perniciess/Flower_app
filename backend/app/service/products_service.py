@@ -237,3 +237,20 @@ async def set_all_products_in_stock(*, session: AsyncSession, in_stock: bool) ->
     return await products_repository.set_all_products_in_stock(
         session=session, in_stock=in_stock
     )
+
+
+async def attach_image(
+    *, session: AsyncSession, product_id: int, image_id: int, sort_order: int = 0
+) -> ProductImageResponse:
+    product = await products_repository.get_product(
+        session=session, product_id=product_id
+    )
+    if product is None:
+        raise ProductNotFoundError(product_id=product_id)
+
+    await images_service.get_image(session=session, image_id=image_id)
+
+    product_image = await products_repository.create_product_image(
+        session=session, product_id=product_id, image_id=image_id, sort_order=sort_order
+    )
+    return ProductImageResponse.model_validate(product_image)
